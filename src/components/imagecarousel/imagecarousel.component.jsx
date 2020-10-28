@@ -10,7 +10,6 @@ const images = [
 
 const ImageCarousel = () => {
       const [activeImage, setActiveImage] = useState(0);
-      const [startCounter, setStartCounter] = useState(false);
       const [imagesArr, setImagesArr] = useState([])
       
       useEffect(() => {

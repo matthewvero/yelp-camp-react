@@ -3,7 +3,7 @@ export const toggleTheme = 'TOGGLE_DARK_MODE'
 
 
 const initialState = {
-      darkMode: true
+      darkMode: false
 }
 
 const themeReducer = (state = initialState, { type }) => {

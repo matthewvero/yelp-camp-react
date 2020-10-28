@@ -1,11 +1,11 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 export const HeaderContainer = styled.div`
   position: fixed; 
-  z-index: 0;
+  z-index: 1;
   left: 0px;
   top: 0px;
-  height: 75px;
+  height: 65px;
   width: 100vw;
   display: flex;
   justify-content: space-between;
@@ -18,7 +18,7 @@ export const HeaderLogo = styled.div`
       color: ${props => props.theme.textAlt};
       width: 10%;
       height: 100%;
-      padding: 0 1vw;
+      padding: 0 50px;
       display: flex; 
       justify-content: space-around;
       align-items: center;

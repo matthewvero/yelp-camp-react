@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { HeaderButton } from '../header/header.styles';
 
 export const ThemeToggleButtonContainer = styled(HeaderButton)`

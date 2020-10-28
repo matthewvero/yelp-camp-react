@@ -14,7 +14,7 @@ const Header = ({history}) => {
                   <HeaderLogo style={{marginLeft: '1%'}} onClick={() => history.push('/')}>
                         YelpCamp <FontAwesomeIcon style={{color: themeContext.color}}icon={faMountain}/>
                   </HeaderLogo>
-                  <div style={{display: 'flex', width: '20%', justifyContent: 'space-around', marginRight: '20px'}}>
+                  <div style={{display: 'flex', width: '350px', justifyContent: 'space-around', marginRight: '20px'}}>
                         <HeaderButton>
                               <div 
                                     style={{
