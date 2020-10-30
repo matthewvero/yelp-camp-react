@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import {Switch, Route} from 'react-router';
 import LandingPage from './pages/landingpage/landingpage'
@@ -6,10 +6,26 @@ import Homepage from './pages/homepage/homepage';
 import Header from './components/header/header.component';
 import { ThemeProvider } from 'styled-components';
 import {lightTheme, darkTheme} from '../src/theme/themes';
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { auth } from './firebase';
+import { setUser } from './redux/auth-redux/auth.actions';
 
 
-function App({darkMode}) {
+function App() {
+  const darkMode = useSelector(state => state.themeReducer.darkMode)
+  const userProfile = useSelector(state => state.authReducer.user)
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        dispatch(setUser(user))
+      }
+      
+    });
+  }, [])
+
   return (
 
     <div className="App">
@@ -24,12 +40,10 @@ function App({darkMode}) {
   );
 }
 
-const mapStateToProps = (state) => ({
-    darkMode: state.themeReducer.darkMode
-})
 
 
 
 
-export default connect(mapStateToProps)(App);
+
+export default App;
 

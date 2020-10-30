@@ -1,43 +1,33 @@
-import React, { useContext } from 'react'
+import React, { useContext, useRef } from 'react'
 import { withRouter } from "react-router";
-import { HeaderButton, HeaderContainer, HeaderLogo } from './header.styles'
+import { HeaderContainer, HeaderLogo } from './header.styles'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faMountain, faUser} from '@fortawesome/free-solid-svg-icons'
+import {faMountain} from '@fortawesome/free-solid-svg-icons'
 import { ThemeContext } from 'styled-components'
 import ThemeToggleButton from '../themetogglebutton/themetogglebutton.component'
+import HeaderDropDownButton from '../headerdropdownbutton/header-dropdown-button.component';
+import Login from '../login/login.component';
+import Signup from '../signup/signup.component';
 
 const Header = ({history}) => {
-
+      const myRef = useRef(null);
       const themeContext = useContext(ThemeContext)
+      
       return (
-            <HeaderContainer>
+            <HeaderContainer ref={myRef}>
                   <HeaderLogo style={{marginLeft: '1%'}} onClick={() => history.push('/')}>
                         YelpCamp <FontAwesomeIcon style={{color: themeContext.color}}icon={faMountain}/>
                   </HeaderLogo>
-                  <div style={{display: 'flex', width: '350px', justifyContent: 'space-around', marginRight: '20px'}}>
-                        <HeaderButton>
-                              <div 
-                                    style={{
-                                          height: '33px', 
-                                          width: '33px', 
-                                          backgroundColor: themeContext.backgroundActive, 
-                                          borderRadius: '50%', 
-                                          alignItems: 'center', 
-                                          display: 'flex', 
-                                          justifyContent: 'center',
-                                          marginLeft: '-12px',
-                                          marginRight: '10px',
-                                          fontSize: '1.4rem',
-                                          
-                                    }}
-                              > 
-                                    <FontAwesomeIcon icon={faUser}/>
-                              </div>
-                              Log In 
-                        </HeaderButton>
-                        <HeaderButton>
-                              Sign Up 
-                        </HeaderButton>
+                  <div style={{display: 'flex', width: '350px', justifyContent: 'space-around', marginRight: '50px'}}>
+                        
+                        <HeaderDropDownButton title='Log In'>
+                              <Login/>
+                        </HeaderDropDownButton>
+
+                        <HeaderDropDownButton title='Sign up'>
+                              <Signup/>
+                        </HeaderDropDownButton>
+                        
                         <ThemeToggleButton/>
                   </div>
             </HeaderContainer>

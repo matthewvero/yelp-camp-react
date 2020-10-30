@@ -53,7 +53,6 @@ export const HeaderButton = styled.div`
             background-color: ${props => props.theme.backgroundHover}; 
       }
       &:active {
-            transform: scale(0.95);
             background-color: ${props => props.theme.backgroundActive}
       }
 `

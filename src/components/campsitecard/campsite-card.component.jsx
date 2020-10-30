@@ -1,44 +1,80 @@
-import { faHeart, faStar, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from 'styled-components';
-import Button from '../button/button.component';
-import { Container } from '../misc/containers.styles'
-import { CampsiteCardContainer, CampsiteCardHeart, CampsiteCardImage } from './campsite-card.styles'
+import { CampsiteCardContainer, CampsiteCardHeart, CampsiteCardImage, LoadingImage } from './campsite-card.styles'
 
-const image = 'https://images.unsplash.com/photo-1526491109672-74740652b963?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2550&q=80';
+const CampsiteCard = ({campsite}) => {
+      const [loading, setLoading] = useState(true);
+      const [image, setImage] = useState();
+      const themeContext = useContext(ThemeContext);
+      const cardContentContainer = {
+            width: '100%', 
+            height: '100%', 
+            padding: '10px 20px', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            justifyContent: 'space-around', 
+            alignItems: 'start'
+      }
+      
 
-const CampsiteCard = ({data}) => {
-      const themeContext = useContext(ThemeContext)
+      useEffect(() => {
+
+            const imageData = new Image();
+            imageData.onload = () => {
+                  setImage(imageData.src);
+                  setLoading(false);
+            }
+            imageData.src = campsite.image
+            
+      }, [campsite.image])
+
       return (
-            <CampsiteCardContainer style={{
-                  height: 'auto', 
-                  flexBasis: '30%', 
-                  margin: '1.5%', 
-                  justifyContent: 'space-between', 
-                  alignItems: 'start',
-                  overflow: 'hidden', 
-                  position: 'relative'
-            }}>
-                  <CampsiteCardImage src={image}/>
-                  <CampsiteCardHeart 
-                        icon={faHeart} 
-                        
-                  />
-                  <div style={{width: '100%', height: '100%', padding: '10px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', alignItems: 'start'}}>
-                        <span style={{color: themeContext.color}}><FontAwesomeIcon icon={faStar}/> 5.0</span>
+            <CampsiteCardContainer>
+                  {
+                        loading ?
+                        <LoadingImage/> 
+                        :
+                        <CampsiteCardImage src={image}/>
+                  }
+                  
+                        <CampsiteCardHeart 
+                              icon={faHeart} 
+                        />
+                  
+                  <div style={cardContentContainer} >
+
+                        <span 
+                        style={{color: themeContext.color}}
+                        >
+                              <FontAwesomeIcon icon={faStar}/> 
+                    
+                              {campsite.rating}
+
+                        </span>
                         <p
-                              style={{
+                        style={{
                               margin: '0', 
                               fontWeight: '400', 
                               color: themeContext.textAlt,
                               fontSize: '1.2rem'
-                              }}
+                        }}
                         >
-                              *Campsite Name*
+                              {campsite.name}
                         </p>
-                        <p style={{margin: '0', color: themeContext.textAlt}}>stuff</p>
-                  </div>
+                        
+         
+                        <p 
+                        style={{
+                              margin: '0', 
+                              color: themeContext.textAlt
+                        }}
+                        >
+                              {campsite.description}
+                        </p>
+                  
+                        </div>
             </CampsiteCardContainer>
       )
 }

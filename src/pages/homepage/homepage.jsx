@@ -1,14 +1,51 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from 'styled-components'
 import { Container } from '../../components/misc/containers.styles'
 import { PageContainer } from '../page.styles'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faMountain, faSearch} from '@fortawesome/free-solid-svg-icons'
-import { FormInputButton, FormInputText } from '../../components/inputs/input-text/input-text.styles'
+import { FormInputText } from '../../components/inputs/input-text/inputs.styles'
 import CampsiteCard from '../../components/campsitecard/campsite-card.component'
+import { db } from '../../firebase'
+
+const formStyles = {
+      position: 'relative', 
+      height: '100%', 
+      display: 'flex', 
+      alignItems: 'center'
+}
+const searchBarStyles = {
+      width: '60vw', 
+      height: '60px', 
+      margin: '20px 0', 
+      display: 'flex', 
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '0 5%'
+}
+
+const campsiteCardsContainerStyles = {
+      width: '70vw', 
+      display: 'flex', 
+      flexDirection: 'row', 
+      flexWrap: 'wrap', 
+      justifyContent: 'flex-start', 
+      alignItems: 'space-evenly'
+}
+
 const Homepage = () => {
       const themeContext = useContext(ThemeContext)
-      const formStyles = {position: 'relative', height: '100%', display: 'flex', alignItems: 'center'}
+      const [campsites, setCampsites] = useState([])
+      useEffect(() => {
+            const getData = async () => {
+                  let campsitesArr = []
+                  const snapshot = await db.collection('campsites').get();
+                  snapshot.forEach(doc => campsitesArr.push({data: doc.data(), id: doc.id}))
+                  setCampsites(campsitesArr)
+            }
+            getData()
+      }, [])
 
       return (
             <PageContainer>
@@ -23,21 +60,13 @@ const Homepage = () => {
                               Welcome To YelpCamp! <FontAwesomeIcon style={{color: themeContext.color}} icon={faMountain}/>
                         </h1>
                         <p 
-                              style={{color: themeContext.textAlt}}>
+                              style={{color: themeContext.textAlt}}
+                        >
                               Take a look at our hand-picked campsites
                         </p>
                   </Container>
                   <Container
-                        style={{
-                              width: '60vw', 
-                              height: '60px', 
-                              margin: '20px 0', 
-                              display: 'flex', 
-                              flexDirection: 'row',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                              padding: '0 5%'
-                        }}
+                        style={searchBarStyles}
                   >
                         <h2 
                               style={{
@@ -57,41 +86,22 @@ const Homepage = () => {
                         >     
                               <div style={formStyles}>
                                     <FontAwesomeIcon icon={faSearch} style={{position: 'absolute', left: '5%', color: themeContext.textAlt}}/>
-                                    <FormInputText placeholder='Search Campsites...'/>
+                                    <FormInputText style={{height: '70%'}} placeholder='Search Campsites...'/>
                               </div>
-                              <FormInputButton>
-                                    Submit
-                              </FormInputButton>
                         </form>
                   </Container>
 
-                  <div style={{width: '70vw', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start', alignItems: 'space-evenly'}}>
+                  <div style={campsiteCardsContainerStyles}>
                   
-                              <CampsiteCard>
+                        {
+                              campsites.map(site => (
 
-                              </CampsiteCard>
-                              <CampsiteCard>
-                              </CampsiteCard>
-                              <CampsiteCard>
-                              </CampsiteCard>
-                              <CampsiteCard>
-                              </CampsiteCard>
-                              <CampsiteCard>
-                              </CampsiteCard>
-                              <CampsiteCard>
-                              </CampsiteCard>
-                              <CampsiteCard>
-                              </CampsiteCard>
-                              <CampsiteCard>
-                              </CampsiteCard>
-                              <CampsiteCard>
-                              </CampsiteCard>
-                              <CampsiteCard>
-                              </CampsiteCard>
-                              <CampsiteCard>
-                              </CampsiteCard>
-                              <CampsiteCard>
-                              </CampsiteCard>
+                                    <CampsiteCard campsite={site.data} key={site.id}/>
+      
+                              ))
+                        }
+                             
+                              
                   
                   </div>
 

@@ -22,6 +22,9 @@ export const lightTheme = {
       boxShadowBottom: '0 1px 2px #bbbbbb',
       boxShadow: '0 1px 2px #bbbbbb',
       borderBtm: 'none',
+      shadowColor: '#bbbbbb',
+      loadingDark: '#bbbbbb',
+      loadingLight: '#F0F2F5'
 }
 
 export const darkTheme = {
@@ -36,5 +39,8 @@ export const darkTheme = {
       boxShadowBottom: '0 0px 10px #111111',
       boxShadow: '0 0 5px #111111',
       border: 'solid 1px #333333',
+      shadowColor: '#111111',
+      loadingDark: 'rgb(36,37,38)',
+      loadingLight: '#666666'
 }
 
