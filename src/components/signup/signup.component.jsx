@@ -1,13 +1,14 @@
+import React, { useContext, useEffect, useState } from 'react'
+import {Link, withRouter} from 'react-router-dom';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group'
 import { ThemeContext } from 'styled-components';
-import { DropdownContainer, DropdownMenuInitial, DropdownMenuSlider } from '../misc/containers.styles'
+import { DropdownContainer, DropDownMenuPage } from '../misc/containers.styles'
 import SignupForm from '../signupform/signupform.component';
 
-const Signup = () => {
+const Signup = ({location}) => {
       const [menuVisible, setMenuVisible] = useState(false);
       const [curMenu, setCurMenu] = useState('signup');
       const [height, setHeight] = useState(300);
@@ -15,9 +16,10 @@ const Signup = () => {
       const user = useSelector(state => state.authReducer.user);
 
       useEffect(() => {
-            user.hasOwnProperty('email') && setCurMenu('welcome')
+            user.hasOwnProperty('displayName') && setCurMenu('welcome')
       }, [user]);
 
+      
 
       return (
             <DropdownContainer height={height} onClick={e => e.stopPropagation()} onAnimationEnd={() => setMenuVisible(menuVisible => !menuVisible)}>
@@ -30,31 +32,57 @@ const Signup = () => {
                         onEntering={(e) => setHeight(e.clientHeight)}
 
                   >
-                        <DropdownMenuInitial >
+                        <DropDownMenuPage >
 
                               <SignupForm/>
                               
-                        </DropdownMenuInitial>
+                        </DropDownMenuPage>
                   </CSSTransition>
 
                   <CSSTransition
                         in={menuVisible && curMenu === 'welcome'}
-                        classNames="slider"
+                        classNames="menu"
                         timeout={1000}
                         unmountOnExit
                         onEntering={(e) => setHeight(e.clientHeight)}
                   >
-                        <DropdownMenuSlider style>
+                        <DropDownMenuPage style>
                               Welcome To YelpCamp
-                              <div style={{width: '100px', height: '100px', margin: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: themeContext.background, borderRadius: '50%'}}>
+                              <div 
+                                    style={{
+                                          width: '100px', 
+                                          height: '100px', 
+                                          margin: '20px', 
+                                          display: 'flex', 
+                                          justifyContent: 'center', 
+                                          alignItems: 'center', 
+                                          backgroundColor: themeContext.background, 
+                                          borderRadius: '50%'
+                                    }}
+                              >
                                     <FontAwesomeIcon icon={faUser} style={{fontSize: '3rem'}}/>
                               </div>
                               {user.displayName}
-                        </DropdownMenuSlider>
+                              {
+                                    location.pathname !== '/profile' &&
+                              
+                              <Link 
+                                    style={{
+                                          color: themeContext.color, 
+                                          textDecoration: 'none', 
+                                          margin: '10px 0'
+                                    }} 
+                                    to={'/profile'}
+                                    
+                              >
+                                    View Your Profile
+                              </Link>
+                              }
+                        </DropDownMenuPage>
                   </CSSTransition>
 
             </DropdownContainer>
       )
 }
 
-export default Signup
+export default withRouter(Signup) 

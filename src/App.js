@@ -9,11 +9,11 @@ import {lightTheme, darkTheme} from '../src/theme/themes';
 import { useDispatch, useSelector } from 'react-redux';
 import { auth } from './firebase';
 import { setUser } from './redux/auth-redux/auth.actions';
+import ProfilePage from './pages/profilepage/profilepage';
 
 
 function App() {
   const darkMode = useSelector(state => state.themeReducer.darkMode)
-  const userProfile = useSelector(state => state.authReducer.user)
 
   const dispatch = useDispatch();
 
@@ -34,6 +34,7 @@ function App() {
         <Switch>
           <Route exact path='/' component={LandingPage}/>
           <Route exact path='/home' component={Homepage}/>
+          <Route exact path='/profile' component={ProfilePage}/>
         </Switch>
         </ThemeProvider>
     </div>

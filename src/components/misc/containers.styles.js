@@ -39,30 +39,14 @@ export const DropdownContainer = styled.div`
       will-change: height;
 `
 
-export const DropdownMenuSlider = styled.div`
+export const DropDownMenuPage = styled.div`
       height: auto;
       width: 100%;
+      padding: 10px 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-around;
-      &.slider-enter {
-            transform: translateX(100%);
-      }
-      &.slider-enter-active {
-            transition: 100ms transform 25ms; 
-            transform: translateX(0%);
-      }
-      &.slider-exit {
-            opacity: 1;
-      }
-      &.slider-exit-active {
-            opacity: 0;
-            transition: 100ms opacity;
-      }
-`;
-
-export const DropdownMenuInitial = styled(DropdownMenuSlider)`
       &.menu-enter {
             opacity: 0;
       }
@@ -71,10 +55,26 @@ export const DropdownMenuInitial = styled(DropdownMenuSlider)`
             opacity: 1;
       }
       &.menu-exit {
-            transform: translateX(0%);
+            opacity: 1;
       }
       &.menu-exit-active {
-            transform: translateX(-100%);
-            transition: 100ms transform;
+            transition: 100ms opacity 50ms; 
+            opacity: 0;
       }
+`;
+
+
+export const ProfilePicture = styled.img`
+      height: 100%;
+      width: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 7px solid ${props => props.theme.main};
+
+`
+export const CoverPicture = styled.img`
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 10px;
 `

@@ -52,7 +52,10 @@ const Homepage = () => {
                   <Container
                         $width='70vw'
                         $height='200px'
-                        style={{marginTop: '20px', justifyContent: 'space-around', padding: '20px 0'}}
+                        style={{
+                              marginTop: '20px', 
+                              justifyContent: 'space-around', 
+                              padding: '20px 0'}}
                   >
                         <h1 
                               style={{fontSize: '2.5rem', fontWeight: '400', color: themeContext.textAlt, margin: '0'}}

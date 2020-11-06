@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { CSSTransition } from 'react-transition-group';
 import { FormInputButton, FormInputText } from '../inputs/input-text/inputs.styles'
-import { DropdownContainer, DropdownMenuInitial } from '../misc/containers.styles';
+import { DropdownContainer, DropDownMenuPage } from '../misc/containers.styles';
 
 const Login = () => {
       const [loginVisible, setLoginVisible] = useState(false);
@@ -20,16 +20,25 @@ const Login = () => {
                   onEntering={(e) => setHeight(e.clientHeight)}
 
             >
-                  <DropdownMenuInitial>
+                  <DropDownMenuPage>
                         <h2 style={{ margin: '2%'}}>Log In</h2>
-                        <form style={{width: '100%', height: '80%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-evenly'}}>
+                        <form 
+                              style={{
+                                    width: '100%', 
+                                    height: '80%', 
+                                    display: 'flex', 
+                                    flexDirection: 'column', 
+                                    alignItems: 'center', 
+                                    justifyContent: 'space-evenly'
+                              }}
+                        >
                         <label>Username</label>
                         <FormInputText style={inputStyles}/>
                         <label>Password</label>
                         <FormInputText style={inputStyles}/>
                         <FormInputButton style={inputStyles} >Log In</FormInputButton>
                         </form>
-                  </DropdownMenuInitial>
+                  </DropDownMenuPage>
             </CSSTransition>
             </DropdownContainer>
       )

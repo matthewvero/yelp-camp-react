@@ -38,6 +38,7 @@ export const HeaderButton = styled.div`
       width: auto;
       min-width: 115px;
       padding: 0 10px;
+      margin: 0 10px;
       display: flex;
       justify-content: space-around;
       align-items: center;
@@ -54,5 +55,19 @@ export const HeaderButton = styled.div`
       }
       &:active {
             background-color: ${props => props.theme.backgroundActive}
+      }
+      &.headerbutton-enter {
+            opacity: 0;
+      }
+      &.headerbutton-enter-active {
+            transition: 100ms opacity 50ms; 
+            opacity: 1;
+      }
+      &.headerbutton-exit {
+            opacity: 1;
+      }
+      &.headerbutton-exit-active {
+            transition: 100ms opacity 50ms; 
+            opacity: 0;
       }
 `

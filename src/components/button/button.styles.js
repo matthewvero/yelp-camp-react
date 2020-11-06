@@ -1,20 +1,17 @@
 import styled from 'styled-components/macro';
 
-export const ButtonContainer = styled.div`
-      height: 40px;
-      width: auto;
-      min-width: 115px;
-      padding: 0 10px;
+export const ButtonContainer = styled.button`
       display: flex;
       justify-content: space-around;
       align-items: center;
-      align-self: center;
-      border-radius: 15px; 
-      background-color: ${props => props.theme.backgroundAlt}; 
+      border-radius: 10px; 
+      border: none;
+      background-color: ${props => props.theme.background}; 
       color: ${props => props.theme.textAlt};
       font-size: 1.3rem;
       transition: transform 25ms linear;
       user-select: none;
+      outline: none;
       cursor: pointer;
       &:hover {
             background-color: ${props => props.theme.backgroundHover}; 

@@ -1,7 +1,8 @@
 import { authTypes } from "./auth.types"
 
 const initialState = {
-      user: {}
+      user: {},
+      loggedIn: false,
 }
 
 const authReducer = (state = initialState, { type, payload }) => {

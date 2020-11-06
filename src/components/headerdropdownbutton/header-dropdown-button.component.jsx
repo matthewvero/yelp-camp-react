@@ -1,27 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { withRouter } from 'react-router';
 
 import { HeaderButton } from '../header/header.styles';
 
-// <div 
-//                                     style={{
-//                                           height: '33px', 
-//                                           width: '33px', 
-//                                           backgroundColor: themeContext.backgroundActive, 
-//                                           borderRadius: '50%', 
-//                                           alignItems: 'center', 
-//                                           display: 'flex', 
-//                                           justifyContent: 'center',
-//                                           marginLeft: '-12px',
-//                                           marginRight: '10px',
-//                                           fontSize: '1.4rem',
-//                                     }}
-//                               > 
-//                                     <FontAwesomeIcon icon={faUser}/>
-//             </div>
-
-
-const HeaderDropDownButton = ({children, title}) => {
+const HeaderDropDownButton = ({children, title, location}) => {
       const [childVisible, setChildVisible] = useState(false);
+      const [prevLocation, setPrevLocation] = useState(location.path);
+
       const handleClick = (e) => {
             setChildVisible(childVisible => !childVisible);
       }
@@ -40,20 +25,23 @@ const HeaderDropDownButton = ({children, title}) => {
             };
       }, [childVisible]);
 
+      useEffect(() => {
+            setPrevLocation(location.pathname) 
+            prevLocation !== location.pathname && setChildVisible(false)
+      }, [location])
+
       return (
-            <React.Fragment >
+            
                   <HeaderButton onClick={handleClick} style={{position: 'relative'}} ref={ref}> 
                         {title}
                         {
-                              
-                              
                               childVisible &&
                               children
                         }
                   </HeaderButton>
 
-            </React.Fragment>
+            
       )
 }
 
-export default HeaderDropDownButton
+export default withRouter( HeaderDropDownButton )
