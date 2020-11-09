@@ -13,31 +13,30 @@ export const CampsiteCreatorPage = styled.div`
       flex-direction: row;
       align-items: center;
       justify-content: center;
-      padding: 0 15px;
       box-sizing: border-box;
-     
       &.page-enter {
-            transform: translateX(100%);
+            opacity: 0;
       }
       &.page-enter-active {
             position: absolute;
-            transition: transform 200ms; 
-            transform: translateX(0%);      
+            opacity: 1;
+            transition: opacity 100ms; 
+            
       }
       &.page-exit {
-            transform: translateX(0%);    
+            opacity: 1;
       }
       &.page-exit-active {
             position: absolute;
-            transition: transform 200ms; 
-            transform: translateX(-100%);   
+            opacity: 0;
+            transition: opacity 100ms;  
       }
 `;
 
 
 export const CampsiteCreatorInput = styled.input`
-      height: 50px;
-      width: 70%;
+      height: 100%;
+      width: 100%;
       padding: 0 10px;
       border: none;
       border-radius: 10px;
@@ -48,8 +47,7 @@ export const CampsiteCreatorInput = styled.input`
       box-sizing: border-box;
 `
 export const CampsiteCreatorImageInput = styled.label`
-      height: 175px;
-      width: 175px;
+      grid-row: 1 / 3;
       display: flex;
       justify-content: space-around;
       align-items: center;

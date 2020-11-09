@@ -16,3 +16,23 @@ firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore();
 
 export const auth = firebase.auth();
+
+export const storage = firebase.storage();
+
+const storageRef = storage.ref()
+
+
+export const addCampsite = async ({campsite, image}) => {
+    const data = {
+        ...campsite,
+        dateCreated: firebase.firestore.Timestamp.now()
+    }
+    
+    const res = await db.collection('campsites').add(data);
+
+    const imageRef = storageRef.child(`images/${res.id}/${image.size}`)
+
+    const uploadTask = imageRef.put(image)
+
+    return {res, uploadTask}
+}

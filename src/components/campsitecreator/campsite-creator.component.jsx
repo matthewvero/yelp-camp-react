@@ -1,175 +1,122 @@
-import { faCamera, faChevronRight, faPlus } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useContext, useState } from 'react'
-import { CSSTransition } from 'react-transition-group'
-import { ThemeContext } from 'styled-components'
-import Button from '../button/button.component'
-import { CampsiteCreatorContainer, CampsiteCreatorImageInput, CampsiteCreatorInput, CampsiteCreatorPage } from './campsite-creator.styles'
+import React, { createContext, useMemo, useState } from 'react';
+import {useSelector} from 'react-redux'
+import {addCampsite } from '../../firebase'
+import { CSSTransition } from 'react-transition-group';
+import { CampsiteCreatorContainer } from './campsite-creator.styles';
+import { CampsiteCreatorCreate, CampsiteCreatorReview, CampsiteCreatorStart } from './campsite-creator-pages';
 
 const CampsiteCreator = () => {
-      const themeContext = useContext(ThemeContext);
       const [activePage, setActivePage] = useState('start')
       const [title, setTitle] = useState('');
       const [description, setDescription] = useState();
       const [price, setPrice] = useState('');
 	const [image, setImage] = useState();
-	const [formValid, setFormValid] = useState(false);
-
+	const [previewImage, setPreviewImage] = useState();
+	const [progress, setProgress] = useState(0)
+	const [loading, setLoading] = useState(false)
+	const user = useSelector(state => state.authReducer.user);
+	
       const handleConfirm = () => {
-            title && description && price && image && setFormValid(true)
-		formValid ? setActivePage('location') : alert('Please fill out all inputs before proceeding.');
-      }
+            title && description && price && image ?
+		 setActivePage('review') : alert('Please fill out all inputs before proceeding.');
+	}
+
+	const handleCancel = () => {
+		setActivePage('start');
+		setTitle('');
+		setDescription('')
+		setPrice('')
+		setImage()
+	}
+
+	const handleBack = () => {
+		setActivePage('create')
+	}
+	
+	const handleSubmit = async () => {
+		setLoading(true);
+		const campsite = {
+			title: title,
+			description: description,
+			price: price,
+			owner: user.uid,
+		}
+		const res = await addCampsite({campsite: campsite, image: image});
+		res.uploadTask.on('state_changed', snapshot => {
+			const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			setProgress(progress);
+		}, 
+		error => console.log(error), 
+		
+		() => {
+			setActivePage('start');
+		})
+		
+	}
+
+	
+
+	const api = {
+		activePage,
+		setActivePage,
+		title, 
+		setTitle,
+		description, setDescription,
+		price,
+		setPrice,
+		image,
+		setImage,
+		previewImage,
+		setPreviewImage,
+		progress,
+		setProgress,
+		loading,
+		setLoading,
+		handleBack,
+		handleCancel,
+		handleConfirm,
+		handleSubmit
+	}
+
+	const getApi = useMemo(() => (api));
+
 
       return (
-            <CampsiteCreatorContainer $width={'100%'} $height={'200px'}>
+		<CampsiteCreatorContainer $width={'100%'} $height={'200px'}>
+			<CreatorAPI.Provider value={getApi}>
+				<CSSTransition
+					in={activePage === 'start' }
+					classNames="page"
+					timeout={200}
+					unmountOnExit
 
-                  <CSSTransition
-                        in={activePage === 'start' }
-                        classNames="page"
-                        timeout={100}
-                        unmountOnExit
+				>
+					<CampsiteCreatorStart/>
+				
+				</CSSTransition>
+				<CSSTransition
+					in={activePage === 'create' }
+					classNames="page"
+					timeout={200}
+					unmountOnExit
 
-                  >
+				>
+					<CampsiteCreatorCreate/>
+				</CSSTransition>
+				<CSSTransition
+					in={activePage === 'review' }
+					classNames="page"
+					timeout={200}
+					unmountOnExit
 
-                        <CampsiteCreatorPage onClick={() => setActivePage('create')}>
-
-                              <span 
-                                    style={{ width: '70%', fontSize: '2rem', color: themeContext.textAlt, cursor: 'pointer', display: 'flex', justifyContent: 'space-around', alignItems: 'center'}}
-                              >
-                                    Create New Campsite 
-                                    <FontAwesomeIcon style={{color: themeContext.color}} icon={faPlus}/> 
-
-                              </span>
-                        
-                        </CampsiteCreatorPage>
-
-                  </CSSTransition>
-                  <CSSTransition
-                        in={activePage === 'create' }
-                        classNames="page"
-                        timeout={100}
-                        unmountOnExit
-
-                  >
-
-                        <CampsiteCreatorPage style={{justifyContent: 'start'}} >
-
-                              {
-                                    image === undefined ?
-                                    <CampsiteCreatorImageInput htmlFor='image'>      
-                                          <FontAwesomeIcon icon={faCamera} style={{fontSize: '3rem'}}/>
-                                    </CampsiteCreatorImageInput>
-                                    :
-                                    <img style={{
-                                                height: '175px', 
-                                                width: '175px', 
-                                                borderRadius: '10px', 
-                                                overflow: 'hidden'
-                                          }} 
-                                          alt='Your campground' 
-                                          src={image}
-                                    />
-                                    
-                              }                                
-
-                              <input 
-                                    name='image' 
-                                    id='image' 
-                                    type='file' 
-                                    style={{
-                                          width: '0.1px',
-                                          height: '0.1px',
-                                          opacity: '0',
-                                          overflow: 'hidden',
-                                          position: 'absolute',
-                                          zIndex: '-1'
-                                    }}
-                                    onChange={e => {
-                                          setImage(URL.createObjectURL(e.target.files[0])) 
-                                          
-                                    }}
-                              />
-                              
-
-                              <div 
-                                    style={{
-                                          display: 'flex', 
-                                          flexDirection: 'row', 
-                                          alignItems: 'space-between', 
-                                          flexWrap: 'wrap',
-                                          justifyContent: 'space-between', 
-                                          padding: '12.5px 10px', 
-                                          height: '100%', 
-                                          width: '80%',
-                                          boxSizing: 'border-box' 
-                                    }}
-                              >
-                                    <CampsiteCreatorInput 
-                                          placeholder='Title' 
-                                          value={title} 
-                                          onChange={e => setTitle(e.target.value)}
-                                    />
-                                    <CampsiteCreatorInput 
-                                          style={{width: '25%'}} 
-                                          type='number' 
-                                          placeholder='Price' 
-                                          value={price} 
-                                          onChange={e => setPrice(e.target.value)}
-                                    />
-                                    <textarea 
-                                          rows="3" 
-                                          placeholder='Description'
-                                          style={{
-                                                width: '70%',
-                                                border: 'none', 
-                                                outline: 'none', 
-                                                backgroundColor: themeContext.background, 
-                                                borderRadius: '10px', 
-                                                padding: '10px',
-                                                resize: 'none',
-                                                fontFamily: 'Helvetica, sans-serif',
-                                                color: themeContext.textAlt,
-                                                fontSize: '1.3rem',
-                                                boxSizing: 'border-box'
-                                          }}
-                                          value={description} 
-                                          onChange={e => setDescription(e.target.value)}
-                                    />
-                                    <div>
-                                          
-                                    </div>
-                                    <Button
-                                          styles={{width: '25%'}}
-                                          fn={handleConfirm}
-                                    >
-                                          Confirm <FontAwesomeIcon style={{color: themeContext.color}} icon={faChevronRight}/>
-                                    </Button>
-                              </div>
-                              
-                        
-                        </CampsiteCreatorPage>
-
-                  </CSSTransition>
-                  <CSSTransition
-                        in={activePage === 'location' }
-                        classNames="page"
-                        timeout={100}
-                        unmountOnExit
-
-                  >
-			     <CampsiteCreatorPage>
-
-					<Button
-						styles={{width: '25%'}}
-						fn={handleConfirm}
-					>
-						Confirm <FontAwesomeIcon style={{color: themeContext.color}} icon={faChevronRight}/>
-					</Button>
-			     </CampsiteCreatorPage>
-                  </CSSTransition>
-
+				>
+					<CampsiteCreatorReview />
+				</CSSTransition>
+			</CreatorAPI.Provider>
             </CampsiteCreatorContainer>
       )
 }
+
+export const CreatorAPI = createContext(null)
 
 export default CampsiteCreator
