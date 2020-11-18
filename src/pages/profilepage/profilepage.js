@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
-import { Container, CoverPicture } from '../../components/misc/containers.styles'
+import React, { useContext, useEffect, useState } from 'react'
+import { ContentContainer, CoverPicture, ResponsiveContainer } from '../../components/misc/containers.styles'
 import { PageContainer } from '../page.styles'
 import {ProfilePicture} from '../../components/misc/containers.styles'
 import { ThemeContext } from 'styled-components'
@@ -7,16 +7,39 @@ import { EditButton } from './profilepage.styles'
 import { faCamera } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CampsiteCreator from '../../components/campsitecreator/campsite-creator.component'
+import { db } from '../../firebase'
+import { useSelector } from 'react-redux'
+import CampsiteCardLong from '../../components/campsitecardlong/campsite-card-long.component'
 const ProfilePage = () => {
-      const themeContext = useContext(ThemeContext)
+      const user = useSelector(state => state.authReducer.user);
+      const userProfile = useSelector(state => state.authReducer.userProfile);
+      const themeContext = useContext(ThemeContext);
+      const [camps, setCamps] = useState();
+      console.log(user)
+      useEffect(() => {
+            const getUserCampsites = () => {
+                  if(user.hasOwnProperty('uid')){
+                        const campsites = db.collection('campsites').where('owner', '==', user.uid);
+                        const unsub = campsites.onSnapshot(snapshot => {
+                              const campsitesArr = [];
+                              snapshot.forEach(el => {
+                                    campsitesArr.push(el.data());
+                              })
+                              setCamps(campsitesArr);
+                        });
+                  return unsub
+                  }
+            }
+            const unsubscribe = getUserCampsites()
+            if(unsubscribe) { return(() => unsubscribe())}
+      }, [user])
       return (
             <PageContainer>
-                  <Container 
+                  <ResponsiveContainer 
                         style={{
                               height: '300px', 
-                              width: '70vw', 
-                              marginTop: '20px', 
-                              position: 'relative'
+                              marginTop: '10px', 
+                              position: 'relative',
                         }}
                   >
                         <EditButton style={{borderRadius: '50%'}}>
@@ -47,77 +70,103 @@ const ProfilePage = () => {
                               </EditButton>
                         </div>
                         
-                        </Container>
+                  </ResponsiveContainer>
                         
-                        <Container 
-                              style={{
-                                    minHeight: '100px', 
-                                    width: '70vw', 
-                                    position: 'relative', 
-                                    margin: '10px'
-                              }}
-                        >
-                        <h1 style={{color: themeContext.textAlt}}> Melanie Barber </h1>
-                  </Container>
-
-                  <div 
-                        style={{
-                              height: 'auto', 
-                              width: '70vw', 
-                              display: 'flex', 
-                              justifyContent: 'space-between'
-                              }}
-                        >
-                        <Container 
-                              style={{
-                                    height: '200px', 
-                                    width: '30%', 
-                                    alignItems: 'start', 
-                                    padding: '20px', 
-                                    justifyContent: 'start', 
-                                    color: themeContext.textAlt
+                        <ResponsiveContainer>
+                              <ContentContainer
+                                    style={{
+                                          minHeight: '100px', 
+                                          position: 'relative', 
                                     }}
                               >
-                              <div style={{margin: '10px 0'}}>
-                                    <h2 style={{margin: '0'}}>About</h2>
-                              </div>
-                              <div style={{
-                                    display: 'flex', 
-                                    flexDirection:'column', 
-                                    alignItems: 'start', 
-                                    justifyContent: 'space-between', 
-                                    width: '100%', 
-                                    height: '100%'
-                              }}>
-                                    <h3 style={{fontWeight: '600', margin: '0'}}> Bio: </h3>
+                                    <h1 style={{color: themeContext.textAlt}}> {user.displayName} </h1>
+                              </ContentContainer>
+                        </ResponsiveContainer>
 
-                                    <p>hello</p>
-
-                                    <div style={{display: 'flex'}}>
-
-                                          <h3 style={{fontWeight: '600', margin: '0'}}> Joined: June </h3> 
-
-                                    </div>
-                                    <div style={{display: 'flex'}}>
-
-                                          <h3 style={{fontWeight: '600', margin: '0'}}> From: LA </h3> 
-
-                                    </div>
-                              </div>
-                        </Container>
-                        <div 
+                        <ResponsiveContainer 
                               style={{
-                                    width: '65%', 
                                     height: 'auto', 
                                     display: 'flex', 
-                                    flexDirection: 'column', 
-                                    alignItems: 'center', 
-                                    overflow: 'scroll'
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'start'
                               }}
                         >
-                              <CampsiteCreator></CampsiteCreator>
-                        </div>
-                  </div>
+                              <ContentContainer 
+                                    style={{
+                                          height: '300px', 
+                                          width: '34%', 
+                                          alignItems: 'start', 
+                                          padding: '20px', 
+                                          justifyContent: 'start', 
+                                          color: themeContext.textAlt,
+                                    }}
+                              >
+
+                                    <div style={{margin: '10px 0'}}>
+                                          <h2 style={{margin: '0'}}>About</h2>
+                                    </div>
+
+                                    <div 
+                                          style={{
+                                                display: 'flex', 
+                                                flexDirection:'column', 
+                                                alignItems: 'start', 
+                                                justifyContent: 'space-between', 
+                                                width: '100%', 
+                                                height: '100%'
+                                          }}
+                                    >
+
+                                          <h3 style={{fontWeight: '600', margin: '0'}}> Bio: </h3>
+
+                                          <p>hello</p>
+
+                                          <div style={{display: 'flex'}}>
+
+                                                <h3 style={{fontWeight: '600', margin: '0'}}> Joined: June </h3> 
+
+                                          </div>
+                                          <div style={{display: 'flex'}}>
+
+                                                <h3 style={{fontWeight: '600', margin: '0'}}> From: LA </h3> 
+
+                                          </div>
+                                    </div>
+                              </ContentContainer>
+
+
+                              <div 
+                                    style={{
+                                          width: '65%', 
+                                          height: 'auto', 
+                                          display: 'flex', 
+                                          flexDirection: 'column', 
+                                          alignItems: 'center', 
+                                    }}
+                              >
+
+                                    <CampsiteCreator/>
+
+                                    <div style={{
+                                          display: 'flex', 
+                                          flexDirection:'column', 
+                                          alignItems: 'center', 
+                                          justifyContent: 'space-between', 
+                                          width: '100%', 
+                                          overflow: 'scroll',
+                                    }}>
+                                    {
+                                          camps &&
+                                          camps.map(el => (
+                                                
+                                                <CampsiteCardLong campsite={el} key={el.id} />
+                                          ))
+                                    }
+                                    </div>
+                              </div>
+
+                        </ResponsiveContainer>
             </PageContainer>
       )
 }

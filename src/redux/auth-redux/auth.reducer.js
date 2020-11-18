@@ -3,6 +3,7 @@ import { authTypes } from "./auth.types"
 const initialState = {
       user: {},
       loggedIn: false,
+      userProfile: {}
 }
 
 const authReducer = (state = initialState, { type, payload }) => {
@@ -13,7 +14,11 @@ const authReducer = (state = initialState, { type, payload }) => {
                   ...state, 
                   user: {...payload}
             }
-
+      case authTypes.setUserProfile:
+            return {
+                  ...state,
+                  userProfile: payload
+            }
       default:
             return state;
       }

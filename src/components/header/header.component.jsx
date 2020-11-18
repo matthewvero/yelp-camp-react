@@ -17,7 +17,7 @@ const Header = ({history}) => {
       const themeContext = useContext(ThemeContext)
       return (
             <HeaderContainer ref={myRef}>
-                  <HeaderLogo style={{marginLeft: '1%'}} onClick={() => history.push('/')}>
+                  <HeaderLogo style={{marginLeft: '1%'}} onClick={() => history.push('/home')}>
                         YelpCamp <FontAwesomeIcon style={{color: themeContext.color}}icon={faMountain}/>
                   </HeaderLogo>
                   <div style={{display: 'flex', width: 'auto', justifyContent: 'space-around', marginRight: '50px'}}>

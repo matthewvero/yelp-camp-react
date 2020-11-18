@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Container } from '../misc/containers.styles';
+import { ContentContainer } from '../misc/containers.styles';
 
-export const CampsiteCreatorContainer = styled(Container)`
+export const CampsiteCreatorContainer = styled(ContentContainer)`
   overflow: hidden;
   position: relative;
 `;
@@ -67,4 +67,16 @@ export const CampsiteCreatorImageInput = styled.label`
             transform: scale(0.95);
             background-color: ${props => props.theme.backgroundActive}
       }
+`
+
+export const CampsiteCreatorHoverEffect = styled.div`
+      height: 100%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      &:hover {
+            background-color: ${props => props.backgroundHover};
+      } 
 `

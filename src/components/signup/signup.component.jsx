@@ -7,6 +7,8 @@ import { CSSTransition } from 'react-transition-group'
 import { ThemeContext } from 'styled-components';
 import { DropdownContainer, DropDownMenuPage } from '../misc/containers.styles'
 import SignupForm from '../signupform/signupform.component';
+import Button from '../button/button.component';
+import { auth } from '../../firebase';
 
 const Signup = ({location}) => {
       const [menuVisible, setMenuVisible] = useState(false);
@@ -65,19 +67,19 @@ const Signup = ({location}) => {
                               {user.displayName}
                               {
                                     location.pathname !== '/profile' &&
-                              
                               <Link 
-                                    style={{
-                                          color: themeContext.color, 
-                                          textDecoration: 'none', 
-                                          margin: '10px 0'
-                                    }} 
-                                    to={'/profile'}
-                                    
+                              style={{
+                                    color: themeContext.color, 
+                                    textDecoration: 'none', 
+                                    margin: '10px 0'
+                              }} 
+                              to={'/profile'}
+                              
                               >
-                                    View Your Profile
+                              View Your Profile
                               </Link>
-                              }
+                        }
+                              <Button styles={{padding: '5px 20px', margin: '10px'}} fn={() => auth.signOut()}>Log Out</Button>
                         </DropDownMenuPage>
                   </CSSTransition>
 

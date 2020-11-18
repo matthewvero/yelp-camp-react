@@ -7,7 +7,7 @@ export const PageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: ${props => props.theme.background};
-  padding-top: 70px;
+  padding-top: 66px;
   box-sizing: border-box;
   overflow: scroll;
 

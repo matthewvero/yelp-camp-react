@@ -1,4 +1,4 @@
-import React, { createContext, useMemo, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import {useSelector} from 'react-redux'
 import {addCampsite } from '../../firebase'
 import { CSSTransition } from 'react-transition-group';
@@ -21,7 +21,7 @@ const CampsiteCreator = () => {
 		 setActivePage('review') : alert('Please fill out all inputs before proceeding.');
 	}
 
-	const handleCancel = () => {
+	const handleReset = () => {
 		setActivePage('start');
 		setTitle('');
 		setDescription('')
@@ -47,14 +47,11 @@ const CampsiteCreator = () => {
 			setProgress(progress);
 		}, 
 		error => console.log(error), 
-		
 		() => {
-			setActivePage('start');
+			handleReset()
 		})
 		
 	}
-
-	
 
 	const api = {
 		activePage,
@@ -73,17 +70,14 @@ const CampsiteCreator = () => {
 		loading,
 		setLoading,
 		handleBack,
-		handleCancel,
+		handleReset,
 		handleConfirm,
 		handleSubmit
 	}
 
-	const getApi = useMemo(() => (api));
-
-
       return (
-		<CampsiteCreatorContainer $width={'100%'} $height={'200px'}>
-			<CreatorAPI.Provider value={getApi}>
+		<CampsiteCreatorContainer style={{width: '100%', height: '200px', marginBottom: '5px'}}>
+			<CreatorAPI.Provider value={api}>
 				<CSSTransition
 					in={activePage === 'start' }
 					classNames="page"

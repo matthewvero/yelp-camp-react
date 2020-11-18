@@ -2,10 +2,11 @@ import { faHeart, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from 'styled-components';
-import { CampsiteCardContainer, CampsiteCardHeart, CampsiteCardImage, LoadingImage } from './campsite-card.styles'
+import { CampsiteCardContainer, CampsiteCardHeart } from './campsite-card.styles';
+import Image from '../image/image.component';
+import { storage } from '../../firebase';
 
 const CampsiteCard = ({campsite}) => {
-      const [loading, setLoading] = useState(true);
       const [image, setImage] = useState();
       const themeContext = useContext(ThemeContext);
       const cardContentContainer = {
@@ -19,25 +20,22 @@ const CampsiteCard = ({campsite}) => {
       }
       
 
-      useEffect(() => {
 
-            const imageData = new Image();
-            imageData.onload = () => {
-                  setImage(imageData.src);
-                  setLoading(false);
+      useEffect(() => {
+            const getImage = async () => {
+                  const storageRef = storage.ref();
+                  const listRef = await storageRef.child(`/images/${campsite.id}`).listAll()
+                  setImage(await listRef.items[0].getDownloadURL())
             }
-            imageData.src = campsite.image
-            
-      }, [campsite.image])
+            getImage()
+      }, [campsite.id])
 
       return (
             <CampsiteCardContainer>
-                  {
-                        loading ?
-                        <LoadingImage/> 
-                        :
-                        <CampsiteCardImage src={image}/>
-                  }
+
+                  <div style={{maxHeight: '65%', minHeight: '65%', width: '100%'}}>
+                        <Image image={image} />
+                  </div>
                   
                         <CampsiteCardHeart 
                               icon={faHeart} 
@@ -61,7 +59,7 @@ const CampsiteCard = ({campsite}) => {
                               fontSize: '1.2rem'
                         }}
                         >
-                              {campsite.name}
+                              {campsite.title}
                         </p>
                         
          

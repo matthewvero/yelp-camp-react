@@ -1,8 +1,12 @@
 import styled, { keyframes } from 'styled-components/macro';
 
-export const Container = styled.div`
-      width: ${props => props.$width};
-      height: ${props => props.$height};
+
+/* 
+      LAY OUT CONTAINERS AT THE BOTTOM
+------------------------------------------
+      AESTHETIC CONTAINERS 
+*/
+export const ContentContainer = styled.div`
       background-color: ${props => props.theme.main};
       border-radius: ${props => props.theme.borderRadius};
       box-shadow: ${props => props.theme.boxShadow};
@@ -10,6 +14,9 @@ export const Container = styled.div`
       flex-direction: column;
       justify-content: space-around;
       align-items: center;
+      height: 100%;
+      width: 100%;
+      box-sizing: border-box;
 `;
 
 const animation = keyframes`
@@ -77,4 +84,19 @@ export const CoverPicture = styled.img`
       width: 100%;
       object-fit: cover;
       border-radius: 10px;
+`
+
+// LAYOUT CONTAINERS
+export const ResponsiveContainer = styled.div`
+      height: auto;
+      width: 70vw;
+      margin: 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      @media (max-width: 1400px) {
+            width: 95vw;
+      }
+
 `

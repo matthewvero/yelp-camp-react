@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react'
+import React, { useContext } from 'react'
 import { ThemeContext } from 'styled-components'
 
 const ProgressIndicator = ({percent, radius, size}) => {

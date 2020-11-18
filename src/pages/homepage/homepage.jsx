@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from 'styled-components'
-import { Container } from '../../components/misc/containers.styles'
+import { ContentContainer, ResponsiveContainer } from '../../components/misc/containers.styles'
 import { PageContainer } from '../page.styles'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faMountain, faSearch} from '@fortawesome/free-solid-svg-icons'
@@ -15,9 +15,9 @@ const formStyles = {
       alignItems: 'center'
 }
 const searchBarStyles = {
-      width: '60vw', 
+      width: '100%', 
       height: '60px', 
-      margin: '20px 0', 
+      margin: '10px 0', 
       display: 'flex', 
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -26,12 +26,13 @@ const searchBarStyles = {
 }
 
 const campsiteCardsContainerStyles = {
-      width: '70vw', 
+      width: '100%', 
+      height: 'auto',
       display: 'flex', 
       flexDirection: 'row', 
       flexWrap: 'wrap', 
-      justifyContent: 'flex-start', 
-      alignItems: 'space-evenly'
+      justifyContent: 'space-between', 
+      alignItems: 'space-between',
 }
 
 const Homepage = () => {
@@ -49,13 +50,19 @@ const Homepage = () => {
 
       return (
             <PageContainer>
-                  <Container
-                        $width='70vw'
-                        $height='200px'
+
+            <ResponsiveContainer 
+                  style={{
+                        marginTop: '10px'
+                  }}
+            >
+            
+                  <ContentContainer
                         style={{
-                              marginTop: '20px', 
+                              height: '200px',
                               justifyContent: 'space-around', 
-                              padding: '20px 0'}}
+                              padding: '20px 0'
+                        }}
                   >
                         <h1 
                               style={{fontSize: '2.5rem', fontWeight: '400', color: themeContext.textAlt, margin: '0'}}
@@ -67,15 +74,16 @@ const Homepage = () => {
                         >
                               Take a look at our hand-picked campsites
                         </p>
-                  </Container>
-                  <Container
+                  </ContentContainer>
+                  <ContentContainer
                         style={searchBarStyles}
                   >
                         <h2 
                               style={{
                                     color: themeContext.textAlt,
                                     fontWeight: '400'
-                              }}>
+                              }}
+                        >
                               Our most popular Campsites!
                         </h2>
                         <form
@@ -92,7 +100,7 @@ const Homepage = () => {
                                     <FormInputText style={{height: '70%'}} placeholder='Search Campsites...'/>
                               </div>
                         </form>
-                  </Container>
+                  </ContentContainer>
 
                   <div style={campsiteCardsContainerStyles}>
                   
@@ -107,7 +115,7 @@ const Homepage = () => {
                               
                   
                   </div>
-
+                  </ResponsiveContainer>
             </PageContainer>
       )
 }

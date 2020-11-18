@@ -4,7 +4,7 @@ import React, { useContext } from 'react'
 import { ThemeContext } from 'styled-components'
 import Button from '../button/button.component'
 import ProgressIndicator from '../progressindicator/progressindicator.component'
-import { CampsiteCreatorImageInput, CampsiteCreatorInput, CampsiteCreatorPage } from './campsite-creator.styles'
+import { CampsiteCreatorHoverEffect, CampsiteCreatorImageInput, CampsiteCreatorInput, CampsiteCreatorPage } from './campsite-creator.styles'
 import {CreatorAPI} from './campsite-creator.component'
 
 export const CampsiteCreatorStart = () => {
@@ -14,24 +14,25 @@ export const CampsiteCreatorStart = () => {
       return (
             
 
-            <CampsiteCreatorPage onClick={() => api.setActivePage('create')}>
+            <CampsiteCreatorPage style={{}} onClick={() => api.setActivePage('create')}>
+                  <CampsiteCreatorHoverEffect>
+                        <span 
+                              style={{ 
+                                    width: '70%', 
+                                    fontSize: '2rem', 
+                                    color: themeContext.textAlt, 
+                                    cursor: 'pointer', 
+                                    display: 'flex', 
+                                    justifyContent: 'space-around', 
+                                    alignItems: 'center'
+                              }}
+                        >
+                              Create New Campsite 
+                              <FontAwesomeIcon style={{color: themeContext.color}} icon={faPlus}/> 
 
-                  <span 
-                        style={{ 
-                              width: '70%', 
-                              fontSize: '2rem', 
-                              color: themeContext.textAlt, 
-                              cursor: 'pointer', 
-                              display: 'flex', 
-                              justifyContent: 'space-around', 
-                              alignItems: 'center'
-                        }}
-                  >
-                        Create New Campsite 
-                        <FontAwesomeIcon style={{color: themeContext.color}} icon={faPlus}/> 
+                        </span>
+                  </CampsiteCreatorHoverEffect>
 
-                  </span>
-            
             </CampsiteCreatorPage>
 
       )
@@ -41,7 +42,7 @@ export const CampsiteCreatorStart = () => {
 export const CampsiteCreatorCreate = () => {
       // Access the campsitecreator hooks and state
       const api = useContext(CreatorAPI)
-      const { handleCancel, handleConfirm, previewImage, setPreviewImage, image, setImage, title, setTitle, price, setPrice, description, setDescription} = api;
+      const { handleReset, handleConfirm, previewImage, setPreviewImage, image, setImage, title, setTitle, price, setPrice, description, setDescription} = api;
       const themeContext = useContext(ThemeContext);
       return (
 
@@ -138,7 +139,7 @@ export const CampsiteCreatorCreate = () => {
                         <div style={{gridColumn: '3/4', gridRow: '2/3'}}>
                               <Button
                                     styles={{width: '100%', height: '45%', marginBottom: '5%'}}
-                                    fn={handleCancel}
+                                    fn={handleReset}
                               >
                                     <FontAwesomeIcon style={{color: 'red'}} icon={faChevronLeft}/> Cancel
                               </Button>

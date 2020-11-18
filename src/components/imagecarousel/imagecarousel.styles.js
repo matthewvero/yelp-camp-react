@@ -7,14 +7,12 @@ export const ImageCarouselContainer = styled.div`
       top: 0px;
       left: 0px;
       z-index: 0;
-
 `;
 
 const fadeIn = keyframes`
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
   }
@@ -48,5 +46,4 @@ export const Fader = styled.div`
       object-fit: cover;
       object-position: center;
       animation: ${fadeIn} 1s forwards 1;
-
 `

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import {Switch, Route} from 'react-router';
 import LandingPage from './pages/landingpage/landingpage'
@@ -6,14 +6,23 @@ import Homepage from './pages/homepage/homepage';
 import Header from './components/header/header.component';
 import { ThemeProvider } from 'styled-components';
 import {lightTheme, darkTheme} from '../src/theme/themes';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { auth } from './firebase';
 import { setUser } from './redux/auth-redux/auth.actions';
 import ProfilePage from './pages/profilepage/profilepage';
 
 
 function App() {
-  const darkMode = useSelector(state => state.themeReducer.darkMode)
+  const [darkMode, setDarkmode] = useState(localStorage.getItem('darkMode') == 'true' ? true : false);
+  useEffect(() => {
+    const localStorageUpdated = () => {
+          setDarkmode(localStorage.getItem('darkMode') == 'true' ? true : false)
+    }
+    window.addEventListener('darkModeChanged', localStorageUpdated)
+    return () => {
+          window.removeEventListener('darkModeChanged')
+    }
+},[])
 
   const dispatch = useDispatch();
 
@@ -22,7 +31,6 @@ function App() {
       if (user) {
         dispatch(setUser(user))
       }
-      
     });
   }, [dispatch])
 
