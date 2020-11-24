@@ -1,19 +1,19 @@
 import React, { createContext, useState } from 'react';
 import {useSelector} from 'react-redux'
-import {addCampsite } from '../../firebase'
+import {addCampsite } from '../../firebase.utils'
 import { CSSTransition } from 'react-transition-group';
 import { CampsiteCreatorContainer } from './campsite-creator.styles';
 import { CampsiteCreatorCreate, CampsiteCreatorReview, CampsiteCreatorStart } from './campsite-creator-pages';
 
 const CampsiteCreator = () => {
-      const [activePage, setActivePage] = useState('start')
-      const [title, setTitle] = useState('');
-      const [description, setDescription] = useState();
-      const [price, setPrice] = useState('');
-	const [image, setImage] = useState();
-	const [previewImage, setPreviewImage] = useState();
-	const [progress, setProgress] = useState(0)
-	const [loading, setLoading] = useState(false)
+      const [activePage, setActivePage] 		= useState('start')
+      const [title, setTitle] 			= useState('');
+      const [description, setDescription] 	= useState();
+      const [price, setPrice] 			= useState('');
+	const [image, setImage] 			= useState();
+	const [previewImage, setPreviewImage] 	= useState();
+	const [progress, setProgress] 		= useState(0)
+	const [loading, setLoading] 			= useState(false)
 	const user = useSelector(state => state.authReducer.user);
 	
       const handleConfirm = () => {
@@ -27,6 +27,9 @@ const CampsiteCreator = () => {
 		setDescription('')
 		setPrice('')
 		setImage()
+		setPreviewImage()
+		setProgress()
+		setLoading(false)
 	}
 
 	const handleBack = () => {
@@ -46,7 +49,7 @@ const CampsiteCreator = () => {
 			const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 			setProgress(progress);
 		}, 
-		error => console.log(error), 
+		error => alert(error), 
 		() => {
 			handleReset()
 		})

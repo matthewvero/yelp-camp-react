@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { auth } from '../../firebase';
-import { setUser } from '../../redux/auth-redux/auth.actions';
-import { FormInputButton, FormInputText } from '../inputs/input-text/inputs.styles';
+import { auth } from '../../../../firebase';
+import { setUser } from '../../../../redux/auth-redux/auth.actions';
+import { FormInputButton, FormInputText } from '../../../inputs/input-text/inputs.styles';
 
 const SignupForm = () => {
       const [username, setUsername] = useState('');

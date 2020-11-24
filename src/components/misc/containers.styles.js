@@ -70,22 +70,6 @@ export const DropDownMenuPage = styled.div`
       }
 `;
 
-
-export const ProfilePicture = styled.img`
-      height: 100%;
-      width: 100%;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 7px solid ${props => props.theme.main};
-
-`
-export const CoverPicture = styled.img`
-      height: 100%;
-      width: 100%;
-      object-fit: cover;
-      border-radius: 10px;
-`
-
 // LAYOUT CONTAINERS
 export const ResponsiveContainer = styled.div`
       height: auto;

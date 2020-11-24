@@ -5,23 +5,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector } from 'react-redux';
 import { CSSTransition } from 'react-transition-group'
 import { ThemeContext } from 'styled-components';
-import { DropdownContainer, DropDownMenuPage } from '../misc/containers.styles'
+import { DropdownContainer, DropDownMenuPage } from '../../../misc/containers.styles'
 import SignupForm from '../signupform/signupform.component';
-import Button from '../button/button.component';
-import { auth } from '../../firebase';
+import Button from '../../../button/button.component';
+import { getUserImages, logOut } from '../../../../firebase.utils.js';
+import { ImageSwitcher } from '../../../image/image.styles';
+import Image from '../../../image/image.component';
 
-const Signup = ({location}) => {
+const Signup = ({location, history}) => {
       const [menuVisible, setMenuVisible] = useState(false);
       const [curMenu, setCurMenu] = useState('signup');
       const [height, setHeight] = useState(300);
       const themeContext = useContext(ThemeContext);
       const user = useSelector(state => state.authReducer.user);
-
+      const [image, setImage] = useState([])
       useEffect(() => {
-            user.hasOwnProperty('displayName') && setCurMenu('welcome')
+            user.hasOwnProperty('displayName') ? setCurMenu('welcome') : setCurMenu('signup')
       }, [user]);
 
-      
+      useEffect(() => {
+            const getImages = async () => {
+                  const URLs = await getUserImages('profileImages', user.uid);
+                  setImage(URLs[0])
+            }
+            getImages()
+      }, [user])
 
       return (
             <DropdownContainer height={height} onClick={e => e.stopPropagation()} onAnimationEnd={() => setMenuVisible(menuVisible => !menuVisible)}>
@@ -59,27 +67,34 @@ const Signup = ({location}) => {
                                           justifyContent: 'center', 
                                           alignItems: 'center', 
                                           backgroundColor: themeContext.background, 
-                                          borderRadius: '50%'
+                                          borderRadius: '50%',
+                                          overflow: 'hidden'
+                                          
                                     }}
-                              >
-                                    <FontAwesomeIcon icon={faUser} style={{fontSize: '3rem'}}/>
+                              >     
+                                    {
+                                          image.length ? 
+                                                <Image image={image}/>
+                                                :
+                                                <FontAwesomeIcon icon={faUser} style={{fontSize: '3rem'}}/>
+                                          
+                                    }
                               </div>
                               {user.displayName}
                               {
                                     location.pathname !== '/profile' &&
                               <Link 
-                              style={{
-                                    color: themeContext.color, 
-                                    textDecoration: 'none', 
-                                    margin: '10px 0'
-                              }} 
-                              to={'/profile'}
-                              
+                                    style={{
+                                          color: themeContext.color, 
+                                          textDecoration: 'none', 
+                                          margin: '10px 0'
+                                    }} 
+                                    to={'/profile'}
                               >
-                              View Your Profile
+                                    View Your Profile
                               </Link>
                         }
-                              <Button styles={{padding: '5px 20px', margin: '10px'}} fn={() => auth.signOut()}>Log Out</Button>
+                              <Button styles={{padding: '5px 20px', margin: '10px'}} fn={() => logOut(history)}>Log Out</Button>
                         </DropDownMenuPage>
                   </CSSTransition>
 

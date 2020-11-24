@@ -10,5 +10,6 @@ export const PageContainer = styled.div`
   padding-top: 66px;
   box-sizing: border-box;
   overflow: scroll;
-
+  scroll-padding-top: 80px; 
+  scroll-behavior: smooth;
 `;

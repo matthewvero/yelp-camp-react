@@ -30,3 +30,25 @@ export const FormInputButton = styled.button`
             transform: scale(0.9);
       }
 `;
+
+export const UpdateImageButtonContainer = styled.label`
+  z-index: 1;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(50, 50, 50, 0.5);
+  font-size: 2rem;
+  color: white;
+  transition: all 50ms linear;
+  border-radius: 50%;
+  cursor: pointer;
+  &:hover {
+        transform: scale(1.1);
+        background-color: rgba(50, 50, 50, 0.7);
+  }
+`;

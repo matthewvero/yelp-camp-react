@@ -6,6 +6,7 @@ import Button from '../button/button.component'
 import ProgressIndicator from '../progressindicator/progressindicator.component'
 import { CampsiteCreatorHoverEffect, CampsiteCreatorImageInput, CampsiteCreatorInput, CampsiteCreatorPage } from './campsite-creator.styles'
 import {CreatorAPI} from './campsite-creator.component'
+import InputImage from '../inputs/input-image/input-image.component'
 
 export const CampsiteCreatorStart = () => {
       // Access the campsitecreator hooks and state
@@ -70,11 +71,12 @@ export const CampsiteCreatorCreate = () => {
                                     borderRadius: '10px', 
                                     overflow: 'hidden'
                               }} >
-                                    <img style={{
-                                          height: '100%', 
-                                          width: '100%', 
-                                          borderRadius: '10px', 
-                                          overflow: 'hidden'
+                                    <img 
+                                          style={{
+                                                height: '100%', 
+                                                width: '100%', 
+                                                borderRadius: '10px', 
+                                                overflow: 'hidden'
                                           }} 
                                           alt='Your campground' 
                                           src={previewImage}
@@ -83,23 +85,7 @@ export const CampsiteCreatorCreate = () => {
                               
                         }                                
 
-                        <input 
-                              name='image' 
-                              id='image' 
-                              type='file' 
-                              style={{
-                                    width: '0.1px',
-                                    height: '0.1px',
-                                    opacity: '0',
-                                    overflow: 'hidden',
-                                    position: 'absolute',
-                                    zIndex: '-1'
-                              }}
-                              onChange={e => {
-                                    setImage(e.target.files[0]) 
-                                    setPreviewImage(URL.createObjectURL(e.target.files[0]))
-                              }}
-                        />
+                        <InputImage id='image' setImageFn={setImage} setPreviewImageFn={setPreviewImage}/>
             
                         <CampsiteCreatorInput 
                               placeholder='Title' 

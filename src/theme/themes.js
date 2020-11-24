@@ -24,7 +24,7 @@ export const lightTheme = {
       borderBtm: 'none',
       shadowColor: '#bbbbbb',
       loadingDark: '#bbbbbb',
-      loadingLight: '#F0F2F5'
+      loadingLight: '#F0F2F5',
 }
 
 export const darkTheme = {
@@ -41,6 +41,6 @@ export const darkTheme = {
       border: 'solid 1px #333333',
       shadowColor: '#111111',
       loadingDark: 'rgb(36,37,38)',
-      loadingLight: '#666666'
+      loadingLight: '#666666',
 }
 

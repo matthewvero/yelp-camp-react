@@ -20,7 +20,7 @@ const ThemeToggleButton = () => {
             }
             window.addEventListener('darkModeChanged', localStorageUpdated)
             return () => {
-                  window.removeEventListener('darkModeChanged')
+                  window.removeEventListener('darkModeChanged', localStorageUpdated)
             }
       },[])
 

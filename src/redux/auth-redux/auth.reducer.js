@@ -19,6 +19,12 @@ const authReducer = (state = initialState, { type, payload }) => {
                   ...state,
                   userProfile: payload
             }
+      case authTypes.destroySession:
+      return {
+            ...state,
+            userProfile: {},
+            user: {}
+      }
       default:
             return state;
       }

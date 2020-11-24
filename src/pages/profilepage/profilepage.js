@@ -1,38 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { ContentContainer, CoverPicture, ResponsiveContainer } from '../../components/misc/containers.styles'
+import { ContentContainer, ResponsiveContainer } from '../../components/misc/containers.styles'
 import { PageContainer } from '../page.styles'
-import {ProfilePicture} from '../../components/misc/containers.styles'
+import ProfilePicture from '../../components/profilepicture/profilepicture.component'
 import { ThemeContext } from 'styled-components'
-import { EditButton } from './profilepage.styles'
-import { faCamera } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CampsiteCreator from '../../components/campsitecreator/campsite-creator.component'
 import { db } from '../../firebase'
 import { useSelector } from 'react-redux'
 import CampsiteCardLong from '../../components/campsitecardlong/campsite-card-long.component'
+import CoverPicture from '../../components/coverpicture/coverpicture.component'
+import { getUserCampsites } from '../../firebase.utils'
 const ProfilePage = () => {
+
       const user = useSelector(state => state.authReducer.user);
       const userProfile = useSelector(state => state.authReducer.userProfile);
       const themeContext = useContext(ThemeContext);
       const [camps, setCamps] = useState();
-      console.log(user)
+
       useEffect(() => {
-            const getUserCampsites = () => {
-                  if(user.hasOwnProperty('uid')){
-                        const campsites = db.collection('campsites').where('owner', '==', user.uid);
-                        const unsub = campsites.onSnapshot(snapshot => {
-                              const campsitesArr = [];
-                              snapshot.forEach(el => {
-                                    campsitesArr.push(el.data());
-                              })
-                              setCamps(campsitesArr);
-                        });
-                  return unsub
-                  }
+            const unsub = getUserCampsites(setCamps)
+            if(unsub) {
+                  return(() => unsub())
             }
-            const unsubscribe = getUserCampsites()
-            if(unsubscribe) { return(() => unsubscribe())}
       }, [user])
+
       return (
             <PageContainer>
                   <ResponsiveContainer 
@@ -42,13 +32,8 @@ const ProfilePage = () => {
                               position: 'relative',
                         }}
                   >
-                        <EditButton style={{borderRadius: '50%'}}>
 
-                              <FontAwesomeIcon icon={faCamera}/>
-
-                        </EditButton>
-
-                        <CoverPicture src='https://images.unsplash.com/photo-1465188466731-618dfc07a57d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2550&q=80'/>
+                        <CoverPicture/>
                         
                         <div 
                               style={{
@@ -61,13 +46,8 @@ const ProfilePage = () => {
                               }}
                         >
 
-                              <ProfilePicture src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80'/>
+                              <ProfilePicture />
                               
-                              <EditButton style={{borderRadius: '50%'}}>
-
-                                    <FontAwesomeIcon icon={faCamera}/>
-
-                              </EditButton>
                         </div>
                         
                   </ResponsiveContainer>

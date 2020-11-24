@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { CSSTransition } from 'react-transition-group';
-import { auth } from '../../firebase';
-import { FormInputButton, FormInputText } from '../inputs/input-text/inputs.styles'
-import { DropdownContainer, DropDownMenuPage } from '../misc/containers.styles';
+import { auth } from '../../../../firebase';
+import { FormInputButton, FormInputText } from '../../../inputs/input-text/inputs.styles'
+import { DropdownContainer, DropDownMenuPage } from '../../../misc/containers.styles';
 
 const Login = () => {
       const [loginVisible, setLoginVisible] = useState(false);
