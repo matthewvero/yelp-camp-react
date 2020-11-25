@@ -1,5 +1,4 @@
-import styled, { keyframes } from 'styled-components/macro';
-
+import styled, { keyframes } from "styled-components/macro";
 
 /* 
       LAY OUT CONTAINERS AT THE BOTTOM
@@ -7,16 +6,16 @@ import styled, { keyframes } from 'styled-components/macro';
       AESTHETIC CONTAINERS 
 */
 export const ContentContainer = styled.div`
-      background-color: ${props => props.theme.main};
-      border-radius: ${props => props.theme.borderRadius};
-      box-shadow: ${props => props.theme.boxShadow};
-      display: flex;
-      flex-direction: column;
-      justify-content: space-around;
-      align-items: center;
-      height: 100%;
-      width: 100%;
-      box-sizing: border-box;
+	background-color: ${(props) => props.theme.main};
+	border-radius: ${(props) => props.theme.borderRadius};
+	box-shadow: ${(props) => props.theme.boxShadow};
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+	box-sizing: border-box;
 `;
 
 const animation = keyframes`
@@ -30,57 +29,56 @@ const animation = keyframes`
 `;
 
 export const DropdownContainer = styled.div`
-      position: absolute;
-      left: 50%;
-      bottom: -${props => props.height + 60}px;
-      height: ${props => props.height}px;
-      width: 20vw;
-      padding: 20px 0;
-      transform: translateX(-50%);
-      transform-origin: top;
-      background-color: ${props => props.theme.main};
-      border-radius: ${props => props.theme.borderRadius};
-      box-shadow: ${props => props.theme.boxShadow};
-      animation: ${animation} 100ms linear 1;
-      overflow: hidden;
-      will-change: height;
-`
+	position: absolute;
+	left: 50%;
+	bottom: -${(props) => props.height + 60}px;
+	height: ${(props) => props.height}px;
+	width: 20vw;
+	padding: 20px 0;
+	transform: translateX(-50%);
+	transform-origin: top;
+	background-color: ${(props) => props.theme.main};
+	border-radius: ${(props) => props.theme.borderRadius};
+	box-shadow: ${(props) => props.theme.boxShadow};
+	animation: ${animation} 100ms linear 1;
+	overflow: hidden;
+	will-change: height;
+`;
 
 export const DropDownMenuPage = styled.div`
-      height: auto;
-      width: 100%;
-      padding: 10px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-around;
-      &.menu-enter {
-            opacity: 0;
-      }
-      &.menu-enter-active {
-            transition: 100ms opacity 50ms; 
-            opacity: 1;
-      }
-      &.menu-exit {
-            opacity: 1;
-      }
-      &.menu-exit-active {
-            transition: 100ms opacity 50ms; 
-            opacity: 0;
-      }
+	height: auto;
+	width: 100%;
+	padding: 10px 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	&.menu-enter {
+		opacity: 0;
+	}
+	&.menu-enter-active {
+		transition: 100ms opacity 50ms;
+		opacity: 1;
+	}
+	&.menu-exit {
+		opacity: 1;
+	}
+	&.menu-exit-active {
+		transition: 100ms opacity 50ms;
+		opacity: 0;
+	}
 `;
 
 // LAYOUT CONTAINERS
 export const ResponsiveContainer = styled.div`
-      height: auto;
-      width: 70vw;
-      margin: 5px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      @media (max-width: 1400px) {
-            width: 95vw;
-      }
-
-`
+	height: auto;
+	width: 70vw;
+	margin: 5px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	@media (max-width: 1400px) {
+		width: 95vw;
+	}
+`;

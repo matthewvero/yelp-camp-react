@@ -1,15 +1,15 @@
 .App {
-    text-align: center;
-    min-height: 100vh;
-    width: 100vw;
+	text-align: center;
+	min-height: 100vh;
+	width: 100vw;
 }
 body {
-    overflow: hidden;
-    font-family: Helvetica, sans-serif;
-    min-height: 100vh;
+	overflow: hidden;
+	font-family: Helvetica, sans-serif;
+	min-height: 100vh;
 }
 
 html {
-    overflow: hidden;
-    scroll-behavior: smooth;
+	overflow: hidden;
+	scroll-behavior: smooth;
 }

@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const CampsitePage = () => {
-      return (
-            <div>
-                  
-            </div>
-      )
-}
+	return <div></div>;
+};
 
-export default CampsitePage
+export default CampsitePage;

@@ -4,15 +4,15 @@ import logger from "redux-logger";
 // Logger logs the state to the console in each
 // stage so that we can see what is going on
 
-import {rootReducer} from "./root-reducer";
+import { rootReducer } from "./root-reducer";
 // Import our root reducer so that it can interact with our store
 
 const middlewares = [logger];
 // Create an array of any middlewares that we want to run
 // These can then be spread in to applyMiddleware from redux
 
-if (process.env.NODE_ENV === 'development') {
-      middlewares.push(logger)
+if (process.env.NODE_ENV === "development") {
+	middlewares.push(logger);
 }
 
 export const store = createStore(rootReducer, applyMiddleware(...middlewares));
