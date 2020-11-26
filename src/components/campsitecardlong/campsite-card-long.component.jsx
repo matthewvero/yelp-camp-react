@@ -3,6 +3,7 @@ import { ThemeContext } from "styled-components";
 import { storage } from "../../firebase";
 import Image from "../image/image.component";
 import { ContentContainer } from "../misc/containers.styles";
+import { SubTitle, Text } from "../misc/text.styles";
 
 const CampsiteCardLong = ({ campsite }) => {
 	const themeContext = useContext(ThemeContext);
@@ -30,7 +31,7 @@ const CampsiteCardLong = ({ campsite }) => {
 					padding: "10px",
 					boxSizing: "border-box",
 					display: "grid",
-					gridTemplateColumns: "25% auto 20%",
+					gridTemplateColumns: "minmax(213px, 25%) auto minmax(120px, 20%)",
 					gridTemplateRows: "30% auto",
 					gap: "1rem",
 				}}
@@ -40,20 +41,21 @@ const CampsiteCardLong = ({ campsite }) => {
 						gridRow: "1 / 3",
 						borderRadius: "10px",
 						overflow: "hidden",
+						
 					}}
 				>
 					<Image image={image} />
 				</div>
 
-				<h2
+				<SubTitle
 					style={{
 						gridColumn: "2/3",
-						color: themeContext.textAlt,
 						textAlign: "left",
+						margin: 'auto 0'
 					}}
 				>
 					{campsite.title}
-				</h2>
+				</SubTitle>
 
 				<div
 					style={{
@@ -62,25 +64,24 @@ const CampsiteCardLong = ({ campsite }) => {
 						overflow: "scroll",
 					}}
 				>
-					<p
+					<Text
 						style={{
-							color: themeContext.textAlt,
 							textAlign: "left",
-							margin: "0",
 						}}
 					>
 						{campsite.description}
-					</p>
+					</Text>
 				</div>
 
-				<h2
+				<SubTitle
 					style={{
 						color: themeContext.color,
 						alignSelf: "start",
+						margin: 'auto 0'
 					}}
 				>
 					£{campsite.price} /Night
-				</h2>
+				</SubTitle>
 			</div>
 		</ContentContainer>
 	);

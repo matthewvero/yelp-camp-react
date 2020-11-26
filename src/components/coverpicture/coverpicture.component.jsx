@@ -5,7 +5,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { ThemeContext } from "styled-components";
 import { addProfileImage, getUserImages } from "../../firebase.utils.js";
 import Image from "../image/image.component.jsx";
@@ -15,21 +14,22 @@ import {
 	CoverPictureContainer,
 	NextSlideButton,
 	NoCoverPicture,
+	PageIndicator,
+	PageIndicatorGroup,
 	PrevSlideButton,
 	ScrollContainer,
 	Slide,
 } from "./coverpicture.styles";
 
-const CoverPicture = () => {
+const CoverPicture = ({userID, editable}) => {
 	const themeContext = useContext(ThemeContext);
-	const user = useSelector((state) => state.authReducer.user);
 	const [images, setImages] = useState([]);
 	const [currentImage, setCurrentImage] = useState(0);
 
 	const updateCoverImage = async (image) => {
 		const uploadTask = addProfileImage(image, "coverImages");
 		uploadTask.then(async () => {
-			const URLs = await getUserImages("coverImages", user.uid);
+			const URLs = await getUserImages("coverImages", userID);
 			setImages(URLs);
 			setCurrentImage(0);
 		});
@@ -58,19 +58,33 @@ const CoverPicture = () => {
 
 	useEffect(() => {
 		const getImages = async () => {
-			const URLs = await getUserImages("coverImages", user.uid);
+			const URLs = await getUserImages("coverImages", userID);
 			setImages(URLs);
 		};
 		getImages();
-	}, [user]);
+	}, [userID]);
 
 	return (
 		<CoverPictureContainer>
-			<UpdateImageButtonContainer htmlFor="coverImage">
-				<FontAwesomeIcon icon={faCamera} />
-			</UpdateImageButtonContainer>
+			{editable &&
+				<UpdateImageButtonContainer htmlFor="coverImage">
+					<FontAwesomeIcon icon={faCamera} />
+				</UpdateImageButtonContainer>
+			}
 
 			<InputImage setImageFn={updateCoverImage} id="coverImage" />
+
+			{	images.length > 1 && 
+				<PageIndicatorGroup>
+				
+					{	
+						images.map((el, idx) => 
+							<PageIndicator activePage={currentImage} page={idx} key={idx}/>
+						)
+					}
+				
+				</PageIndicatorGroup>
+			}
 
 			{images.length > 1 && (
 				<React.Fragment>

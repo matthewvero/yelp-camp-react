@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "styled-components";
 import {
 	ContentContainer,
-	ResponsiveContainer,
+	ResponsivePageContainer,
 } from "../../components/misc/containers.styles";
 import { PageContainer } from "../page.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -55,7 +55,7 @@ const Homepage = () => {
 
 	return (
 		<PageContainer>
-			<ResponsiveContainer
+			<ResponsivePageContainer
 				style={{
 					marginTop: "10px",
 				}}
@@ -129,7 +129,7 @@ const Homepage = () => {
 						/>
 					))}
 				</div>
-			</ResponsiveContainer>
+			</ResponsivePageContainer>
 		</PageContainer>
 	);
 };

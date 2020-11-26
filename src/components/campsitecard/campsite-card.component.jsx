@@ -8,6 +8,7 @@ import {
 } from "./campsite-card.styles";
 import Image from "../image/image.component";
 import { storage } from "../../firebase";
+import { SubTitle, Text } from "../misc/text.styles";
 
 const CampsiteCard = ({ campsite }) => {
 	const [image, setImage] = useState();
@@ -53,25 +54,23 @@ const CampsiteCard = ({ campsite }) => {
 
 					{campsite.rating}
 				</span>
-				<p
+				<SubTitle
 					style={{
 						margin: "0",
-						fontWeight: "400",
 						color: themeContext.textAlt,
-						fontSize: "1.2rem",
 					}}
 				>
 					{campsite.title}
-				</p>
+				</SubTitle>
 
-				<p
+				<Text
 					style={{
 						margin: "0",
 						color: themeContext.textAlt,
 					}}
 				>
 					{campsite.description}
-				</p>
+				</Text>
 			</div>
 		</CampsiteCardContainer>
 	);

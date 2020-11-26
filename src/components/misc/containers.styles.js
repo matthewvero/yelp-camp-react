@@ -33,7 +33,7 @@ export const DropdownContainer = styled.div`
 	left: 50%;
 	bottom: -${(props) => props.height + 60}px;
 	height: ${(props) => props.height}px;
-	width: 20vw;
+	width: 350px;
 	padding: 20px 0;
 	transform: translateX(-50%);
 	transform-origin: top;
@@ -70,7 +70,7 @@ export const DropDownMenuPage = styled.div`
 `;
 
 // LAYOUT CONTAINERS
-export const ResponsiveContainer = styled.div`
+export const ResponsivePageContainer = styled.div`
 	height: auto;
 	width: 70vw;
 	margin: 5px;
@@ -80,5 +80,18 @@ export const ResponsiveContainer = styled.div`
 	justify-content: center;
 	@media (max-width: 1400px) {
 		width: 95vw;
+		
 	}
 `;
+
+export const ResponsiveContentContainer = styled.div`
+	width: ${props => props.$width ? props.$width : 'auto'};
+	height: autoauto;
+	display: flexauto;
+	flex-direction: columnauto;
+	align-items: centerauto;
+	@media (max-width: 900px) {
+		width: 100%;
+		margin: 5px 0;
+	}
+`

@@ -3,9 +3,9 @@ import { CSSTransition } from "react-transition-group";
 import { Loader } from "../misc/loadinganimations.styles";
 import { ImageContainer, ImageSwitcher } from "./image.styles";
 
-const Image = ({ image }) => {
+const Image = ({ image,styles }) => {
 	return (
-		<ImageContainer>
+		<ImageContainer style={styles}>
 			<CSSTransition
 				in={image ? true : false}
 				classNames="image"

@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import {
 	ContentContainer,
-	ResponsiveContainer,
+	ResponsiveContentContainer,
+	ResponsivePageContainer,
 } from "../../components/misc/containers.styles";
 import { PageContainer } from "../page.styles";
 import ProfilePicture from "../../components/profilepicture/profilepicture.component";
@@ -12,29 +13,49 @@ import { useSelector } from "react-redux";
 import CampsiteCardLong from "../../components/campsitecardlong/campsite-card-long.component";
 import CoverPicture from "../../components/coverpicture/coverpicture.component";
 import { getUserCampsites } from "../../firebase.utils";
-const ProfilePage = () => {
+import { withRouter } from "react-router";
+import About from '../../components/about/about.component'
+import { Title } from "../../components/misc/text.styles";
+import { NameBar } from "./profilepage.styles";
+const ProfilePage = ({match}) => {
 	const user = useSelector((state) => state.authReducer.user);
 	const userProfile = useSelector((state) => state.authReducer.userProfile);
 	const themeContext = useContext(ThemeContext);
 	const [camps, setCamps] = useState();
+	const [profileInfo, setProfileInfo] = useState({});
+	const [editable, setEditable] = useState(false);
+	const [editing, setEditing] = useState(false)
 
 	useEffect(() => {
-		const unsub = getUserCampsites(setCamps);
+		const setUserProfile = async () => {
+			if(user.uid === match.params.id) {
+				setProfileInfo({...userProfile, displayName: user.displayName})
+				setEditable(true);
+			} else {
+				// const collectionRef = db.collection('users').where('id' === match.params.id);
+				// const data = await collectionRef.get()
+				// console.log(data.docs)
+			}
+
+		} 
+		setUserProfile()
+		const unsub = getUserCampsites(setCamps, match.params.id);
 		if (unsub) {
 			return () => unsub();
 		}
-	}, [user]);
+	}, [match, user.displayName, user.uid, userProfile]);
+
 
 	return (
 		<PageContainer>
-			<ResponsiveContainer
+			<ResponsivePageContainer
 				style={{
 					height: "300px",
 					marginTop: "10px",
 					position: "relative",
 				}}
 			>
-				<CoverPicture />
+				<CoverPicture editable={editable} userID={match.params.id}/>
 
 				<div
 					style={{
@@ -46,104 +67,43 @@ const ProfilePage = () => {
 						zIndex: "1",
 					}}
 				>
-					<ProfilePicture />
+					<ProfilePicture editable={editable} userID={match.params.id}/>
 				</div>
-			</ResponsiveContainer>
+			</ResponsivePageContainer>
 
-			<ResponsiveContainer>
-				<ContentContainer
+			<ResponsivePageContainer>
+				<NameBar
 					style={{
 						minHeight: "100px",
 						position: "relative",
 					}}
 				>
-					<h1 style={{ color: themeContext.textAlt }}>
-						{" "}
-						{user.displayName}{" "}
-					</h1>
-				</ContentContainer>
-			</ResponsiveContainer>
+					<Title >
+						{profileInfo.displayName}
+					</Title>
+				</NameBar>
+			</ResponsivePageContainer>
 
-			<ResponsiveContainer
+			<ResponsivePageContainer
 				style={{
 					height: "auto",
 					display: "flex",
 					flexDirection: "row",
 					justifyContent: "space-between",
 					alignItems: "start",
+					flexWrap: 'wrap'
 				}}
 			>
-				<ContentContainer
-					style={{
-						height: "300px",
-						width: "34%",
-						alignItems: "start",
-						padding: "20px",
-						justifyContent: "start",
-						color: themeContext.textAlt,
-					}}
+				<ResponsiveContentContainer $width='34%'>
+					<About profileInfo={profileInfo} editable={editable}/>
+				</ResponsiveContentContainer>
+
+				<ResponsiveContentContainer
+					$width='65%'
 				>
-					<div style={{ margin: "10px 0" }}>
-						<h2 style={{ margin: "0" }}>About</h2>
-					</div>
-
-					<div
-						style={{
-							display: "flex",
-							flexDirection: "column",
-							alignItems: "start",
-							justifyContent: "space-between",
-							width: "100%",
-							height: "100%",
-						}}
-					>
-						<h3
-							style={{
-								fontWeight: "600",
-								margin: "0",
-							}}
-						>
-							{" "}
-							Bio:{" "}
-						</h3>
-
-						<p>hello</p>
-
-						<div style={{ display: "flex" }}>
-							<h3
-								style={{
-									fontWeight: "600",
-									margin: "0",
-								}}
-							>
-								{" "}
-								Joined: June{" "}
-							</h3>
-						</div>
-						<div style={{ display: "flex" }}>
-							<h3
-								style={{
-									fontWeight: "600",
-									margin: "0",
-								}}
-							>
-								{" "}
-								From: LA{" "}
-							</h3>
-						</div>
-					</div>
-				</ContentContainer>
-
-				<div
-					style={{
-						width: "65%",
-						height: "auto",
-						display: "flex",
-						flexDirection: "column",
-						alignItems: "center",
-					}}
-				>
-					<CampsiteCreator />
+					{editable &&
+						<CampsiteCreator />
+					}
 
 					<div
 						style={{
@@ -155,18 +115,21 @@ const ProfilePage = () => {
 							overflow: "scroll",
 						}}
 					>
-						{camps &&
+						{
+							camps &&
 							camps.map((el) => (
 								<CampsiteCardLong
 									campsite={el}
 									key={el.id}
 								/>
-							))}
+							))
+						}
+
 					</div>
-				</div>
-			</ResponsiveContainer>
+				</ResponsiveContentContainer>
+			</ResponsivePageContainer>
 		</PageContainer>
 	);
 };
 
-export default ProfilePage;
+export default withRouter(ProfilePage);

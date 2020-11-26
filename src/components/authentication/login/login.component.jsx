@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import { auth } from "../../../../firebase";
+import { auth } from "../../../firebase";
 import {
 	FormInputButton,
 	FormInputText,
-} from "../../../inputs/input-text/inputs.styles";
+} from "../../inputs/input-text/inputs.styles";
 import {
 	DropdownContainer,
 	DropDownMenuPage,
-} from "../../../misc/containers.styles";
+} from "../../misc/containers.styles";
+import { ButtonText, Title } from "../../misc/text.styles";
 
 const Login = () => {
 	const [loginVisible, setLoginVisible] = useState(false);
@@ -42,7 +43,7 @@ const Login = () => {
 				onEntering={(e) => setHeight(e.clientHeight)}
 			>
 				<DropDownMenuPage>
-					<h2 style={{ margin: "2%" }}>Log In</h2>
+					<Title style={{margin: '2%'}}>Log In</Title>
 					<form
 						style={{
 							width: "100%",
@@ -54,26 +55,28 @@ const Login = () => {
 						}}
 						onSubmit={(e) => loginUser(e)}
 					>
-						<label>Email</label>
+						<label htmlFor='email'>Email</label>
 						<FormInputText
 							style={inputStyles}
 							type="email"
+							id='email'
 							value={email}
 							onChange={(e) =>
 								setEmail(e.target.value)
 							}
 						/>
-						<label>Password</label>
+						<label htmlFor='password'>Password</label>
 						<FormInputText
 							style={inputStyles}
 							type="password"
+							id='password'
 							value={password}
 							onChange={(e) =>
 								setPassword(e.target.value)
 							}
 						/>
 						<FormInputButton style={inputStyles}>
-							Log In
+							<ButtonText>Log In</ButtonText>
 						</FormInputButton>
 					</form>
 				</DropDownMenuPage>

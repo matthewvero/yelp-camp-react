@@ -8,20 +8,20 @@ import { ThemeContext } from "styled-components";
 import {
 	DropdownContainer,
 	DropDownMenuPage,
-} from "../../../misc/containers.styles";
+} from "../../misc/containers.styles";
 import SignupForm from "../signupform/signupform.component";
-import Button from "../../../button/button.component";
-import { getUserImages, logOut } from "../../../../firebase.utils.js";
-import { ImageSwitcher } from "../../../image/image.styles";
-import Image from "../../../image/image.component";
+import Button from "../../button/button.component";
+import { getUserImages, logOut } from "../../../firebase.utils.js";
+import Image from "../../image/image.component";
+import { SubTitle } from "../../misc/text.styles";
 
 const Signup = ({ location, history }) => {
 	const [menuVisible, setMenuVisible] = useState(false);
 	const [curMenu, setCurMenu] = useState("signup");
 	const [height, setHeight] = useState(300);
+	const [image, setImage] = useState([]);
 	const themeContext = useContext(ThemeContext);
 	const user = useSelector((state) => state.authReducer.user);
-	const [image, setImage] = useState([]);
 	useEffect(() => {
 		user.hasOwnProperty("displayName")
 			? setCurMenu("welcome")
@@ -64,7 +64,7 @@ const Signup = ({ location, history }) => {
 				onEntering={(e) => setHeight(e.clientHeight)}
 			>
 				<DropDownMenuPage style>
-					Welcome To YelpCamp
+					<SubTitle>Welcome To YelpCamp</SubTitle>
 					<div
 						style={{
 							width: "100px",
@@ -79,7 +79,7 @@ const Signup = ({ location, history }) => {
 							overflow: "hidden",
 						}}
 					>
-						{image.length ? (
+						{image && image.length ? (
 							<Image image={image} />
 						) : (
 							<FontAwesomeIcon
@@ -96,7 +96,7 @@ const Signup = ({ location, history }) => {
 								textDecoration: "none",
 								margin: "10px 0",
 							}}
-							to={"/profile"}
+							to={`/profile/${user.uid}`}
 						>
 							View Your Profile
 						</Link>

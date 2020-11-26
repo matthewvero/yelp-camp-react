@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { ThemeContext } from "styled-components";
 import { addProfileImage, getUserImages } from "../../firebase.utils";
 import Image from "../image/image.component";
@@ -13,32 +12,33 @@ import {
 import { faCamera, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const ProfilePicture = () => {
+const ProfilePicture = ({userID, editable}) => {
 	const themeContext = useContext(ThemeContext);
-	const user = useSelector((state) => state.authReducer.user);
 	const [image, setImage] = useState([]);
 
 	useEffect(() => {
 		const getImages = async () => {
-			const URLs = await getUserImages("profileImages", user.uid);
+			const URLs = await getUserImages("profileImages", userID);
 			setImage(URLs);
 		};
 		getImages();
-	}, [user]);
+	}, [userID]);
 
 	const updateProfileImage = async (image) => {
 		const uploadTask = addProfileImage(image, "profileImages");
 		uploadTask.then(async () => {
-			const URLs = await getUserImages("profileImages", user.uid);
+			const URLs = await getUserImages("profileImages", userID);
 			setImage(URLs[0]);
 		});
 	};
 
 	return (
 		<ProfilePictureContainer>
-			<UpdateImageButtonContainer htmlFor="profileImage">
-				<FontAwesomeIcon icon={faCamera} />
-			</UpdateImageButtonContainer>
+			{editable &&
+				<UpdateImageButtonContainer htmlFor="profileImage">
+					<FontAwesomeIcon icon={faCamera} />
+				</UpdateImageButtonContainer>
+			}
 
 			<InputImage
 				setImageFn={updateProfileImage}

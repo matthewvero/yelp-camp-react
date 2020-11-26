@@ -6,8 +6,8 @@ import { faMountain } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from "styled-components";
 import ThemeToggleButton from "../themetogglebutton/themetogglebutton.component";
 import HeaderDropDownButton from "../headerdropdownbutton/header-dropdown-button.component";
-import Login from "../authentication/components/login/login.component";
-import Signup from "../authentication/components/signup/signup.component";
+import Login from "../authentication/login/login.component";
+import Signup from "../authentication/signup/signup.component";
 import { useSelector } from "react-redux";
 import { CSSTransition } from "react-transition-group";
 

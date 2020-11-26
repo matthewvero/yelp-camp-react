@@ -17,6 +17,7 @@ import {
 } from "./campsite-creator.styles";
 import { CreatorAPI } from "./campsite-creator.component";
 import InputImage from "../inputs/input-image/input-image.component";
+import { SubTitle, Text } from "../misc/text.styles";
 
 export const CampsiteCreatorStart = () => {
 	// Access the campsitecreator hooks and state
@@ -77,7 +78,7 @@ export const CampsiteCreatorCreate = () => {
 					boxSizing: "border-box",
 					width: "100%",
 					display: "grid",
-					gridTemplateColumns: "25% auto 20%",
+					gridTemplateColumns: "minmax(213px, 25%) auto minmax(120px, 20%)",
 					gridTemplateRows: "30% auto",
 					gap: "1rem",
 				}}
@@ -205,7 +206,7 @@ export const CampsiteCreatorReview = () => {
 						boxSizing: "border-box",
 						width: "100%",
 						display: "grid",
-						gridTemplateColumns: "25% auto 20%",
+						gridTemplateColumns: "minmax(213px, 25%) auto 20%",
 						gridTemplateRows: "30% auto",
 						gap: "1rem",
 					}}
@@ -229,15 +230,15 @@ export const CampsiteCreatorReview = () => {
 						/>
 					</div>
 
-					<h2
+					<SubTitle
 						style={{
 							gridColumn: "2/3",
-							color: themeContext.textAlt,
 							textAlign: "left",
+							margin: 'auto 0'
 						}}
 					>
 						{title}
-					</h2>
+					</SubTitle>
 
 					<div
 						style={{
@@ -246,25 +247,24 @@ export const CampsiteCreatorReview = () => {
 							overflow: "scroll",
 						}}
 					>
-						<p
+						<Text
 							style={{
-								color: themeContext.textAlt,
 								textAlign: "left",
-								margin: "0",
 							}}
 						>
 							{description}
-						</p>
+						</Text>
 					</div>
 
-					<h2
+					<SubTitle
 						style={{
 							color: themeContext.color,
 							alignSelf: "start",
+							margin: 'auto 0'
 						}}
 					>
 						£{price} /Night
-					</h2>
+					</SubTitle>
 
 					<div
 						style={{

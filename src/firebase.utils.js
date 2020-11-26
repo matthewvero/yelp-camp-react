@@ -6,14 +6,10 @@ import { destroySession } from "./redux/auth-redux/auth.actions";
 // CAMPSITE UTILITIES
 const storageRef = storage.ref();
 
-export const getUserCampsites = (setCamps) => {
-	const user = store.getState().authReducer.user;
-
-	//check if user is signed in
-	if (user.hasOwnProperty("uid")) {
+export const getUserCampsites = (setCamps, userID) => {
 		const campsites = db
 			.collection("campsites")
-			.where("owner", "==", user.uid); // Need to load campsites in chronological order
+			.where("owner", "==", userID); // Need to load campsites in chronological order
 
 		const unsub = campsites.onSnapshot((snapshot) => {
 			let campsitesArr = [];
@@ -24,7 +20,6 @@ export const getUserCampsites = (setCamps) => {
 		});
 
 		return unsub;
-	}
 };
 
 export const addCampsite = async ({ campsite, image }) => {
@@ -121,4 +116,11 @@ export const getUserImages = async (imageType, uid) => {
 		return URLs;
 	}
 	return [];
+};
+
+export const updateUserProfile = async (key, value) => {
+	const user = store.getState().authReducer.user;
+	const campsiteRef = db.collection("userProfiles").doc(user.uid);
+	const res = await campsiteRef.update({ [key]: value });
+	return res;
 };

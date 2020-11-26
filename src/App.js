@@ -8,7 +8,7 @@ import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "../src/theme/themes";
 import { useDispatch } from "react-redux";
 import { auth } from "./firebase";
-import { setUser } from "./redux/auth-redux/auth.actions";
+import { setUser, setUserProfile } from "./redux/auth-redux/auth.actions";
 import ProfilePage from "./pages/profilepage/profilepage";
 
 function App() {
@@ -35,6 +35,9 @@ function App() {
 		auth.onAuthStateChanged(function (user) {
 			if (user) {
 				dispatch(setUser(user));
+				dispatch(setUserProfile({
+					displayName: user.displayName,
+				}))
 			}
 		});
 	}, [dispatch]);
@@ -48,8 +51,10 @@ function App() {
 					<Route exact path="/home" component={Homepage} />
 					<Route
 						exact
-						path="/profile"
-						component={ProfilePage}
+						path="/profile/:id"
+						render={(props) => (
+							<ProfilePage {...props} isAuthed={true} />
+						    )}
 					/>
 				</Switch>
 			</ThemeProvider>

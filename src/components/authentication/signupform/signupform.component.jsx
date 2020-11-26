@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { auth } from "../../../../firebase";
-import { setUser } from "../../../../redux/auth-redux/auth.actions";
+import { auth } from "../../../firebase";
+import { setUser } from "../../../redux/auth-redux/auth.actions";
 import {
 	FormInputButton,
 	FormInputText,
-} from "../../../inputs/input-text/inputs.styles";
+} from "../../inputs/input-text/inputs.styles";
+import { Title } from "../../misc/text.styles";
 
 const SignupForm = () => {
 	const [username, setUsername] = useState("");
@@ -22,30 +23,28 @@ const SignupForm = () => {
 		justifyContent: "space-evenly",
 	};
 
-	const handleSumbit = (e) => {
+	const handleSumbit = async (e) => {
 		e.preventDefault();
-		auth.createUserWithEmailAndPassword(email, password)
-			.then((result) => {
-				return result.user
-					.updateProfile({
-						displayName: username,
-					})
-					.then((result) =>
-						dispatch(
-							setUser({
-								...result,
-								displayName: username,
-							})
-						)
-					)
-					.catch((error) => console.log(error));
-			})
-			.catch((error) => console.log(error));
-	};
+		try {
+			const res = await auth.createUserWithEmailAndPassword(email, password)
+			const userProfile = await res.user
+				.updateProfile({
+					displayName: username,
+				});
+			return dispatch(
+				setUser({
+					...res,
+					displayName: username,
+				})
+			);
+		} catch (error) {
+			return console.log(error);
+		}
+	}
 
 	return (
 		<React.Fragment>
-			<h2 style={{ margin: "2%" }}> Sign Up </h2>
+			<Title style={{margin: '2%'}}>Sign Up</Title>
 
 			<form style={formStyles} onSubmit={(e) => handleSumbit(e)}>
 				<label style={{ margin: "1%" }} htmlFor="username">
