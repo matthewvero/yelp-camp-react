@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled, { keyframes } from "styled-components/macro";
 
 /* 
@@ -78,7 +79,7 @@ export const ResponsivePageContainer = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	@media (max-width: 1400px) {
+	@media (max-width: ${props => props.theme.largeBreakPoint}) {
 		width: 95vw;
 		
 	}
@@ -86,12 +87,42 @@ export const ResponsivePageContainer = styled.div`
 
 export const ResponsiveContentContainer = styled.div`
 	width: ${props => props.$width ? props.$width : 'auto'};
-	height: autoauto;
-	display: flexauto;
-	flex-direction: columnauto;
-	align-items: centerauto;
-	@media (max-width: 900px) {
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	@media (max-width: ${props => props.theme.mediumBreakPoint}) {
 		width: 100%;
 		margin: 5px 0;
 	}
+`
+
+export const CollapsibleContainer = styled(ContentContainer)`
+	height: ${props => props.collapsed ? '100px' : 'auto'};
+	overflow: hidden;
+	transition: all 100ms linear;
+`
+
+export const CollapsibleContainerTitleBar = styled.div`
+	min-height: 100px;
+	min-width: 100%;
+	margin-top: -20px;
+	margin-left: -20px;
+	margin-bottom: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 20px;
+	border-radius: 10px;
+	cursor: pointer;
+	&:hover {
+		background-color: ${props => props.theme.backgroundHover}
+	}
+	
+`
+
+export const CollapsibleContainerIcon = styled(FontAwesomeIcon)`
+	transform: rotateZ(${props => props.collapsed ? '180deg' : '0deg'});
+	transition: transform 100ms linear;
+	color: ${props => props.theme.color};
 `

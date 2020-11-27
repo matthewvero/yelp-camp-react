@@ -90,7 +90,7 @@ export const PageIndicatorGroup = styled.div`
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
       animation: ${popup} 200ms linear 1;
-	@media (max-width: 600px) {
+	@media (max-width: ${props => props.theme.mediumBreakPoint}) {
 		top: 0px;
 		border-top-left-radius: 0px;
 		border-top-right-radius: 0px;

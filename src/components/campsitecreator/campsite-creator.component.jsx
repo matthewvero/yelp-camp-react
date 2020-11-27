@@ -2,11 +2,11 @@ import React, { createContext, useState } from "react";
 import { useSelector } from "react-redux";
 import { addCampsite } from "../../firebase.utils";
 import { CSSTransition } from "react-transition-group";
-import { CampsiteCreatorContainer } from "./campsite-creator.styles";
+import { CCContainer } from "./campsite-creator.styles";
 import {
-	CampsiteCreatorCreate,
-	CampsiteCreatorReview,
-	CampsiteCreatorStart,
+	CCCreate,
+	CCReview,
+	CCStart,
 } from "./campsite-creator-pages";
 
 const CampsiteCreator = () => {
@@ -90,12 +90,12 @@ const CampsiteCreator = () => {
 	};
 
 	return (
-		<CampsiteCreatorContainer
+		<CCContainer
 			style={{
 				width: "100%",
-				height: "200px",
 				marginBottom: "5px",
 			}}
+			activePage={activePage}
 		>
 			<CreatorAPI.Provider value={api}>
 				<CSSTransition
@@ -104,7 +104,7 @@ const CampsiteCreator = () => {
 					timeout={200}
 					unmountOnExit
 				>
-					<CampsiteCreatorStart />
+					<CCStart />
 				</CSSTransition>
 				<CSSTransition
 					in={activePage === "create"}
@@ -112,7 +112,7 @@ const CampsiteCreator = () => {
 					timeout={200}
 					unmountOnExit
 				>
-					<CampsiteCreatorCreate />
+					<CCCreate />
 				</CSSTransition>
 				<CSSTransition
 					in={activePage === "review"}
@@ -120,10 +120,10 @@ const CampsiteCreator = () => {
 					timeout={200}
 					unmountOnExit
 				>
-					<CampsiteCreatorReview />
+					<CCReview />
 				</CSSTransition>
 			</CreatorAPI.Provider>
-		</CampsiteCreatorContainer>
+		</CCContainer>
 	);
 };
 

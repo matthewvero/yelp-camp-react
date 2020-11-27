@@ -1,18 +1,34 @@
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from 'styled-components';
-import { ContentContainer } from '../misc/containers.styles';
+import { CollapsibleContainer, CollapsibleContainerIcon, CollapsibleContainerTitleBar, ContentContainer } from '../misc/containers.styles';
 import { SectionTitle, SubTitle, Text } from '../misc/text.styles';
 import { AboutSection } from './about.styles';
 
 const About = ({profileInfo, editable}) => {
       const [editing, setEditing] = useState(false)
       const themeContext = useContext(ThemeContext);
+      const [collapsed, setCollapsed] = useState(window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`).matches)
+
+      useEffect(() => {
+            const windowSize = window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`);
+            const handleChange = e => {
+                  if(e.matches) {
+                        setCollapsed(true);
+                  } else {
+                        setCollapsed(false);
+                  }
+            }
+            windowSize.addEventListener('change', handleChange);
+            return () => {
+                  windowSize.removeEventListener('change', handleChange);
+            }
+      }, [])
+
       return (
-            <ContentContainer
+            <CollapsibleContainer
                   style={{
-                        height: "auto",
                         width: "100%",
                         alignItems: "start",
                         padding: "20px",
@@ -20,19 +36,13 @@ const About = ({profileInfo, editable}) => {
                         color: themeContext.textAlt,
                         position: 'relative'
                   }}
+                  collapsed={collapsed}
             >
-                  {
-                        editable &&
-                        <FontAwesomeIcon
-                              icon={faEdit} 
-                              onClick={() => setEditing(true)}
-                              style={{cursor: 'pointer', fontSize: '1.4rem', position: 'absolute', top: '30px', right: '20px'}}
-                        />
-                  }
-                  <div style={{ margin: "10px 0", display: 'flex', alignItems: 'center'}}>
+                  
+                  <CollapsibleContainerTitleBar onClick={() => setCollapsed(collapsed => !collapsed)}>
                         <SubTitle style={{ marginRight: '20px', fontSize: '1.5rem', fontWeight: '600' }}>About</SubTitle> 
-                        
-                  </div>
+                        <CollapsibleContainerIcon icon={faChevronDown} collapsed={collapsed} />
+                  </CollapsibleContainerTitleBar>
 
                   <div
                         style={{
@@ -75,7 +85,7 @@ const About = ({profileInfo, editable}) => {
                         }
                         </div>
                   </div>
-            </ContentContainer>
+            </CollapsibleContainer>
       )
 }
 

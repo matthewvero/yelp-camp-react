@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	ContentContainer,
 	ResponsiveContentContainer,
@@ -6,9 +6,7 @@ import {
 } from "../../components/misc/containers.styles";
 import { PageContainer } from "../page.styles";
 import ProfilePicture from "../../components/profilepicture/profilepicture.component";
-import { ThemeContext } from "styled-components";
 import CampsiteCreator from "../../components/campsitecreator/campsite-creator.component";
-import { db } from "../../firebase";
 import { useSelector } from "react-redux";
 import CampsiteCardLong from "../../components/campsitecardlong/campsite-card-long.component";
 import CoverPicture from "../../components/coverpicture/coverpicture.component";
@@ -16,11 +14,10 @@ import { getUserCampsites } from "../../firebase.utils";
 import { withRouter } from "react-router";
 import About from '../../components/about/about.component'
 import { Title } from "../../components/misc/text.styles";
-import { NameBar } from "./profilepage.styles";
+import { CoverPictureResponsiveContainer, ProfilePictureResponsiveContainer } from "./profilepage.styles";
 const ProfilePage = ({match}) => {
 	const user = useSelector((state) => state.authReducer.user);
 	const userProfile = useSelector((state) => state.authReducer.userProfile);
-	const themeContext = useContext(ThemeContext);
 	const [camps, setCamps] = useState();
 	const [profileInfo, setProfileInfo] = useState({});
 	const [editable, setEditable] = useState(false);
@@ -45,34 +42,19 @@ const ProfilePage = ({match}) => {
 		}
 	}, [match, user.displayName, user.uid, userProfile]);
 
-
 	return (
 		<PageContainer>
-			<ResponsivePageContainer
-				style={{
-					height: "300px",
-					marginTop: "10px",
-					position: "relative",
-				}}
-			>
+			<CoverPictureResponsiveContainer
+>
 				<CoverPicture editable={editable} userID={match.params.id}/>
 
-				<div
-					style={{
-						height: "200px",
-						width: "200px",
-						position: "absolute",
-						left: "5%",
-						bottom: "-30%",
-						zIndex: "1",
-					}}
-				>
+				<ProfilePictureResponsiveContainer>
 					<ProfilePicture editable={editable} userID={match.params.id}/>
-				</div>
-			</ResponsivePageContainer>
+				</ProfilePictureResponsiveContainer>
+			</CoverPictureResponsiveContainer>
 
 			<ResponsivePageContainer>
-				<NameBar
+				<ContentContainer
 					style={{
 						minHeight: "100px",
 						position: "relative",
@@ -81,7 +63,7 @@ const ProfilePage = ({match}) => {
 					<Title >
 						{profileInfo.displayName}
 					</Title>
-				</NameBar>
+				</ContentContainer>
 			</ResponsivePageContainer>
 
 			<ResponsivePageContainer

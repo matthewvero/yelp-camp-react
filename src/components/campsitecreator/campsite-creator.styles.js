@@ -1,12 +1,25 @@
 import styled from "styled-components";
 import { ContentContainer } from "../misc/containers.styles";
-
-export const CampsiteCreatorContainer = styled(ContentContainer)`
+import Button from '../button/button.component';
+import { ButtonContainer } from "../button/button.styles";
+export const CCContainer = styled(ContentContainer)`
 	overflow: hidden;
 	position: relative;
+	height: 200px;
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		height:  ${props => {
+			console.log(props.activePage)
+		switch(props.activePage) {
+			case 'create' || 'review': 
+				return '400px';
+			default: 
+				return '100px';
+		} 
+	}};
+	}
 `;
 
-export const CampsiteCreatorPage = styled.div`
+export const CCPage = styled.div`
 	width: 100%;
 	height: 100%;
 	display: flex;
@@ -28,11 +41,27 @@ export const CampsiteCreatorPage = styled.div`
 	&.page-exit-active {
 		position: absolute;
 		opacity: 0;
-		transition: opacity 100ms;
+		transition: opacity 0ms;
 	}
 `;
 
-export const CampsiteCreatorInput = styled.input`
+export const CCGrid = styled.div`
+  	height: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	width: 100%;
+	display: grid;
+	grid-template-columns: minmax(213px, 25%) auto minmax(120px, 20%);
+	grid-template-rows: 30% auto;
+	gap: 1rem;
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-template-rows: 15% 60% auto;
+		grid-template-columns: 48% 48%;
+		gap: 4%;
+	}
+`;
+
+export const CCInput = styled.input`
 	height: 100%;
 	width: 100%;
 	padding: 0 10px;
@@ -44,7 +73,24 @@ export const CampsiteCreatorInput = styled.input`
 	color: ${(props) => props.theme.textAlt};
 	box-sizing: border-box;
 `;
-export const CampsiteCreatorImageInput = styled.label`
+
+export const CCTextArea = styled.textarea`
+	width: 100%;
+	border: none;
+	outline: none;
+	background-color: ${props => props.theme.background};
+	border-radius: 10px;
+	padding: 10px;
+	resize: none;
+	font-family: Helvetica sans-serif;
+	color: ${props => props.theme.textAlt};
+	font-size: 1.3rem;
+	box-sizing: border-box;
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-row: 2/3;
+	}
+`;
+export const CCImageInput = styled.label`
 	grid-row: 1 / 3;
 	display: flex;
 	justify-content: space-around;
@@ -65,9 +111,46 @@ export const CampsiteCreatorImageInput = styled.label`
 		transform: scale(0.95);
 		background-color: ${(props) => props.theme.backgroundActive};
 	}
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-row: 2/3;
+	}
 `;
 
-export const CampsiteCreatorHoverEffect = styled.div`
+export const CCImageContainer = styled.div`
+	grid-row: 1 / 3;
+	border-radius: 10px;
+	overflow: hidden;
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-row: 2/3;
+	}
+`;
+
+export const CCButtonContainer = styled.div`
+	grid-column: "3/4";
+	grid-row: "2/3";
+	display: flex;
+	flex-direction: column;
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-row: 3/4;
+		grid-column: 1/3;
+		flex-direction: row;
+		justify-content: space-between;
+	}
+
+`;
+
+export const CCButton = styled(ButtonContainer)`
+  	width: 100%;
+	height: 45%;
+	margin-bottom: 5%;
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		width: 40%;
+		height: 100%;
+
+}
+`;
+
+export const CCHoverEffect = styled.div`
 	height: 100%;
 	width: 100%;
 	display: flex;
@@ -76,5 +159,19 @@ export const CampsiteCreatorHoverEffect = styled.div`
 	cursor: pointer;
 	&:hover {
 		background-color: ${(props) => props.backgroundHover};
+	}
+`;
+
+export const StartPageTitle = styled.span`
+	width: 70%;
+	font-size: 2rem;
+	color: ${props => props.theme.textAlt};
+	cursor: pointer;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	@media (max-width: ${props => props.theme.smallBreakPoint}){
+		width: 95%;
+		font-size: 1.6rem;
 	}
 `;

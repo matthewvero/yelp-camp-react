@@ -10,49 +10,44 @@ import { ThemeContext } from "styled-components";
 import Button from "../button/button.component";
 import ProgressIndicator from "../progressindicator/progressindicator.component";
 import {
-	CampsiteCreatorHoverEffect,
-	CampsiteCreatorImageInput,
-	CampsiteCreatorInput,
-	CampsiteCreatorPage,
+	CCButton,
+	CCButtonContainer,
+	CCGrid,
+	CCHoverEffect,
+	CCImageContainer,
+	CCImageInput,
+	CCInput,
+	CCPage,
+	CCTextArea,
+	StartPageTitle,
 } from "./campsite-creator.styles";
 import { CreatorAPI } from "./campsite-creator.component";
 import InputImage from "../inputs/input-image/input-image.component";
 import { SubTitle, Text } from "../misc/text.styles";
 
-export const CampsiteCreatorStart = () => {
-	// Access the campsitecreator hooks and state
+export const CCStart = () => {
+	// Access the cC hooks and state
 	const api = useContext(CreatorAPI);
 	const themeContext = useContext(ThemeContext);
 	return (
-		<CampsiteCreatorPage
-			style={{}}
+		<CCPage
 			onClick={() => api.setActivePage("create")}
 		>
-			<CampsiteCreatorHoverEffect>
-				<span
-					style={{
-						width: "70%",
-						fontSize: "2rem",
-						color: themeContext.textAlt,
-						cursor: "pointer",
-						display: "flex",
-						justifyContent: "space-around",
-						alignItems: "center",
-					}}
-				>
+			<CCHoverEffect>
+				<StartPageTitle>
 					Create New Campsite
 					<FontAwesomeIcon
 						style={{ color: themeContext.color }}
 						icon={faPlus}
 					/>
-				</span>
-			</CampsiteCreatorHoverEffect>
-		</CampsiteCreatorPage>
+				</StartPageTitle>
+			</CCHoverEffect>
+		</CCPage>
 	);
 };
 
-export const CampsiteCreatorCreate = () => {
-	// Access the campsitecreator hooks and state
+export const CCCreate = () => {
+	// Access the cC hooks and state
 	const api = useContext(CreatorAPI);
 	const {
 		handleReset,
@@ -70,34 +65,17 @@ export const CampsiteCreatorCreate = () => {
 	} = api;
 	const themeContext = useContext(ThemeContext);
 	return (
-		<CampsiteCreatorPage style={{ padding: "0" }}>
-			<div
-				style={{
-					height: "100%",
-					padding: "10px",
-					boxSizing: "border-box",
-					width: "100%",
-					display: "grid",
-					gridTemplateColumns: "minmax(213px, 25%) auto minmax(120px, 20%)",
-					gridTemplateRows: "30% auto",
-					gap: "1rem",
-				}}
-			>
+		<CCPage style={{ padding: "0" }}>
+			<CCGrid>
 				{image === undefined ? (
-					<CampsiteCreatorImageInput htmlFor="image">
+					<CCImageInput htmlFor="image">
 						<FontAwesomeIcon
 							icon={faCamera}
 							style={{ fontSize: "3rem" }}
 						/>
-					</CampsiteCreatorImageInput>
+					</CCImageInput>
 				) : (
-					<div
-						style={{
-							gridRow: "1 / 3",
-							borderRadius: "10px",
-							overflow: "hidden",
-						}}
-					>
+					<CCImageContainer>
 						<img
 							style={{
 								height: "100%",
@@ -108,7 +86,7 @@ export const CampsiteCreatorCreate = () => {
 							alt="Your campground"
 							src={previewImage}
 						/>
-					</div>
+					</CCImageContainer>
 				)}
 
 				<InputImage
@@ -117,13 +95,13 @@ export const CampsiteCreatorCreate = () => {
 					setPreviewImageFn={setPreviewImage}
 				/>
 
-				<CampsiteCreatorInput
+				<CCInput
 					placeholder="Title"
 					value={title}
 					onChange={(e) => setTitle(e.target.value)}
 				/>
 
-				<CampsiteCreatorInput
+				<CCInput
 					type="number"
 					placeholder="Price"
 					value={price}
@@ -132,58 +110,39 @@ export const CampsiteCreatorCreate = () => {
 					step="5"
 				/>
 
-				<textarea
+				<CCTextArea
 					rows="3"
 					placeholder="Description"
-					style={{
-						width: "100%",
-						border: "none",
-						outline: "none",
-						backgroundColor: themeContext.background,
-						borderRadius: "10px",
-						padding: "10px",
-						resize: "none",
-						fontFamily: "Helvetica, sans-serif",
-						color: themeContext.textAlt,
-						fontSize: "1.3rem",
-						boxSizing: "border-box",
-					}}
 					value={description}
 					onChange={(e) => setDescription(e.target.value)}
 				/>
 
-				<div style={{ gridColumn: "3/4", gridRow: "2/3" }}>
-					<Button
-						styles={{
-							width: "100%",
-							height: "45%",
-							marginBottom: "5%",
-						}}
-						fn={handleReset}
+				<CCButtonContainer >
+					<CCButton
+						onClick={() => handleReset()}
 					>
 						<FontAwesomeIcon
 							style={{ color: "red" }}
 							icon={faChevronLeft}
 						/>{" "}
 						Cancel
-					</Button>
-					<Button
-						styles={{ width: "100%", height: "45%" }}
-						fn={handleConfirm}
+					</CCButton>
+					<CCButton
+						onClick={() => handleConfirm()}
 					>
 						Review{" "}
 						<FontAwesomeIcon
 							style={{ color: themeContext.color }}
 							icon={faChevronRight}
 						/>
-					</Button>
-				</div>
-			</div>
-		</CampsiteCreatorPage>
+					</CCButton>
+				</CCButtonContainer>
+			</CCGrid>
+		</CCPage>
 	);
 };
 
-export const CampsiteCreatorReview = () => {
+export const CCReview = () => {
 	const api = useContext(CreatorAPI);
 	const {
 		loading,
@@ -197,7 +156,7 @@ export const CampsiteCreatorReview = () => {
 	} = api;
 	const themeContext = useContext(ThemeContext);
 	return (
-		<CampsiteCreatorPage>
+		<CCPage>
 			{!loading ? (
 				<div
 					style={{
@@ -266,18 +225,8 @@ export const CampsiteCreatorReview = () => {
 						£{price} /Night
 					</SubTitle>
 
-					<div
-						style={{
-							gridColumn: "3/4",
-							gridRow: "2/3",
-						}}
-					>
-						<Button
-							styles={{
-								width: "100%",
-								height: "45%",
-								marginBottom: "5%",
-							}}
+					<CCButtonContainer>
+						<CCButton
 							fn={handleBack}
 						>
 							<FontAwesomeIcon
@@ -285,12 +234,8 @@ export const CampsiteCreatorReview = () => {
 								icon={faChevronLeft}
 							/>{" "}
 							Go back
-						</Button>
-						<Button
-							styles={{
-								width: "100%",
-								height: "45%",
-							}}
+						</CCButton>
+						<CCButton
 							fn={handleSubmit}
 						>
 							Create{" "}
@@ -300,8 +245,8 @@ export const CampsiteCreatorReview = () => {
 								}}
 								icon={faChevronRight}
 							/>
-						</Button>
-					</div>
+						</CCButton>
+					</CCButtonContainer>
 				</div>
 			) : (
 				<ProgressIndicator
@@ -310,6 +255,6 @@ export const CampsiteCreatorReview = () => {
 					percent={progress}
 				/>
 			)}
-		</CampsiteCreatorPage>
+		</CCPage>
 	);
 };
