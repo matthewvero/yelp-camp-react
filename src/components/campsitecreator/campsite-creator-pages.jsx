@@ -7,7 +7,6 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext } from "react";
 import { ThemeContext } from "styled-components";
-import Button from "../button/button.component";
 import ProgressIndicator from "../progressindicator/progressindicator.component";
 import {
 	CCButton,

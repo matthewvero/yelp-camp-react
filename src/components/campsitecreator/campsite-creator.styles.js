@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { ContentContainer } from "../misc/containers.styles";
-import Button from '../button/button.component';
 import { ButtonContainer } from "../button/button.styles";
 export const CCContainer = styled(ContentContainer)`
 	overflow: hidden;
@@ -8,7 +7,6 @@ export const CCContainer = styled(ContentContainer)`
 	height: 200px;
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
 		height:  ${props => {
-			console.log(props.activePage)
 		switch(props.activePage) {
 			case 'create' || 'review': 
 				return '400px';

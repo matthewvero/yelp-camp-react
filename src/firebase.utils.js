@@ -118,9 +118,9 @@ export const getUserImages = async (imageType, uid) => {
 	return [];
 };
 
-export const updateUserProfile = async (key, value) => {
+export const updateUserProfile = async (obj) => {
 	const user = store.getState().authReducer.user;
 	const campsiteRef = db.collection("userProfiles").doc(user.uid);
-	const res = await campsiteRef.update({ [key]: value });
+	const res = await campsiteRef.update(obj);
 	return res;
 };

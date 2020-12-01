@@ -16,7 +16,7 @@ export const HeaderContainer = styled.div`
 
 export const HeaderLogo = styled.div`
 	color: ${(props) => props.theme.textAlt};
-	width: 10%;
+	width: 100px;
 	height: 100%;
 	padding: 0 50px;
 	display: flex;

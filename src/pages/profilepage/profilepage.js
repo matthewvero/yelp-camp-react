@@ -15,6 +15,7 @@ import { withRouter } from "react-router";
 import About from '../../components/about/about.component'
 import { Title } from "../../components/misc/text.styles";
 import { CoverPictureResponsiveContainer, ProfilePictureResponsiveContainer } from "./profilepage.styles";
+import { db } from "../../firebase";
 const ProfilePage = ({match}) => {
 	const user = useSelector((state) => state.authReducer.user);
 	const userProfile = useSelector((state) => state.authReducer.userProfile);
@@ -25,13 +26,15 @@ const ProfilePage = ({match}) => {
 
 	useEffect(() => {
 		const setUserProfile = async () => {
+			
 			if(user.uid === match.params.id) {
 				setProfileInfo({...userProfile, displayName: user.displayName})
 				setEditable(true);
 			} else {
-				// const collectionRef = db.collection('users').where('id' === match.params.id);
-				// const data = await collectionRef.get()
-				// console.log(data.docs)
+				const collectionRef = db.collection('campsites');
+				const camps = await collectionRef
+				.where('owner', '==', match.params.id).get();
+				setCamps(camps.docs.map(el => el.data()));
 			}
 
 		} 

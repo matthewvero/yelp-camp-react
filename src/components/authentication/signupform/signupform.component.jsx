@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { auth } from "../../../firebase";
+import { auth, db } from "../../../firebase";
+import { updateUserProfile } from "../../../firebase.utils";
 import { setUser } from "../../../redux/auth-redux/auth.actions";
 import {
 	FormInputButton,
@@ -27,16 +28,17 @@ const SignupForm = () => {
 		e.preventDefault();
 		try {
 			const res = await auth.createUserWithEmailAndPassword(email, password)
-			const userProfile = await res.user
+			await res.user
 				.updateProfile({
 					displayName: username,
 				});
-			return dispatch(
+			dispatch(
 				setUser({
 					...res,
 					displayName: username,
 				})
 			);
+			
 		} catch (error) {
 			return console.log(error);
 		}

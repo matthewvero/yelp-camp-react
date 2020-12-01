@@ -1,16 +1,14 @@
-import { faChevronDown, faChevronLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import React, { useContext, useEffect, useState } from 'react'
 import { ThemeContext } from 'styled-components';
-import { CollapsibleContainer, CollapsibleContainerIcon, CollapsibleContainerTitleBar, ContentContainer } from '../misc/containers.styles';
+import { CollapsibleContainer, CollapsibleContainerIcon, CollapsibleContainerTitleBar } from '../misc/containers.styles';
 import { SectionTitle, SubTitle, Text } from '../misc/text.styles';
 import { AboutSection } from './about.styles';
 
 const About = ({profileInfo, editable}) => {
       const [editing, setEditing] = useState(false)
       const themeContext = useContext(ThemeContext);
-      const [collapsed, setCollapsed] = useState(window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`).matches)
-
+      const [collapsed, setCollapsed] = useState(window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`).matches);
       useEffect(() => {
             const windowSize = window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`);
             const handleChange = e => {
