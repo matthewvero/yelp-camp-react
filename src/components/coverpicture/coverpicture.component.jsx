@@ -12,13 +12,9 @@ import InputImage from "../inputs/input-image/input-image.component";
 import { UpdateImageButtonContainer } from "../inputs/input-text/inputs.styles";
 import {
 	CoverPictureContainer,
-	NextSlideButton,
+
 	NoCoverPicture,
-	PageIndicator,
-	PageIndicatorGroup,
-	PrevSlideButton,
-	ScrollContainer,
-	Slide,
+
 } from "./coverpicture.styles";
 
 const CoverPicture = ({userID, editable}) => {
@@ -74,62 +70,29 @@ const CoverPicture = ({userID, editable}) => {
 
 			<InputImage setImageFn={updateCoverImage} id="coverImage" />
 
-			{	images.length > 1 && 
-				<PageIndicatorGroup>
-				
-					{	
-						images.map((el, idx) => 
-							<PageIndicator activePage={currentImage} page={idx} key={idx}/>
-						)
-					}
-				
-				</PageIndicatorGroup>
-			}
+			{images.length ? (
 
-			{images.length > 1 && (
-				<React.Fragment>
-					<NextSlideButton
-						href={`#${currentImage}`}
-						onClick={() => handleClick("next")}
-					>
-						<FontAwesomeIcon icon={faChevronRight} />
-					</NextSlideButton>
+				<Image image={images[0]} />
 
-					<PrevSlideButton
-						href={`#${currentImage}`}
-						onClick={() => handleClick("prev")}
+			) : (
+				<NoCoverPicture>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						style={{
+							position: "absolute",
+							bottom: "0px",
+							left: "0px",
+						}}
+						viewBox="0 0 1300 300"
 					>
-						<FontAwesomeIcon icon={faChevronLeft} />
-					</PrevSlideButton>
-				</React.Fragment>
+						<path
+							d="m 0 150 h 250 l 100 -50 l 100 50 l 50 -25 l 50 25 l 125 -50 l 125 50 l 125 -75 l 125 75 h 250 v 200 h -1300 v -200"
+							fill={themeContext.main}
+						/>
+					</svg>
+				</NoCoverPicture>
 			)}
-
-			<ScrollContainer>
-				{images.length ? (
-					images.map((el, idx) => (
-						<Slide id={idx} key={idx}>
-							<Image image={el} />
-						</Slide>
-					))
-				) : (
-					<NoCoverPicture>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							style={{
-								position: "absolute",
-								bottom: "0px",
-								left: "0px",
-							}}
-							viewBox="0 0 1300 300"
-						>
-							<path
-								d="m 0 150 h 250 l 100 -50 l 100 50 l 50 -25 l 50 25 l 125 -50 l 125 50 l 125 -75 l 125 75 h 250 v 200 h -1300 v -200"
-								fill={themeContext.main}
-							/>
-						</svg>
-					</NoCoverPicture>
-				)}
-			</ScrollContainer>
+		
 		</CoverPictureContainer>
 	);
 };

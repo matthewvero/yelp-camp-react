@@ -10,6 +10,9 @@ body {
 }
 
 html {
-	overflow: hidden;
+	overflow: scroll;
 	scroll-behavior: smooth;
+	background-color: #222222;
 }
+
+

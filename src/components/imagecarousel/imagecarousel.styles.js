@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components/macro";
 
 export const ImageCarouselContainer = styled.div`
 	width: 100%;

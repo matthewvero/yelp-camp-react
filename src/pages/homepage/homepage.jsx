@@ -10,6 +10,8 @@ import { faMountain, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FormInputText } from "../../components/inputs/input-text/inputs.styles";
 import CampsiteCard from "../../components/campsitecard/campsite-card.component";
 import { db } from "../../firebase";
+import { HomepageHeadingContainer, SearchBarContainer } from "./homepage.styles";
+import { SubTitle, Text, Title } from "../../components/misc/text.styles";
 
 const formStyles = {
 	position: "relative",
@@ -18,14 +20,7 @@ const formStyles = {
 	alignItems: "center",
 };
 const searchBarStyles = {
-	width: "100%",
-	height: "60px",
-	margin: "10px 0",
-	display: "flex",
-	flexDirection: "row",
-	justifyContent: "space-between",
-	alignItems: "center",
-	padding: "0 5%",
+	
 };
 
 const campsiteCardsContainerStyles = {
@@ -60,14 +55,10 @@ const Homepage = () => {
 					marginTop: "10px",
 				}}
 			>
-				<ContentContainer
-					style={{
-						height: "200px",
-						justifyContent: "space-around",
-						padding: "20px 0",
-					}}
+				<HomepageHeadingContainer
+					
 				>
-					<h1
+					<Title
 						style={{
 							fontSize: "2.5rem",
 							fontWeight: "400",
@@ -80,20 +71,16 @@ const Homepage = () => {
 							style={{ color: themeContext.color }}
 							icon={faMountain}
 						/>
-					</h1>
-					<p style={{ color: themeContext.textAlt }}>
-						Take a look at our hand-picked campsites
-					</p>
-				</ContentContainer>
-				<ContentContainer style={searchBarStyles}>
-					<h2
-						style={{
-							color: themeContext.textAlt,
-							fontWeight: "400",
-						}}
+					</Title>
+					
+				</HomepageHeadingContainer>
+
+				<SearchBarContainer >					
+					<Text
+						
 					>
 						Our most popular Campsites!
-					</h2>
+					</Text>
 					<form
 						onSubmit={(e) => e.preventDefault()}
 						style={{
@@ -119,7 +106,7 @@ const Homepage = () => {
 							/>
 						</div>
 					</form>
-				</ContentContainer>
+				</SearchBarContainer>
 
 				<div style={campsiteCardsContainerStyles}>
 					{campsites.map((site) => (

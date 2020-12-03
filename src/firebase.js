@@ -1,4 +1,7 @@
-import firebase from "firebase";
+import fb from "firebase/app";
+import 'firebase/auth';        // for authentication
+import 'firebase/storage';     // for storage
+import 'firebase/firestore';
 
 var firebaseConfig = {
 	apiKey: "AIzaSyCsZdFdrJ7-NXJ7EtvfzfagzCUWJg_dQ3k",
@@ -11,10 +14,12 @@ var firebaseConfig = {
 	measurementId: "G-PTGPMK19NR",
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+const firebase = fb.initializeApp(firebaseConfig);
 
 export const db = firebase.firestore();
 
 export const auth = firebase.auth();
 
 export const storage = firebase.storage();
+
+export default firebase;

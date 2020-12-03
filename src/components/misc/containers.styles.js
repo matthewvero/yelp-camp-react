@@ -73,7 +73,8 @@ export const DropDownMenuPage = styled.div`
 // LAYOUT CONTAINERS
 export const ResponsivePageContainer = styled.div`
 	height: auto;
-	width: 70vw;
+	min-height: 100px;
+	width: 80vw;
 	margin: 5px;
 	display: flex;
 	flex-direction: column;
@@ -94,6 +95,14 @@ export const ResponsiveContentContainer = styled.div`
 	@media (max-width: ${props => props.theme.mediumBreakPoint}) {
 		width: 100%;
 		margin: 5px 0;
+	}
+	&:before {
+		content: ' ';
+		display: table;
+	}
+	&:after {
+		content: ' ';
+		display: table;
 	}
 `
 

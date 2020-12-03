@@ -1,9 +1,11 @@
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 export const ImageContainer = styled.div`
 	height: 100%;
 	width: 100%;
 	position: relative;
+	box-sizing: content-box;
+	overflow: hidden;
 `;
 
 export const ImageSwitcher = styled.div`
@@ -13,7 +15,7 @@ export const ImageSwitcher = styled.div`
 		opacity: 0;
 	}
 	&.image-enter-active {
-		position: absolute;
+		position: relative;
 		transition: 500ms opacity;
 		opacity: 1;
 	}
@@ -21,7 +23,7 @@ export const ImageSwitcher = styled.div`
 		opacity: 1;
 	}
 	&.image-exit-active {
-		position: absolute;
+		position: relative;
 		transition: 500ms opacity;
 		opacity: 0;
 	}

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { ContentContainer } from "../misc/containers.styles";
 import { ButtonContainer } from "../button/button.styles";
 export const CCContainer = styled(ContentContainer)`
@@ -80,7 +80,7 @@ export const CCTextArea = styled.textarea`
 	border-radius: 10px;
 	padding: 10px;
 	resize: none;
-	font-family: Helvetica sans-serif;
+	font-family: Helvetica, sans-serif;
 	color: ${props => props.theme.textAlt};
 	font-size: 1.3rem;
 	box-sizing: border-box;

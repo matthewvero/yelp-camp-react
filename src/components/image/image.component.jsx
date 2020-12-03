@@ -3,7 +3,7 @@ import { CSSTransition } from "react-transition-group";
 import { Loader } from "../misc/loadinganimations.styles";
 import { ImageContainer, ImageSwitcher } from "./image.styles";
 
-const Image = ({ image,styles }) => {
+const Image = ({ image, styles }) => {
 	return (
 		<ImageContainer style={styles}>
 			<CSSTransition
@@ -17,8 +17,8 @@ const Image = ({ image,styles }) => {
 						style={{
 							height: "100%",
 							width: "100%",
-							overflow: "hidden",
 							objectFit: "cover",
+							
 						}}
 						alt="Your campground"
 						src={image}

@@ -5,6 +5,7 @@ import { ThemeContext } from "styled-components";
 import {
 	CampsiteCardContainer,
 	CampsiteCardHeart,
+	CampsiteCardImageContainer,
 } from "./campsite-card.styles";
 import Image from "../image/image.component";
 import { storage } from "../../firebase";
@@ -15,12 +16,13 @@ const CampsiteCard = ({ campsite }) => {
 	const themeContext = useContext(ThemeContext);
 	const cardContentContainer = {
 		width: "100%",
-		height: "100%",
+		height: "140px",
 		padding: "10px 20px",
 		display: "flex",
 		flexDirection: "column",
 		justifyContent: "space-around",
 		alignItems: "start",
+		boxSizing: 'border-box',
 	};
 
 	useEffect(() => {
@@ -36,15 +38,9 @@ const CampsiteCard = ({ campsite }) => {
 
 	return (
 		<CampsiteCardContainer>
-			<div
-				style={{
-					maxHeight: "65%",
-					minHeight: "65%",
-					width: "100%",
-				}}
-			>
-				<Image image={image} />
-			</div>
+			<CampsiteCardImageContainer>
+				<Image image={image} styles={{height: '260px'}}/>
+			</CampsiteCardImageContainer>
 
 			<CampsiteCardHeart icon={faHeart} />
 

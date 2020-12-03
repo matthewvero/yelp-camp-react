@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import firebase from "firebase/app";
 import { db, storage, auth } from "./firebase";
 import store from "./redux/store";
 import { destroySession } from "./redux/auth-redux/auth.actions";

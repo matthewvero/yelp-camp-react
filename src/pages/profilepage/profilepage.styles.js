@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { ContentContainer, ResponsivePageContainer } from "../../components/misc/containers.styles";
 
 export const ProfilePictureResponsiveContainer = styled.div`
@@ -19,6 +19,7 @@ export const ProfilePictureResponsiveContainer = styled.div`
 
 export const CoverPictureResponsiveContainer = styled(ResponsivePageContainer)`
       height: 300px;
+      min-height: 300px;
       margin-top: 10px;
       position: relative;
       @media (max-width: ${props => props.theme.smallBreakPoint}) {

@@ -1,19 +1,31 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { ContentContainer } from "../misc/containers.styles";
 
 export const CampsiteCardContainer = styled(ContentContainer)`
 	min-height: 400px;
 	max-height: 400px;
-	flex-basis: 32%;
+	flex-basis: 32.5%;
 	justify-content: space-between;
 	align-items: start;
 	overflow: hidden;
 	position: relative;
+	margin-bottom: 10px;
 	transition: all 25ms linear;
 	cursor: pointer;
 	&:hover {
 		transform: translateY(-5px);
+	}
+	@media (max-width: 1200px){
+		flex-basis: 49%;
+		
+	}
+
+	@media (max-width: ${props => props.theme.smallBreakPoint}){
+		flex-basis: 100%;
+		&:hover {
+		transform: translateY(0px);
+	}
 	}
 `;
 
@@ -39,4 +51,11 @@ export const CampsiteCardHeart = styled(FontAwesomeIcon)`
 		color: rgb(255, 100, 100);
 		transform: scale(1.4);
 	}
+`;
+
+export const CampsiteCardImageContainer = styled.div`
+  max-height: 65%;
+  min-height: 65%;
+  width: 100%;
+
 `;

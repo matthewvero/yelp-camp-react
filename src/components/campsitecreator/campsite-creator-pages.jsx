@@ -226,7 +226,7 @@ export const CCReview = () => {
 
 					<CCButtonContainer>
 						<CCButton
-							fn={handleBack}
+							onClick={() => handleBack()}
 						>
 							<FontAwesomeIcon
 								style={{ color: "red" }}
@@ -235,7 +235,7 @@ export const CCReview = () => {
 							Go back
 						</CCButton>
 						<CCButton
-							fn={handleSubmit}
+							onClick={() => handleSubmit()}
 						>
 							Create{" "}
 							<FontAwesomeIcon
