@@ -10,7 +10,7 @@ const About = ({profileInfo, editable}) => {
       const themeContext = useContext(ThemeContext);
       const [collapsed, setCollapsed] = useState(window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`).matches);
       useEffect(() => {
-            const windowSize = window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`);
+            const windowSize = window.matchMedia(`(max-width: ${themeContext.mediumBreakPoint})`);
             const handleChange = e => {
                   if(e.matches) {
                         setCollapsed(true);
@@ -38,8 +38,8 @@ const About = ({profileInfo, editable}) => {
             >
                   
                   <CollapsibleContainerTitleBar onClick={() => setCollapsed(collapsed => !collapsed)}>
-                        <SubTitle style={{ marginRight: '20px', fontSize: '1.5rem', fontWeight: '600' }}>About</SubTitle> 
-                        <CollapsibleContainerIcon icon={faChevronDown} collapsed={collapsed} />
+                        <SubTitle>About</SubTitle> 
+                        <CollapsibleContainerIcon icon={faChevronDown} collapsed={collapsed ? 1 : 0}  />
                   </CollapsibleContainerTitleBar>
 
                   <div

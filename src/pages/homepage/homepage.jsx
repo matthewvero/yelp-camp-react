@@ -55,9 +55,7 @@ const Homepage = () => {
 					marginTop: "10px",
 				}}
 			>
-				<HomepageHeadingContainer
-					
-				>
+				<HomepageHeadingContainer>
 					<Title
 						style={{
 							fontSize: "2.5rem",

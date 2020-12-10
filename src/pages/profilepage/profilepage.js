@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-	ContentContainer,
 	ResponsiveContentContainer,
 	ResponsivePageContainer,
 } from "../../components/misc/containers.styles";
@@ -14,9 +13,10 @@ import { getUserCampsites } from "../../firebase.utils";
 import { withRouter } from "react-router";
 import About from '../../components/about/about.component'
 import { Title } from "../../components/misc/text.styles";
-import { CoverPictureResponsiveContainer, ProfilePictureResponsiveContainer } from "./profilepage.styles";
+import { CoverPictureResponsiveContainer, ProfilePictureResponsiveContainer, UserNameBar } from "./profilepage.styles";
 import { db } from "../../firebase";
 const ProfilePage = ({match}) => {
+	
 	const user = useSelector((state) => state.authReducer.user);
 	const userProfile = useSelector((state) => state.authReducer.userProfile);
 	const [camps, setCamps] = useState();
@@ -57,16 +57,11 @@ const ProfilePage = ({match}) => {
 			</CoverPictureResponsiveContainer>
 
 			<ResponsivePageContainer>
-				<ContentContainer
-					style={{
-						minHeight: "100px",
-						position: "relative",
-					}}
-				>
+				<UserNameBar>
 					<Title >
 						{profileInfo.displayName}
 					</Title>
-				</ContentContainer>
+				</UserNameBar>
 			</ResponsivePageContainer>
 
 			<ResponsivePageContainer
@@ -97,7 +92,8 @@ const ProfilePage = ({match}) => {
 							alignItems: "center",
 							justifyContent: "space-between",
 							width: "100%",
-							overflow: "scroll",
+							overflowY: "scroll",
+							overflowX: 'visible'
 						}}
 					>
 						{

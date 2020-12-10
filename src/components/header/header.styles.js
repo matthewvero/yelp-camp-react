@@ -2,7 +2,7 @@ import styled from "styled-components/macro";
 
 export const HeaderContainer = styled.div`
 	position: fixed;
-	z-index: 100;
+	z-index: 50;
 	left: 0px;
 	top: 0px;
 	height: 65px;
@@ -12,6 +12,11 @@ export const HeaderContainer = styled.div`
 	background-color: ${(props) => props.theme.main};
 	box-shadow: ${(props) => props.theme.boxShadowBottom};
 	border-bottom: ${(props) => props.theme.border};
+	padding-right: 5vw;
+	box-sizing: border-box;
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		padding-right: 10px;
+	}
 `;
 
 export const HeaderLogo = styled.div`
@@ -56,18 +61,14 @@ export const HeaderButton = styled.div`
 	&:active {
 		background-color: ${(props) => props.theme.backgroundActive};
 	}
-	&.headerbutton-enter {
-		opacity: 0;
-	}
-	&.headerbutton-enter-active {
-		transition: 100ms opacity 50ms;
-		opacity: 1;
-	}
-	&.headerbutton-exit {
-		opacity: 1;
-	}
-	&.headerbutton-exit-active {
-		transition: 100ms opacity 50ms;
-		opacity: 0;
-	}
+`;
+
+export const CircleButtonContainer = styled(HeaderButton)`
+	height: 50px;
+	width: 50px;
+	min-width: 50px;
+	padding: 0;
+	justify-content: space-around;
+	font-size: 1.7em;
+	color: ${(props) => props.theme.color};
 `;

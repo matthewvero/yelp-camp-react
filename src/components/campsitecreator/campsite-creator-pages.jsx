@@ -25,7 +25,7 @@ import InputImage from "../inputs/input-image/input-image.component";
 import { SubTitle, Text } from "../misc/text.styles";
 
 export const CCStart = () => {
-	// Access the cC hooks and state
+	// Access the CC hooks and state
 	const api = useContext(CreatorAPI);
 	const themeContext = useContext(ThemeContext);
 	return (
@@ -34,7 +34,7 @@ export const CCStart = () => {
 		>
 			<CCHoverEffect>
 				<StartPageTitle>
-					Create New Campsite
+					<SubTitle>Create New Campsite</SubTitle>
 					<FontAwesomeIcon
 						style={{ color: themeContext.color }}
 						icon={faPlus}

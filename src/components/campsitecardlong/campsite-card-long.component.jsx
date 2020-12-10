@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "styled-components";
 import { storage } from "../../firebase";
 import Image from "../image/image.component";
-import { ContentContainer } from "../misc/containers.styles";
 import { SubTitle, Text } from "../misc/text.styles";
+import { CampsiteCardLongContainer, CampsiteCardLongTextContainer, CampsiteCardLongPriceContainer } from "./campsite-card-long.styles";
 
 const CampsiteCardLong = ({ campsite }) => {
 	const themeContext = useContext(ThemeContext);
@@ -15,27 +15,14 @@ const CampsiteCardLong = ({ campsite }) => {
 			const listRef = await storageRef
 				.child(`/images/${campsite.id}`)
 				.listAll();
+			listRef.items.length &&
 			setImage(await listRef.items[0].getDownloadURL());
 		};
 		getImage();
 	}, [campsite.id]);
 
 	return (
-		<ContentContainer
-			style={{ width: "100%", height: "200px", margin: "5px" }}
-		>
-			<div
-				style={{
-					height: "100%",
-					width: "100%",
-					padding: "10px",
-					boxSizing: "border-box",
-					display: "grid",
-					gridTemplateColumns: "minmax(213px, 25%) auto minmax(120px, 20%)",
-					gridTemplateRows: "30% auto",
-					gap: "1rem",
-				}}
-			>
+			<CampsiteCardLongContainer>
 				<div
 					style={{
 						gridRow: "1 / 3",
@@ -47,43 +34,33 @@ const CampsiteCardLong = ({ campsite }) => {
 					<Image image={image} />
 				</div>
 
-				<SubTitle
-					style={{
-						gridColumn: "2/3",
-						textAlign: "left",
-						margin: 'auto 0'
-					}}
-				>
+				<CampsiteCardLongTextContainer>
+				<SubTitle style={{textAlign: 'left'}}>
 					{campsite.title}
 				</SubTitle>
-
-				<div
+				
+				
+				<Text
 					style={{
-						gridColumn: "2/3",
-						gridRow: "2/3",
-						overflow: "scroll",
+						textAlign: "left",
 					}}
-				>
-					<Text
-						style={{
-							textAlign: "left",
-						}}
 					>
-						{campsite.description}
-					</Text>
-				</div>
+					{campsite.description}
+				</Text>
+				</CampsiteCardLongTextContainer>
+				
 
-				<SubTitle
-					style={{
-						color: themeContext.color,
-						alignSelf: "start",
-						margin: 'auto 0'
-					}}
-				>
-					£{campsite.price} /Night
-				</SubTitle>
-			</div>
-		</ContentContainer>
+				<CampsiteCardLongPriceContainer>
+					<SubTitle
+						style={{
+							color: themeContext.color,
+							alignSelf: "start",
+						}}
+						>
+						£{campsite.price} /Night
+					</SubTitle>
+				</CampsiteCardLongPriceContainer>
+			</CampsiteCardLongContainer>
 	);
 };
 

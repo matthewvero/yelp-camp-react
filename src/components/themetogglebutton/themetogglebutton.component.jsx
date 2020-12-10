@@ -1,7 +1,7 @@
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { ThemeToggleButtonContainer } from "./themetogglebutton.styles";
+import { CircleButtonContainer } from "../header/header.styles";
 
 const ThemeToggleButton = () => {
 	// Get dark mode from local storage and convert to boolean
@@ -34,9 +34,9 @@ const ThemeToggleButton = () => {
 	}, []);
 
 	return (
-		<ThemeToggleButtonContainer onClick={toggleDarkMode}>
+		<CircleButtonContainer onClick={toggleDarkMode}>
 			<FontAwesomeIcon icon={darkMode ? faMoon : faSun} />
-		</ThemeToggleButtonContainer>
+		</CircleButtonContainer>
 	);
 };
 

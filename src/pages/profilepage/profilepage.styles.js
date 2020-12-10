@@ -8,12 +8,14 @@ export const ProfilePictureResponsiveContainer = styled.div`
       left: 5%;
       bottom: -30%;
       z-index: 1;
+      border: solid 5px ${props => props.theme.main};
+      border-radius: 50%;
       @media (max-width: ${props => props.theme.mediumBreakPoint}) {
             height: 150px;
             width: 150px;
             left: 50%;
             transform: translateX(-50%);
-            bottom: -10%;
+            bottom: 0%;
       }
 `
 
@@ -26,3 +28,11 @@ export const CoverPictureResponsiveContainer = styled(ResponsivePageContainer)`
             height: 200px;
       }
 `
+
+export const UserNameBar = styled(ContentContainer)`
+      min-height: 100px;
+	position: relative;
+      @media (max-width: ${props => props.theme.smallBreakPoint}) {
+            min-height: 50px;
+	}
+`;

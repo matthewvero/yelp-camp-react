@@ -27,38 +27,45 @@ export const addCampsite = async ({ campsite, image }) => {
 	if (user.uid) {
 		// Add created date
 		const timestamp = firebase.firestore.FieldValue.serverTimestamp;
-		const data = {
-			...campsite,
-			createdAt: timestamp(),
-		};
 
 		// Create reference for new camp to get random ID
 		const newCampsite = db.collection("campsites").doc();
 		const newCampsiteRef = await newCampsite.get();
 
 		// Upload image to folder under campsite ID
-		const imageRef = storageRef.child(
-			`images/${newCampsiteRef.id}/${image.size}`
-		);
-
-		const uploadTask = imageRef.put(image);
+		const {uploadTask, imageRef} = addCampsiteImage(newCampsiteRef, image);
 
 		// On completion of image upload write data to firestore
-		uploadTask.on("state_change", undefined, undefined, () => {
+		uploadTask.on("state_change", undefined, undefined, async () => {
 			db.collection("campsites")
 				.doc(newCampsiteRef.id)
 				.set({
-					...data,
-					// Insert ID inside new doc so that it can be searched later.
+					...campsite,
+					createdAt: timestamp(),
+					likedBy: [],
+					// Insert ID inside new doc so that it can be used later.
 					id: newCampsiteRef.id,
-				});
+				})
+				.catch(() => {
+					// Remove image if document write fails
+					imageRef.delete();
+					alert('Something went wrong');
+				})
 		});
-
 		// Return uploadTask so that progress can be tracked
 		return { uploadTask };
 	} else {
 		alert("You need to be logged in to do that.");
 	}
+};
+
+function addCampsiteImage(newCampsiteRef, image) {
+	const imageRef = storageRef.child(
+		`images/${newCampsiteRef.id}/${image.size}`
+	);
+
+	const uploadTask = imageRef.put(image);
+	return {uploadTask, imageRef};
 };
 
 export const updateCampsite = async (campsite, key, value) => {
@@ -69,6 +76,26 @@ export const updateCampsite = async (campsite, key, value) => {
 		return res;
 	}
 };
+
+export const likeCampsite = async (campsiteID, userID, liked) => {
+	if (userID){
+		const campsiteRef = db.collection('campsites').doc(campsiteID);
+		liked ?
+
+			campsiteRef.update({
+				likedBy: firebase.firestore.FieldValue.arrayRemove(userID)
+			}).catch(err => alert('Something Went Wrong'))
+		: 
+			campsiteRef.update({
+				likedBy: firebase.firestore.FieldValue.arrayUnion(userID)
+			}).catch(err => alert('Something Went Wrong'))
+			
+	} else {
+		alert('You need to be signed in to do that')
+	}
+}
+
+
 
 // USER UTILITIES
 

@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled from "styled-components/macro";
+import styled, { withTheme } from "styled-components/macro";
 import { ContentContainer } from "../misc/containers.styles";
 
 export const CampsiteCardContainer = styled(ContentContainer)`
@@ -36,16 +36,19 @@ export const CampsiteCardHeart = styled(FontAwesomeIcon)`
 		width: 10px;
 		background-color: white;
 	}
-	color: white;
+	color: ${props => props.liked ? 'rgb(255, 100, 100)' : 'white'};
 	position: absolute;
 	top: 10px;
 	right: 10px;
-	font-size: 1.5rem;
+	font-size: 2rem;
 	transition: all 0.3s;
 	cursor: pointer;
-	&:hover {
-		transform: scale(1.2);
-		color: pink;
+	@media (max-width: ${props => props.theme.smallBreakPoint}){
+		&:hover {
+			transform: scale(1.2);
+			color: pink;
+		}
+
 	}
 	&:active {
 		color: rgb(255, 100, 100);

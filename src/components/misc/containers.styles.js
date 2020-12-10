@@ -73,14 +73,18 @@ export const DropDownMenuPage = styled.div`
 // LAYOUT CONTAINERS
 export const ResponsivePageContainer = styled.div`
 	height: auto;
-	min-height: 100px;
+	min-height: 50px;
 	width: 80vw;
 	margin: 5px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	@media (max-width: ${props => props.theme.largeBreakPoint}) {
+	@media (max-width: ${props => props.theme.extraLargeBreakPoint}) {
+		width: 98vw;
+		
+	}
+	@media (max-width: ${props => props.theme.mediumBreakPoint}) {
 		width: 95vw;
 		
 	}
@@ -92,7 +96,7 @@ export const ResponsiveContentContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	@media (max-width: ${props => props.theme.mediumBreakPoint}) {
+	@media (max-width: ${props => props.theme.largeBreakPoint}) {
 		width: 100%;
 		margin: 5px 0;
 	}
@@ -109,7 +113,9 @@ export const ResponsiveContentContainer = styled.div`
 export const CollapsibleContainer = styled(ContentContainer)`
 	height: ${props => props.collapsed ? '100px' : 'auto'};
 	overflow: hidden;
-	transition: all 100ms linear;
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		height: ${props => props.collapsed ? '50px' : 'auto'};
+	}
 `
 
 export const CollapsibleContainerTitleBar = styled.div`
@@ -127,11 +133,17 @@ export const CollapsibleContainerTitleBar = styled.div`
 	&:hover {
 		background-color: ${props => props.theme.backgroundHover}
 	}
-	
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+            min-height: 50px;
+	}
 `
 
 export const CollapsibleContainerIcon = styled(FontAwesomeIcon)`
 	transform: rotateZ(${props => props.collapsed ? '180deg' : '0deg'});
 	transition: transform 100ms linear;
 	color: ${props => props.theme.color};
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+            font-size: 1.6rem;
+	    }
+	font-size: 2rem;
 `

@@ -11,6 +11,10 @@ import { auth } from "./firebase";
 import { setUser, setUserProfile } from "./redux/auth-redux/auth.actions";
 import ProfilePage from "./pages/profilepage/profilepage";
 
+import MainMenu from "./components/mainmenu/main-menu.component";
+import { getUserImages } from "./firebase.utils";
+import { SignedIn } from "./events/auth-events";
+
 function App() {
 	const [darkMode, setDarkmode] = useState(
 		localStorage.getItem("darkMode") == "true" ? true : false
@@ -25,7 +29,7 @@ function App() {
 		};
 		window.addEventListener("darkModeChanged", localStorageUpdated);
 		return () => {
-			window.removeEventListener("darkModeChanged");
+			window.removeEventListener("darkModeChanged", localStorageUpdated);
 		};
 	}, []);
 
@@ -33,11 +37,19 @@ function App() {
 
 	useEffect(() => {
 		auth.onAuthStateChanged(function (user) {
+
 			if (user) {
+				const getImages = async () => {
+					const profileImageURLs = await getUserImages("profileImages", user.uid);
+					const coverImageURLs = await getUserImages("coverImages", user.uid);
+					dispatch(setUserProfile({
+						displayName: user.displayName, 
+						profilePicture: profileImageURLs, 
+						coverImages: coverImageURLs
+					}))
+				};
+				getImages();
 				dispatch(setUser(user));
-				dispatch(setUserProfile({
-					displayName: user.displayName,
-				}))
 			}
 		});
 	}, [dispatch]);
@@ -46,6 +58,9 @@ function App() {
 		<div className="App">
 			<ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
 				<Header />
+				
+				<MainMenu/>
+				
 				<Switch>
 					<Route exact path="/" component={LandingPage} />
 					<Route exact path="/home" component={Homepage} />

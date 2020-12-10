@@ -7,22 +7,29 @@ import InputImage from "../inputs/input-image/input-image.component";
 import { UpdateImageButtonContainer } from "../inputs/input-text/inputs.styles";
 import {
 	NoProfileImage,
+	NoProfileImageIcon,
 	ProfilePictureContainer,
 } from "./profilepicture.styles";
 import { faCamera, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector } from "react-redux";
 
 const ProfilePicture = ({userID, editable}) => {
 	const themeContext = useContext(ThemeContext);
 	const [image, setImage] = useState([]);
-
+	const user = useSelector(state => state.authReducer.user);
+	const userProfile = useSelector(state => state.authReducer.userProfile)
 	useEffect(() => {
-		const getImages = async () => {
-			const URLs = await getUserImages("profileImages", userID);
-			setImage(URLs);
-		};
-		getImages();
-	}, [userID]);
+		if(userID === user.uid){
+			setImage(userProfile.profilePicture)
+		} else {
+			const getImages = async () => {
+				const URLs = await getUserImages("profileImages", userID);
+				setImage(URLs[0]);
+			};
+			getImages();
+		}
+	}, [user.uid, userID, userProfile.profilePicture]);
 
 	const updateProfileImage = async (image) => {
 		const uploadTask = addProfileImage(image, "profileImages");
@@ -49,12 +56,7 @@ const ProfilePicture = ({userID, editable}) => {
 				<Image image={image} />
 			) : (
 				<NoProfileImage>
-					<FontAwesomeIcon
-						style={{
-							position: "absolute",
-							fontSize: "7rem",
-							color: themeContext.main,
-						}}
+					<NoProfileImageIcon
 						icon={faUser}
 					/>
 				</NoProfileImage>

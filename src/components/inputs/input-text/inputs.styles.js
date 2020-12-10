@@ -11,6 +11,12 @@ export const FormInputText = styled.input`
 	outline: none;
 `;
 
+export const FormInputLabel = styled.label`
+	margin: 1%;
+	font-size: 1rem;
+	color: ${props => props.theme.textAlt};
+`;
+
 export const FormInputButton = styled.button`
 	padding: 0 20px;
 	border: none;

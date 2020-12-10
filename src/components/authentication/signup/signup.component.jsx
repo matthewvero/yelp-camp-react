@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter, matchPath } from "react-router-dom";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
@@ -56,64 +56,67 @@ const Signup = ({ location, history }) => {
 				</DropDownMenuPage>
 			</CSSTransition>
 
-			<CSSTransition
-				in={menuVisible && curMenu === "welcome"}
-				classNames="menu"
-				timeout={1000}
-				unmountOnExit
-				onEntering={(e) => setHeight(e.clientHeight)}
-			>
-				<DropDownMenuPage style>
-					<SubTitle>Welcome To YelpCamp</SubTitle>
-					<div
-						style={{
-							width: "100px",
-							height: "100px",
-							margin: "20px",
-							display: "flex",
-							justifyContent: "center",
-							alignItems: "center",
-							backgroundColor:
-								themeContext.background,
-							borderRadius: "50%",
-							overflow: "hidden",
-						}}
-					>
-						{image && image.length ? (
-							<Image image={image} />
-						) : (
-							<FontAwesomeIcon
-								icon={faUser}
-								style={{ fontSize: "3rem" }}
-							/>
-						)}
-					</div>
-					{user.displayName}
-					{location.pathname !== "/profile" && (
-						<Link
-							style={{
-								color: themeContext.color,
-								textDecoration: "none",
-								margin: "10px 0",
-							}}
-							to={`/profile/${user.uid}`}
-						>
-							View Your Profile
-						</Link>
-					)}
-					<Button
-						styles={{
-							padding: "5px 20px",
-							margin: "10px",
-						}}
-						fn={() => logOut(history)}
-					>
-						Log Out
-					</Button>
-				</DropDownMenuPage>
-			</CSSTransition>
+			
 		</DropdownContainer>
 	);
 };
 
 export default withRouter(Signup);
+
+
+// <CSSTransition
+// 				in={menuVisible && curMenu === "welcome"}
+// 				classNames="menu"
+// 				timeout={1000}
+// 				unmountOnExit
+// 				onEntering={(e) => setHeight(e.clientHeight)}
+// 			>
+// 				<DropDownMenuPage style>
+// 					<SubTitle>Welcome To YelpCamp</SubTitle>
+// 					<div
+// 						style={{
+// 							width: "100px",
+// 							height: "100px",
+// 							margin: "20px",
+// 							display: "flex",
+// 							justifyContent: "center",
+// 							alignItems: "center",
+// 							backgroundColor:
+// 								themeContext.background,
+// 							borderRadius: "50%",
+// 							overflow: "hidden",
+// 						}}
+// 					>
+// 						{image && image.length ? (
+// 							<Image image={image} />
+// 						) : (
+// 							<FontAwesomeIcon
+// 								icon={faUser}
+// 								style={{ fontSize: "3rem" }}
+// 							/>
+// 						)}
+// 					</div>
+// 					{user.displayName}
+// 					{location.pathname !== `/profile/${user.uid}` && (
+// 						<Link
+// 							style={{
+// 								color: themeContext.color,
+// 								textDecoration: "none",
+// 								margin: "10px 0",
+// 							}}
+// 							to={`/profile/${user.uid}`}
+// 						>
+// 							View Your Profile
+// 						</Link>
+// 					)}
+// 					<Button
+// 						styles={{
+// 							padding: "5px 20px",
+// 							margin: "10px",
+// 						}}
+// 						fn={() => logOut(history)}
+// 					>
+// 						Log Out
+// 					</Button>
+// 				</DropDownMenuPage>
+// 			</CSSTransition>

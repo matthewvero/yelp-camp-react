@@ -6,7 +6,8 @@ const theme = {
 	colorActive: "#1e7dff",
 	borderRadius: "10px",
 	btnColor: "white",
-	largeBreakPoint: '1400px',
+	extraLargeBreakPoint: '1400px',
+	largeBreakPoint: '1100px',
 	mediumBreakPoint: '900px',
 	smallBreakPoint: '700px'
 

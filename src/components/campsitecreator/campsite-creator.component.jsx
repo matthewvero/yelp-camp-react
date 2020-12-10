@@ -50,6 +50,7 @@ const CampsiteCreator = () => {
 			owner: user.uid,
 		};
 		const res = await addCampsite({ campsite: campsite, image: image });
+		
 		res.uploadTask.on(
 			"state_changed",
 			(snapshot) => {
@@ -93,7 +94,7 @@ const CampsiteCreator = () => {
 		<CCContainer
 			style={{
 				width: "100%",
-				marginBottom: "5px",
+				marginBottom: "10px",
 			}}
 			activePage={activePage}
 		>

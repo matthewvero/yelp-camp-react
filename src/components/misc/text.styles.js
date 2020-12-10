@@ -5,7 +5,9 @@ export const Title = styled.h1`
   font-weight: 600;
   color: ${props => props.theme.textAlt};
   margin: 0;
-
+  @media (max-width: ${props => props.theme.smallBreakPoint}) {
+            font-size: 1.3rem;
+	    }
 `;
 
 export const SubTitle = styled.h2`
@@ -13,6 +15,9 @@ export const SubTitle = styled.h2`
       font-weight: 600;
       color: ${props => props.theme.textAlt};
       margin: 0;
+      @media (max-width: ${props => props.theme.smallBreakPoint}) {
+            font-size: 1.1rem;
+	    }
 `;
 
 export const SectionTitle = styled.h3`
@@ -20,6 +25,9 @@ export const SectionTitle = styled.h3`
       font-weight: 600;
       color: ${props => props.theme.textAlt};
       margin: 0;
+      @media (max-width: ${props => props.theme.smallBreakPoint}) {
+            font-size: 0.9rem;
+	    }
 `
 
 export const ButtonText = styled.span`
@@ -27,6 +35,9 @@ export const ButtonText = styled.span`
   font-weight: 400;
   color: ${props => props.theme.textAlt};
   margin: 0;
+  @media (max-width: ${props => props.theme.smallBreakPoint}) {
+            font-size: 1rem;
+	    }
 `;
 
 export const Text = styled.p`
@@ -34,4 +45,7 @@ export const Text = styled.p`
   font-weight: 400;
   color: ${props => props.theme.textAlt};
   margin: 0;
+  @media (max-width: ${props => props.theme.smallBreakPoint}) {
+            font-size: 0.9rem;
+	    }
 `;

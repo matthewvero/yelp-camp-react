@@ -8,10 +8,12 @@ export const CCContainer = styled(ContentContainer)`
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
 		height:  ${props => {
 		switch(props.activePage) {
-			case 'create' || 'review': 
-				return '400px';
+			case 'create': 
+				return '150px';
+			case 'review': 
+				return '150px';
 			default: 
-				return '100px';
+				return '50px';
 		} 
 	}};
 	}
@@ -53,10 +55,14 @@ export const CCGrid = styled.div`
 	grid-template-rows: 30% auto;
 	gap: 1rem;
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
-		grid-template-rows: 15% 60% auto;
-		grid-template-columns: 48% 48%;
-		gap: 4%;
+		grid-template-columns: 150px 45% auto;
+            grid-template-rows: 30% auto;
+            padding: 5px;
+            gap: 0.5rem;
+            min-height: 150px;
+            max-height: 150px;            
 	}
+
 `;
 
 export const CCInput = styled.input`
@@ -70,6 +76,9 @@ export const CCInput = styled.input`
 	font-size: 1.3rem;
 	color: ${(props) => props.theme.textAlt};
 	box-sizing: border-box;
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		font-size: 1rem;
+	}
 `;
 
 export const CCTextArea = styled.textarea`
@@ -85,7 +94,7 @@ export const CCTextArea = styled.textarea`
 	font-size: 1.3rem;
 	box-sizing: border-box;
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
-		grid-row: 2/3;
+		font-size: 1rem;
 	}
 `;
 export const CCImageInput = styled.label`
@@ -109,18 +118,13 @@ export const CCImageInput = styled.label`
 		transform: scale(0.95);
 		background-color: ${(props) => props.theme.backgroundActive};
 	}
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
-		grid-row: 2/3;
-	}
 `;
 
 export const CCImageContainer = styled.div`
 	grid-row: 1 / 3;
 	border-radius: 10px;
 	overflow: hidden;
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
-		grid-row: 2/3;
-	}
+	
 `;
 
 export const CCButtonContainer = styled.div`
@@ -128,24 +132,18 @@ export const CCButtonContainer = styled.div`
 	grid-row: "2/3";
 	display: flex;
 	flex-direction: column;
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
-		grid-row: 3/4;
-		grid-column: 1/3;
-		flex-direction: row;
-		justify-content: space-between;
-	}
+	justify-content: space-between;
 
 `;
 
 export const CCButton = styled(ButtonContainer)`
   	width: 100%;
 	height: 45%;
-	margin-bottom: 5%;
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
-		width: 40%;
-		height: 100%;
-
-}
+		width: 100%;
+		height: 45%;
+		font-size: 1rem;
+	}
 `;
 
 export const CCHoverEffect = styled.div`
@@ -171,5 +169,7 @@ export const StartPageTitle = styled.span`
 	@media (max-width: ${props => props.theme.smallBreakPoint}){
 		width: 95%;
 		font-size: 1.6rem;
+		justify-content: space-between;
+		padding: 0 20px;
 	}
 `;

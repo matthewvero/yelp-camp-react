@@ -1,10 +1,7 @@
-import {
-	faCamera,
-	faChevronLeft,
-	faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { ThemeContext } from "styled-components";
 import { addProfileImage, getUserImages } from "../../firebase.utils.js";
 import Image from "../image/image.component.jsx";
@@ -12,53 +9,35 @@ import InputImage from "../inputs/input-image/input-image.component";
 import { UpdateImageButtonContainer } from "../inputs/input-text/inputs.styles";
 import {
 	CoverPictureContainer,
-
 	NoCoverPicture,
-
 } from "./coverpicture.styles";
 
 const CoverPicture = ({userID, editable}) => {
+	const userProfile = useSelector(state => state.authReducer.userProfile);
+	const user = useSelector(state => state.authReducer.user);
 	const themeContext = useContext(ThemeContext);
 	const [images, setImages] = useState([]);
-	const [currentImage, setCurrentImage] = useState(0);
 
 	const updateCoverImage = async (image) => {
 		const uploadTask = addProfileImage(image, "coverImages");
 		uploadTask.then(async () => {
 			const URLs = await getUserImages("coverImages", userID);
 			setImages(URLs);
-			setCurrentImage(0);
 		});
 	};
 
-	const handleClick = (direction) => {
-		// Cycle through available images
-		if (direction === "next") {
-			setCurrentImage((currentImage) => {
-				let num;
-				currentImage + 1 < images.length
-					? (num = currentImage + 1)
-					: (num = 0);
-				return num;
-			});
-		} else {
-			setCurrentImage((currentImage) => {
-				let num;
-				currentImage - 1 < 0
-					? (num = images.length - 1)
-					: (num = currentImage - 1);
-				return num;
-			});
-		}
-	};
-
 	useEffect(() => {
-		const getImages = async () => {
-			const URLs = await getUserImages("coverImages", userID);
-			setImages(URLs);
-		};
-		getImages();
-	}, [userID]);
+		if(userID === user.uid){
+			setImages(userProfile.coverImages)
+		} else {
+			const getImages = async () => {
+				const URLs = await getUserImages("coverImages", userID);
+				setImages(URLs);
+			};
+			getImages();
+		}
+	}, [user]);
+
 
 	return (
 		<CoverPictureContainer>
@@ -70,7 +49,9 @@ const CoverPicture = ({userID, editable}) => {
 
 			<InputImage setImageFn={updateCoverImage} id="coverImage" />
 
-			{images.length ? (
+			{
+				
+			images ? (
 
 				<Image image={images[0]} />
 

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { SignedIn } from "../../../events/auth-events";
 import { auth, db } from "../../../firebase";
 import { updateUserProfile } from "../../../firebase.utils";
 import { setUser } from "../../../redux/auth-redux/auth.actions";
 import {
 	FormInputButton,
+	FormInputLabel,
 	FormInputText,
 } from "../../inputs/input-text/inputs.styles";
 import { Title } from "../../misc/text.styles";
@@ -17,7 +19,7 @@ const SignupForm = () => {
 	const inputStyles = { height: "50px", width: "70%", margin: "2%" };
 	const formStyles = {
 		width: "100%",
-		height: "80%",
+		height: "auto",
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
@@ -29,16 +31,16 @@ const SignupForm = () => {
 		try {
 			const res = await auth.createUserWithEmailAndPassword(email, password)
 			await res.user
-				.updateProfile({
-					displayName: username,
-				});
+			.updateProfile({
+				displayName: username,
+			});
 			dispatch(
 				setUser({
 					...res,
 					displayName: username,
 				})
 			);
-			
+			dispatchEvent(SignedIn);
 		} catch (error) {
 			return console.log(error);
 		}
@@ -49,10 +51,10 @@ const SignupForm = () => {
 			<Title style={{margin: '2%'}}>Sign Up</Title>
 
 			<form style={formStyles} onSubmit={(e) => handleSumbit(e)}>
-				<label style={{ margin: "1%" }} htmlFor="username">
+				<FormInputLabel htmlFor="username">
 					{" "}
 					Username{" "}
-				</label>
+				</FormInputLabel>
 
 				<FormInputText
 					style={inputStyles}
@@ -62,10 +64,10 @@ const SignupForm = () => {
 					onChange={(e) => setUsername(e.target.value)}
 				/>
 
-				<label style={{ margin: "1%" }} htmlFor="email">
+				<FormInputLabel htmlFor="email">
 					{" "}
 					Email{" "}
-				</label>
+				</FormInputLabel>
 
 				<FormInputText
 					style={inputStyles}
@@ -75,10 +77,10 @@ const SignupForm = () => {
 					onChange={(e) => setEmail(e.target.value)}
 				/>
 
-				<label style={{ margin: "1%" }} htmlFor="password">
+				<FormInputLabel  htmlFor="password">
 					{" "}
 					Password{" "}
-				</label>
+				</FormInputLabel>
 
 				<FormInputText
 					type="password"
