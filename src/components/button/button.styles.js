@@ -13,6 +13,7 @@ export const ButtonContainer = styled.button`
 	user-select: none;
 	outline: none;
 	cursor: pointer;
+	
 	&:hover {
 		background-color: ${(props) => props.theme.backgroundHover};
 	}

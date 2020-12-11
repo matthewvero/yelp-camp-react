@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { SignedIn } from "../../../events/auth-events";
-import { auth, db } from "../../../firebase";
-import { updateUserProfile } from "../../../firebase.utils";
+import { SignedUp } from "../../../events/auth-events";
+import { auth } from "../../../firebase";
 import { setUser } from "../../../redux/auth-redux/auth.actions";
 import {
 	FormInputButton,
 	FormInputLabel,
 	FormInputText,
 } from "../../inputs/input-text/inputs.styles";
-import { Title } from "../../misc/text.styles";
+import { ButtonText, Title } from "../../misc/text.styles";
 
 const SignupForm = () => {
 	const [username, setUsername] = useState("");
@@ -40,7 +39,7 @@ const SignupForm = () => {
 					displayName: username,
 				})
 			);
-			dispatchEvent(SignedIn);
+			dispatchEvent(SignedUp);
 		} catch (error) {
 			return console.log(error);
 		}
@@ -91,7 +90,7 @@ const SignupForm = () => {
 				/>
 
 				<FormInputButton style={inputStyles}>
-					Log In
+					<ButtonText>Sign Up</ButtonText>
 				</FormInputButton>
 			</form>
 		</React.Fragment>

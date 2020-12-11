@@ -1,6 +1,5 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import { ThemeContext } from "styled-components";
 import { addProfileImage, getUserImages } from "../../firebase.utils";
 import Image from "../image/image.component";
 import InputImage from "../inputs/input-image/input-image.component";
@@ -15,7 +14,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 
 const ProfilePicture = ({userID, editable}) => {
-	const themeContext = useContext(ThemeContext);
 	const [image, setImage] = useState([]);
 	const user = useSelector(state => state.authReducer.user);
 	const userProfile = useSelector(state => state.authReducer.userProfile)

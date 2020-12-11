@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled, { withTheme } from "styled-components/macro";
+import styled from "styled-components/macro";
 import { ContentContainer } from "../misc/containers.styles";
 
 export const CampsiteCardContainer = styled(ContentContainer)`

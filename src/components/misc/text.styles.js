@@ -37,7 +37,7 @@ export const ButtonText = styled.span`
   margin: 0;
   @media (max-width: ${props => props.theme.smallBreakPoint}) {
             font-size: 1rem;
-	    }
+	}
 `;
 
 export const Text = styled.p`

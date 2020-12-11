@@ -1,23 +1,25 @@
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faCog, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
-import Button from '../button/button.component'
 import { CircleButtonContainer, HeaderButton } from '../header/header.styles'
 import { SubTitle } from '../misc/text.styles'
 import ProfilePicture from '../profilepicture/profilepicture.component'
-import { MainMenuContainer, MainMenuItem, MMDivider, MainMenuProfilePicture, MMProfile, Page, MainMenuContentSection } from './main-menu.styles'
+import { MainMenuContainer, MainMenuItem, MMDivider, MainMenuProfilePicture, MMProfile, Page, MainMenuContentSection, MainMenuButtonContainer } from './main-menu.styles'
 import uiTypes from '../../redux/ui-redux/ui.types'
 import { setMenuVisibility } from '../../redux/ui-redux/ui.actions'
-import { FormInputText } from '../inputs/input-text/inputs.styles'
 import SignupForm from '../authentication/signupform/signupform.component'
 import LogInForm from '../authentication/loginform/login-form.component'
 import { auth } from '../../firebase'
 import { destroySession } from '../../redux/auth-redux/auth.actions'
-const MainMenu = () => {
+import { ThemeContext } from 'styled-components'
+import { withRouter } from 'react-router'
+import Button from '../button/button.component'
+const MainMenu = ({history}) => {
       const user = useSelector(state => state.authReducer.user)
       const menuVisible = useSelector(state => state.uiReducer[uiTypes.mainMenu]);
+      const themeContext = useContext(ThemeContext);
       const [activeMainMenuPage, setActiveMainMenuPage] = useState('default')
       const dispatch = useDispatch()
       const ref = useRef()
@@ -30,7 +32,12 @@ const MainMenu = () => {
             console.log('signout')
       }
 
-      const handleSignin = () => {
+      const goToProfile = () => {
+            history.push(`/profile/${user.uid}`);
+            dispatch(setMenuVisibility({menu: uiTypes.mainMenu, visible: false}))
+      }
+
+      const handleSignUp = () => {
             setActiveMainMenuPage('welcome')
       }
 
@@ -57,9 +64,9 @@ const MainMenu = () => {
       }, [dispatch, menuVisible]);
       
       useEffect(() => {
-            window.addEventListener('SignedIn', handleSignin)
+            window.addEventListener('SignedIn', handleSignUp)
             return () => {
-                  window.removeEventListener('SignedIn', handleSignin)
+                  window.removeEventListener('SignedIn', handleSignUp)
             }
       }, [])
 
@@ -81,16 +88,15 @@ const MainMenu = () => {
                               user.hasOwnProperty('displayName') ?
                                     <React.Fragment>
                                           <SubTitle>{user.displayName}</SubTitle>
-                                          <CircleButtonContainer><FontAwesomeIcon icon={faUser}/></CircleButtonContainer>
-                                          <Button 
-                                                styles={{margin: '10px', padding: '10px'}} 
-                                                fn={() => handleLogOut()}
+                                          <CircleButtonContainer 
+                                                style={{marginLeft: 'auto', marginRight: '30px'}}
+                                                onClick={() => goToProfile()}
                                           >
-                                                Log Out
-                                          </Button>
+                                                <FontAwesomeIcon icon={faUser}/>
+                                          </CircleButtonContainer>
                                     </React.Fragment>
                               :
-                                    <React.Fragment>
+                                    <MainMenuButtonContainer>
                                           <HeaderButton 
                                                 styles={{margin: '10px', padding: '10px'}}
                                                 onClick={() => handleMenuClick('login')}
@@ -103,7 +109,7 @@ const MainMenu = () => {
                                           >
                                                 Sign Up
                                           </HeaderButton>
-                                    </React.Fragment>
+                                    </MainMenuButtonContainer>
                         }
                               
                   </MMProfile>
@@ -117,7 +123,10 @@ const MainMenu = () => {
                               unmountOnExit
                         >
                               <Page>
-                              
+                                    <MainMenuItem onClick={() => setActiveMainMenuPage('settings')}>
+                                          <SubTitle>Settings</SubTitle>
+                                          <FontAwesomeIcon icon={faCog} style={{color: themeContext.textAlt, margin: '0 10px', fontSize: '1.3rem'}}/>
+                                    </MainMenuItem>
                               </Page>
                         </CSSTransition>
                         <CSSTransition
@@ -127,6 +136,9 @@ const MainMenu = () => {
                               unmountOnExit
                         >
                               <Page>
+                                    <MainMenuItem onClick={() => setActiveMainMenuPage('default')}>
+                                          <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
+                                    </MainMenuItem>
                                     <SignupForm/>
                               </Page>
                         </CSSTransition>
@@ -137,19 +149,38 @@ const MainMenu = () => {
                               unmountOnExit
                         >
                               <Page>
+                                    <MainMenuItem onClick={() => setActiveMainMenuPage('default')}>
+                                          <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
+                                    </MainMenuItem>
                                     <LogInForm/>
                               </Page>
                         </CSSTransition>
                         <CSSTransition
-                        in={activeMainMenuPage === 'welcome'}
-                        classNames='mainMenuPage'
-                        timeout={100}
-                        unmountOnExit
-                  >
-                        <Page>
-                              <h1>Welcome</h1>
-                        </Page>
-                  </CSSTransition>
+                              in={activeMainMenuPage === 'welcome'}
+                              classNames='mainMenuPage'
+                              timeout={100}
+                              unmountOnExit
+                        >
+                              <Page>
+                                    <h1>Welcome</h1>
+                              </Page>
+                        </CSSTransition>
+                        <CSSTransition
+                              in={activeMainMenuPage === 'settings'}
+                              classNames='mainMenuPage'
+                              timeout={100}
+                              unmountOnExit
+                        >
+                              <Page>
+                                    <MainMenuItem onClick={() => setActiveMainMenuPage('default')}>
+                                          <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
+                                    </MainMenuItem>
+                                    <SubTitle>Settings</SubTitle>
+                                    <MainMenuItem onClick={() => handleLogOut()}>
+                                          Log Out
+                                    </MainMenuItem>
+                              </Page>
+                        </CSSTransition>
                   </MainMenuContentSection>
             </MainMenuContainer>
             
@@ -157,4 +188,4 @@ const MainMenu = () => {
       )
 }
 
-export default MainMenu
+export default withRouter(MainMenu);

@@ -9,7 +9,7 @@ export const CCContainer = styled(ContentContainer)`
 		height:  ${props => {
 		switch(props.activePage) {
 			case 'create': 
-				return '150px';
+				return '300px';
 			case 'review': 
 				return '150px';
 			default: 
@@ -55,12 +55,12 @@ export const CCGrid = styled.div`
 	grid-template-rows: 30% auto;
 	gap: 1rem;
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
-		grid-template-columns: 150px 45% auto;
-            grid-template-rows: 30% auto;
+		grid-template-columns: auto 50%;
+            grid-template-rows: 15% auto 50%;
             padding: 5px;
             gap: 0.5rem;
-            min-height: 150px;
-            max-height: 150px;            
+            min-height: 300px;
+            max-height: 300px;            
 	}
 
 `;
@@ -81,6 +81,19 @@ export const CCInput = styled.input`
 	}
 `;
 
+export const CCPriceInput = styled(CCInput)`
+@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-row: 1/2;
+		grid-column: 2/3;
+	}
+`
+export const CCTitleInput = styled(CCInput)`
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-row: 1/2;
+		grid-column: 1/2;
+	}
+`
+
 export const CCTextArea = styled.textarea`
 	width: 100%;
 	border: none;
@@ -95,6 +108,8 @@ export const CCTextArea = styled.textarea`
 	box-sizing: border-box;
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
 		font-size: 1rem;
+		grid-row: 2/3;
+		grid-column: 1/3;
 	}
 `;
 export const CCImageInput = styled.label`
@@ -118,6 +133,9 @@ export const CCImageInput = styled.label`
 		transform: scale(0.95);
 		background-color: ${(props) => props.theme.backgroundActive};
 	}
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-row: 3/4;
+	}
 `;
 
 export const CCImageContainer = styled.div`
@@ -128,12 +146,13 @@ export const CCImageContainer = styled.div`
 `;
 
 export const CCButtonContainer = styled.div`
-	grid-column: "3/4";
-	grid-row: "2/3";
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-row: 3/4;
+		grid-column: 2/3;
+	}
 `;
 
 export const CCButton = styled(ButtonContainer)`

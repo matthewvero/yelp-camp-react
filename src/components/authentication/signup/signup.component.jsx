@@ -1,26 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, withRouter, matchPath } from "react-router-dom";
-import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, {  useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { CSSTransition } from "react-transition-group";
-import { ThemeContext } from "styled-components";
 import {
 	DropdownContainer,
 	DropDownMenuPage,
 } from "../../misc/containers.styles";
 import SignupForm from "../signupform/signupform.component";
-import Button from "../../button/button.component";
-import { getUserImages, logOut } from "../../../firebase.utils.js";
-import Image from "../../image/image.component";
-import { SubTitle } from "../../misc/text.styles";
 
-const Signup = ({ location, history }) => {
+const Signup = () => {
 	const [menuVisible, setMenuVisible] = useState(false);
 	const [curMenu, setCurMenu] = useState("signup");
 	const [height, setHeight] = useState(300);
-	const [image, setImage] = useState([]);
-	const themeContext = useContext(ThemeContext);
 	const user = useSelector((state) => state.authReducer.user);
 	useEffect(() => {
 		user.hasOwnProperty("displayName")
@@ -28,13 +19,7 @@ const Signup = ({ location, history }) => {
 			: setCurMenu("signup");
 	}, [user]);
 
-	useEffect(() => {
-		const getImages = async () => {
-			const URLs = await getUserImages("profileImages", user.uid);
-			setImage(URLs[0]);
-		};
-		getImages();
-	}, [user]);
+
 
 	return (
 		<DropdownContainer

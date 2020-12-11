@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "styled-components";
 import {
-	ContentContainer,
 	ResponsivePageContainer,
 } from "../../components/misc/containers.styles";
 import { PageContainer } from "../page.styles";
@@ -11,7 +10,7 @@ import { FormInputText } from "../../components/inputs/input-text/inputs.styles"
 import CampsiteCard from "../../components/campsitecard/campsite-card.component";
 import { db } from "../../firebase";
 import { HomepageHeadingContainer, SearchBarContainer } from "./homepage.styles";
-import { SubTitle, Text, Title } from "../../components/misc/text.styles";
+import { Text, Title } from "../../components/misc/text.styles";
 
 const formStyles = {
 	position: "relative",
@@ -19,9 +18,7 @@ const formStyles = {
 	display: "flex",
 	alignItems: "center",
 };
-const searchBarStyles = {
-	
-};
+
 
 const campsiteCardsContainerStyles = {
 	width: "100%",

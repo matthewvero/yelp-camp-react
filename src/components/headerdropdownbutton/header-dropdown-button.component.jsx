@@ -28,7 +28,7 @@ const HeaderDropDownButton = ({ children, title, location, contains }) => {
 			// Unbind the event listener on clean up
 			document.removeEventListener("click", handleClickOutside);
 		};
-	}, [menuState]);
+	}, [contains, dispatch, menuState]);
 
 	useEffect(() => {
 		setPrevLocation(location.pathname);

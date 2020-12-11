@@ -1,3 +1,4 @@
+// import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
@@ -36,7 +37,7 @@ const CoverPicture = ({userID, editable}) => {
 			};
 			getImages();
 		}
-	}, [user]);
+	}, [user, userID, userProfile.coverImages]);
 
 
 	return (

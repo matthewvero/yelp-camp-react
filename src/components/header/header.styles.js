@@ -61,6 +61,11 @@ export const HeaderButton = styled.div`
 	&:active {
 		background-color: ${(props) => props.theme.backgroundActive};
 	}
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		font-size: 1.1rem;
+		padding: 0px;
+		height: 30px;
+	}
 `;
 
 export const CircleButtonContainer = styled(HeaderButton)`

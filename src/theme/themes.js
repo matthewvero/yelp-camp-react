@@ -9,8 +9,9 @@ const theme = {
 	extraLargeBreakPoint: '1400px',
 	largeBreakPoint: '1100px',
 	mediumBreakPoint: '900px',
-	smallBreakPoint: '700px'
-
+	smallBreakPoint: '700px',
+	xSmallBreakPoint: '500px',
+	xxSmallBreakPoint: '400px'
 };
 
 export const lightTheme = {

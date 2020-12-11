@@ -32,13 +32,37 @@ export const MainMenuContainer = styled.div`
 	}
 `;
 
+export const MainMenuButtonContainer = styled.div`
+      width: auto;
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-around;
+      @media (max-width: 400px) {
+            flex-direction: column;
+            align-items: start;
+            justify-content: space-around;
+		
+	}
+`;
+
 export const MainMenuItem = styled.div`
-      width: 100%;
-      height: 100px;
+      width: 70%;
+      height: 50px;
+      border-radius: 10px;
       display: flex;
       flex-direction: row;
       justify-content: start;
       align-items: center;
+      padding: 0 10%;
+      cursor: pointer;
+      &:hover {
+            background-color: ${props => props.theme.backgroundHover};
+      }
+      &:active {
+            background-color: ${props => props.theme.backgroundActive}
+      }
 `;
 
 export const MMDivider = styled.hr`
@@ -49,8 +73,14 @@ export const MMDivider = styled.hr`
       border: none;
 `
 
-export const MMProfile = styled(MainMenuItem)`
+export const MMProfile = styled.div`
       height: 150px;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      align-items: center;
       @media (max-width: ${props => props.theme.smallBreakPoint}) {
 	      height: 125px;
 	}

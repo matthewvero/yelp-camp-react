@@ -59,7 +59,7 @@ const CampsiteCard = ({ campsite }) => {
 			setLiked(data.likedBy.includes(user.uid))
 		})
 		return () => unsub();
-	}, [])
+	}, [campsite.id, user.uid])
 
 	return (
 		<CampsiteCardContainer>

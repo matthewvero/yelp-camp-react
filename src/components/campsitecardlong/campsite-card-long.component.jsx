@@ -2,8 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "styled-components";
 import { storage } from "../../firebase";
 import Image from "../image/image.component";
-import { SubTitle, Text } from "../misc/text.styles";
-import { CampsiteCardLongContainer, CampsiteCardLongTextContainer, CampsiteCardLongPriceContainer } from "./campsite-card-long.styles";
+import { CampsiteCardLongContainer, CampsiteCardLongTextContainer, CampsiteCardLongPriceContainer, CampsiteCardLongTitle, CampsiteCardLongSubText } from "./campsite-card-long.styles";
 
 const CampsiteCardLong = ({ campsite }) => {
 	const themeContext = useContext(ThemeContext);
@@ -35,30 +34,30 @@ const CampsiteCardLong = ({ campsite }) => {
 				</div>
 
 				<CampsiteCardLongTextContainer>
-				<SubTitle style={{textAlign: 'left'}}>
+				<CampsiteCardLongTitle style={{textAlign: 'left'}}>
 					{campsite.title}
-				</SubTitle>
+				</CampsiteCardLongTitle>
 				
 				
-				<Text
+				<CampsiteCardLongSubText
 					style={{
 						textAlign: "left",
 					}}
 					>
 					{campsite.description}
-				</Text>
+				</CampsiteCardLongSubText>
 				</CampsiteCardLongTextContainer>
 				
 
 				<CampsiteCardLongPriceContainer>
-					<SubTitle
+					<CampsiteCardLongSubText
 						style={{
 							color: themeContext.color,
 							alignSelf: "start",
 						}}
 						>
 						£{campsite.price} /Night
-					</SubTitle>
+					</CampsiteCardLongSubText>
 				</CampsiteCardLongPriceContainer>
 			</CampsiteCardLongContainer>
 	);

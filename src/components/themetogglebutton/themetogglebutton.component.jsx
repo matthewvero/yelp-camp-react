@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { CircleButtonContainer } from "../header/header.styles";
 
-const ThemeToggleButton = () => {
+const ThemeToggleButton = (styles) => {
 	// Get dark mode from local storage and convert to boolean
 	const localDarkMode = localStorage.getItem("darkMode");
 	const [darkMode, setDarkmode] = useState(
@@ -34,7 +34,7 @@ const ThemeToggleButton = () => {
 	}, []);
 
 	return (
-		<CircleButtonContainer onClick={toggleDarkMode}>
+		<CircleButtonContainer style={styles} onClick={toggleDarkMode}>
 			<FontAwesomeIcon icon={darkMode ? faMoon : faSun} />
 		</CircleButtonContainer>
 	);

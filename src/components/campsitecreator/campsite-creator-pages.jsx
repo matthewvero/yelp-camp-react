@@ -15,8 +15,9 @@ import {
 	CCHoverEffect,
 	CCImageContainer,
 	CCImageInput,
-	CCInput,
+	CCTitleInput,
 	CCPage,
+	CCPriceInput,
 	CCTextArea,
 	StartPageTitle,
 } from "./campsite-creator.styles";
@@ -94,13 +95,13 @@ export const CCCreate = () => {
 					setPreviewImageFn={setPreviewImage}
 				/>
 
-				<CCInput
+				<CCTitleInput
 					placeholder="Title"
 					value={title}
 					onChange={(e) => setTitle(e.target.value)}
 				/>
 
-				<CCInput
+				<CCPriceInput
 					type="number"
 					placeholder="Price"
 					value={price}

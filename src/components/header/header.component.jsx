@@ -8,14 +8,12 @@ import ThemeToggleButton from "../themetogglebutton/themetogglebutton.component"
 import HeaderDropDownButton from "../headerdropdownbutton/header-dropdown-button.component";
 import Login from "../authentication/login/login.component";
 import Signup from "../authentication/signup/signup.component";
-import { useDispatch, useSelector } from "react-redux";
-import { CSSTransition } from "react-transition-group";
+import { useDispatch } from "react-redux";
 import { toggleMenu } from "../../redux/ui-redux/ui.actions";
 import uiTypes from '../../redux/ui-redux/ui.types'
 
 const Header = ({ history }) => {
 	const myRef = useRef(null);
-	const user = useSelector((state) => state.authReducer.user);
 	const themeContext = useContext(ThemeContext);
 	const dispatch = useDispatch();
 
@@ -33,7 +31,7 @@ const Header = ({ history }) => {
             return () => {
                   windowSize.removeEventListener('change', handleChange);
             }
-      }, [])
+      }, [themeContext.mediumBreakPoint])
 
 	return (
 		<HeaderContainer ref={myRef}>
