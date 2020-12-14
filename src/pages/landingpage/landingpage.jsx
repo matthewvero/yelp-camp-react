@@ -16,16 +16,16 @@ const LandingPage = ({ history }) => {
 					display: "flex",
 					flexDirection: "column",
 					alignItems: "center",
-					backgroundColor: "rgba(23,24,25, 0.5)",
 					padding: "20px",
 					borderRadius: "15px",
+					backdropFilter: 'blur(10px)'
 				}}
 			>
 				<h1 style={{ color: "white", fontSize: "3rem" }}>
 					Welcome To YelpCamp{" "}
 					<FontAwesomeIcon icon={faMountain} />
 				</h1>
-				<Button fn={() => history.push("home")}>
+				<Button fn={() => history.push("home")} styles={{padding: '10px'}}>
 					View Campsites
 				</Button>
 			</div>

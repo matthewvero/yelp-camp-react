@@ -25,7 +25,10 @@ import { CreatorAPI } from "./campsite-creator.component";
 import InputImage from "../inputs/input-image/input-image.component";
 import { SubTitle, Text } from "../misc/text.styles";
 import Button from "../button/button.component";
-import TouchAnimator from "../touch-animator/touch-animator.component";
+import withTouchAnimator from "../touch-hoc/touch-hoc.component";
+
+const CCImageInputTouch = withTouchAnimator(CCImageInput)
+const CCButtonTouch = withTouchAnimator(CCButton)
 
 export const CCStart = () => {
 	// Access the CC hooks and state
@@ -66,7 +69,6 @@ export const CCCreate = () => {
 		setDescription,
 	} = api;
 	const themeContext = useContext(ThemeContext);
-	const CCImageInputTouch = TouchAnimator(CCImageInput)
 	return (
 		<CCPage style={{ padding: "0" }}>
 			<CCGrid>
@@ -127,7 +129,7 @@ export const CCCreate = () => {
 				/>
 
 				<CCButtonContainer >
-						<CCButton
+						<CCButtonTouch
 							onClick={() => handleReset()}
 						>
 							<FontAwesomeIcon
@@ -135,9 +137,9 @@ export const CCCreate = () => {
 								icon={faChevronLeft}
 							/>{" "}
 							Cancel
-						</CCButton>
+						</CCButtonTouch>
 					
-						<CCButton
+						<CCButtonTouch
 							onClick={() => handleConfirm()}
 						>
 							Review{" "}
@@ -145,7 +147,7 @@ export const CCCreate = () => {
 								style={{ color: themeContext.color }}
 								icon={faChevronRight}
 							/>
-						</CCButton>
+						</CCButtonTouch>
 				</CCButtonContainer>
 			</CCGrid>
 		</CCPage>

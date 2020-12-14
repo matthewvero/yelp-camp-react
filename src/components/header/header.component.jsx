@@ -11,11 +11,13 @@ import Signup from "../authentication/signup/signup.component";
 import { useDispatch } from "react-redux";
 import { toggleMenu } from "../../redux/ui-redux/ui.actions";
 import uiTypes from '../../redux/ui-redux/ui.types'
+import withTouchAnimator from "../touch-hoc/touch-hoc.component";
 
 const Header = ({ history }) => {
 	const myRef = useRef(null);
 	const themeContext = useContext(ThemeContext);
 	const dispatch = useDispatch();
+	const CircleButtonTouch = withTouchAnimator(CircleButtonContainer);
 
 	const [collapsed, setCollapsed] = useState(window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`).matches);
       useEffect(() => { // Need to add this to redux to keep code DRY.
@@ -77,7 +79,7 @@ const Header = ({ history }) => {
 				<ThemeToggleButton />
 				</React.Fragment>
 			}
-				<CircleButtonContainer onClick={() => dispatch(toggleMenu(uiTypes.mainMenu))}><FontAwesomeIcon icon={faBars}/></CircleButtonContainer>
+				<CircleButtonTouch onClick={() => dispatch(toggleMenu(uiTypes.mainMenu))}><FontAwesomeIcon icon={faBars}/></CircleButtonTouch>
 
 			</div>
 			

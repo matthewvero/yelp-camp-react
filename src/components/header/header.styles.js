@@ -49,18 +49,19 @@ export const HeaderButton = styled.div`
 	align-items: center;
 	align-self: center;
 	border-radius: 500px;
-	background-color: ${(props) => props.theme.backgroundAlt};
+	background-color: ${(props) => props.animated ? props.theme.backgroundActive : props.theme.backgroundAlt};
 	color: ${(props) => props.theme.textAlt};
 	font-size: 1.3rem;
 	transition: transform 25ms linear;
 	user-select: none;
 	cursor: pointer;
-	&:hover {
-		background-color: ${(props) => props.theme.backgroundHover};
+	transform: scale(${props => props.animated ? '0.95' : '1'});
+	@media (min-width: ${props => props.theme.smallBreakPoint}) {
+		&:hover {
+			background-color: ${(props) => props.theme.backgroundHover};
+		}
 	}
-	&:active {
-		background-color: ${(props) => props.theme.backgroundActive};
-	}
+
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
 		font-size: 1.1rem;
 		padding: 0px;

@@ -128,6 +128,7 @@ export const CCImageInput = styled.label`
 	transition: transform 25ms linear;
 	user-select: none;
 	outline: none;
+	grid-row: 1/3;
 	cursor: pointer;
 	&:hover {
 		background-color: ${(props) => props.theme.backgroundHover};
@@ -147,8 +148,9 @@ export const CCImageContainer = styled.div`
 `;
 
 export const CCButtonContainer = styled.div`
-grid-row: 2/3;
-grid-column: 3/4;
+	grid-row: 2/3;
+	grid-column: 3/4;
+	gap: 1rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;

@@ -38,7 +38,15 @@ export const CampsiteCardHeart = styled(FontAwesomeIcon)`
 		width: 10px;
 		background-color: white;
 	}
-	color: ${props => props.liked ? 'rgb(255, 100, 100)' : 'white'};
+	color: ${props => {
+		if (props.animated || props.liked) {
+			return 'rgb(255, 100, 100)'
+		} else if (props.hovering){
+			return 'pink'
+		} else {
+			return 'white'
+		}
+	}};
 	position: absolute;
 	top: 10px;
 	right: 10px;
@@ -52,10 +60,7 @@ export const CampsiteCardHeart = styled(FontAwesomeIcon)`
 		}
 
 	}
-	&:active {
-		color: rgb(255, 100, 100);
-		transform: scale(1.4);
-	}
+
 `;
 
 export const CampsiteCardImageContainer = styled.div`

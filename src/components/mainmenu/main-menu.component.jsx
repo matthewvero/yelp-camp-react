@@ -17,11 +17,14 @@ import { ThemeContext } from 'styled-components'
 import { withRouter } from 'react-router'
 import Button from '../button/button.component'
 import ThemeToggleButton from '../themetogglebutton/themetogglebutton.component'
+import withTouchAnimator from '../touch-hoc/touch-hoc.component'
 const MainMenu = ({history}) => {
       const user = useSelector(state => state.authReducer.user)
       const menuVisible = useSelector(state => state.uiReducer[uiTypes.mainMenu]);
       const themeContext = useContext(ThemeContext);
+      const CircleButtonTouch = withTouchAnimator(CircleButtonContainer);
       const [activeMainMenuPage, setActiveMainMenuPage] = useState('default')
+
       const dispatch = useDispatch()
       const ref = useRef()
       const handleMenuClick = (menu) => {
@@ -89,12 +92,12 @@ const MainMenu = ({history}) => {
                               user.hasOwnProperty('displayName') ?
                                     <React.Fragment>
                                           <SubTitle>{user.displayName}</SubTitle>
-                                          <CircleButtonContainer 
+                                          <CircleButtonTouch 
                                                 style={{marginLeft: 'auto', marginRight: '30px'}}
                                                 onClick={() => goToProfile()}
                                           >
                                                 <FontAwesomeIcon icon={faUser}/>
-                                          </CircleButtonContainer>
+                                          </CircleButtonTouch>
                                     </React.Fragment>
                               :
                                     <MainMenuButtonContainer>
@@ -176,7 +179,7 @@ const MainMenu = ({history}) => {
                                     <MainMenuItem onClick={() => setActiveMainMenuPage('default')}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
                                     </MainMenuItem>
-                                    <SubTitle>Settings</SubTitle>
+                                    <SubTitle styles={{margin: '5px 0'}}>Settings</SubTitle>
                                     <MainMenuItem onClick={() => handleLogOut()}>
                                           <SubTitle>Log Out</SubTitle>
                                     </MainMenuItem>

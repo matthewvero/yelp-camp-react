@@ -10,7 +10,7 @@ export const MainMenuContainer = styled.div`
       display: flex;
       flex-direction: column;
       padding-top: 75px;
-      background-color: ${props => props.theme.main};
+      backdrop-filter: blur(60px);
       box-shadow: 0 20px 10px ${props => props.theme.shadowColor};
       overflow-y: scroll;
       &.mainMenu-enter {
@@ -56,6 +56,7 @@ export const MainMenuItem = styled.div`
       justify-content: start;
       align-items: center;
       padding: 0 10%;
+      margin: 5px 0;
       cursor: pointer;
       &:hover {
             background-color: ${props => props.theme.backgroundHover};
