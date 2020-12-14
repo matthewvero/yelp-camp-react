@@ -5,7 +5,7 @@ import {
 	faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ThemeContext } from "styled-components";
 import ProgressIndicator from "../progressindicator/progressindicator.component";
 import {
@@ -24,6 +24,8 @@ import {
 import { CreatorAPI } from "./campsite-creator.component";
 import InputImage from "../inputs/input-image/input-image.component";
 import { SubTitle, Text } from "../misc/text.styles";
+import Button from "../button/button.component";
+import TouchAnimator from "../touch-animator/touch-animator.component";
 
 export const CCStart = () => {
 	// Access the CC hooks and state
@@ -64,16 +66,23 @@ export const CCCreate = () => {
 		setDescription,
 	} = api;
 	const themeContext = useContext(ThemeContext);
+	const CCImageInputTouch = TouchAnimator(CCImageInput)
 	return (
 		<CCPage style={{ padding: "0" }}>
 			<CCGrid>
 				{image === undefined ? (
-					<CCImageInput htmlFor="image">
-						<FontAwesomeIcon
-							icon={faCamera}
-							style={{ fontSize: "3rem" }}
-						/>
-					</CCImageInput>
+							
+							<CCImageInputTouch
+								htmlFor="image"
+								
+							>
+								<FontAwesomeIcon
+									icon={faCamera}
+									style={{ fontSize: "3rem" }}
+								/>
+							</CCImageInputTouch>
+							
+					
 				) : (
 					<CCImageContainer>
 						<img
@@ -118,24 +127,25 @@ export const CCCreate = () => {
 				/>
 
 				<CCButtonContainer >
-					<CCButton
-						onClick={() => handleReset()}
-					>
-						<FontAwesomeIcon
-							style={{ color: "red" }}
-							icon={faChevronLeft}
-						/>{" "}
-						Cancel
-					</CCButton>
-					<CCButton
-						onClick={() => handleConfirm()}
-					>
-						Review{" "}
-						<FontAwesomeIcon
-							style={{ color: themeContext.color }}
-							icon={faChevronRight}
-						/>
-					</CCButton>
+						<CCButton
+							onClick={() => handleReset()}
+						>
+							<FontAwesomeIcon
+								style={{ color: "red" }}
+								icon={faChevronLeft}
+							/>{" "}
+							Cancel
+						</CCButton>
+					
+						<CCButton
+							onClick={() => handleConfirm()}
+						>
+							Review{" "}
+							<FontAwesomeIcon
+								style={{ color: themeContext.color }}
+								icon={faChevronRight}
+							/>
+						</CCButton>
 				</CCButtonContainer>
 			</CCGrid>
 		</CCPage>

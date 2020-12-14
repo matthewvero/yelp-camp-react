@@ -12,10 +12,12 @@ export const CampsiteCardContainer = styled(ContentContainer)`
 	position: relative;
 	margin-bottom: 10px;
 	transition: all 25ms linear;
-	cursor: pointer;
-	&:hover {
-		transform: translateY(-5px);
+	@media (min-width: ${props => props.theme.mediumBreakPoint}) {
+		
+		transform: rotateY(${props => props.tiltX}deg) rotateX(${props => props.tiltY}deg);
+		box-shadow: ${props => props.shadowX}px ${props => props.shadowY}px 2px ${props => props.theme.dynamicBoxShadow};
 	}
+	cursor: pointer;
 	@media (max-width: 1200px){
 		flex-basis: 49%;
 		
@@ -43,7 +45,7 @@ export const CampsiteCardHeart = styled(FontAwesomeIcon)`
 	font-size: 2rem;
 	transition: all 0.3s;
 	cursor: pointer;
-	@media (max-width: ${props => props.theme.smallBreakPoint}){
+	@media (min-width: ${props => props.theme.smallBreakPoint}){
 		&:hover {
 			transform: scale(1.2);
 			color: pink;

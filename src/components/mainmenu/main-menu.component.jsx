@@ -16,6 +16,7 @@ import { destroySession } from '../../redux/auth-redux/auth.actions'
 import { ThemeContext } from 'styled-components'
 import { withRouter } from 'react-router'
 import Button from '../button/button.component'
+import ThemeToggleButton from '../themetogglebutton/themetogglebutton.component'
 const MainMenu = ({history}) => {
       const user = useSelector(state => state.authReducer.user)
       const menuVisible = useSelector(state => state.uiReducer[uiTypes.mainMenu]);
@@ -177,8 +178,9 @@ const MainMenu = ({history}) => {
                                     </MainMenuItem>
                                     <SubTitle>Settings</SubTitle>
                                     <MainMenuItem onClick={() => handleLogOut()}>
-                                          Log Out
+                                          <SubTitle>Log Out</SubTitle>
                                     </MainMenuItem>
+                                    <ThemeToggleButton/>
                               </Page>
                         </CSSTransition>
                   </MainMenuContentSection>

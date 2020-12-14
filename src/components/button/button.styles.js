@@ -1,24 +1,21 @@
 import styled from "styled-components/macro";
 
-export const ButtonContainer = styled.button`
+export const ButtonContainer = styled.div`
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
 	border-radius: 10px;
-	border: none;
-	background-color: ${(props) => props.theme.background};
+	background-color: ${(props) => props.animated ? props.theme.backgroundActive : props.theme.background};
 	color: ${(props) => props.theme.textAlt};
 	font-size: 1.3rem;
-	transition: transform 25ms linear;
+	transition: all 100ms linear;
 	user-select: none;
 	outline: none;
 	cursor: pointer;
-	
-	&:hover {
-		background-color: ${(props) => props.theme.backgroundHover};
+	@media (min-width: ${props => props.theme.mediumBreakPoint}) {
+		&:hover {
+			background-color: ${(props) => props.theme.backgroundHover};
+		}
 	}
-	&:active {
-		transform: scale(0.95);
-		background-color: ${(props) => props.theme.backgroundActive};
-	}
+	${props => console.log(props)}
 `;

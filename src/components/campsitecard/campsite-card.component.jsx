@@ -1,6 +1,6 @@
 import { faHeart, faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { ThemeContext } from "styled-components";
 import {
 	CampsiteCardContainer,
@@ -28,6 +28,34 @@ const CampsiteCard = ({ campsite }) => {
 		alignItems: "start",
 		boxSizing: 'border-box',
 	};
+
+	const ref = useRef()
+      const [Xtilt, setXTilt] = useState();
+	const [Ytilt, setYTilt] = useState();
+	const [YShadow, setYShadow] = useState();
+	const [XShadow, setXShadow] = useState();
+      const handleHover = (e) => {
+		// adds perspective effect
+            const x = e.pageX - ref.current.offsetLeft;
+            const y = e.pageY - ref.current.offsetTop;
+            const width = ref.current.offsetWidth;
+            const height = ref.current.offsetHeight
+            const tiltPercentageY = Math.ceil(y / height * 20);
+		const tiltPercentageX = Math.ceil(x / width * 20);
+		const ShadowPercentageY = Math.ceil(y / height * 20);
+		const ShadowPercentageX = Math.ceil(x / width * 20);
+            setYTilt(tiltPercentageY);
+		setXTilt(tiltPercentageX);
+		setYShadow(ShadowPercentageY - 10);
+		setXShadow(ShadowPercentageX - 10);
+      }
+
+      const handleMouseOut = () => {
+            setXTilt(10)
+		setYTilt(10)
+		setXShadow(0)
+		setYShadow(0)
+      }
 
 	const handleLike = () => {
 		likeCampsite(campsite.id, user.uid, liked);
@@ -62,7 +90,14 @@ const CampsiteCard = ({ campsite }) => {
 	}, [campsite.id, user.uid])
 
 	return (
-		<CampsiteCardContainer>
+		<CampsiteCardContainer 
+			tiltX={Xtilt - 10}
+			tiltY={-Ytilt + 10}
+			shadowX={XShadow * -1}
+			shadowY={YShadow * -1}
+			onMouseMove={e => handleHover(e)}
+			ref={ref}
+			onMouseOut={() => handleMouseOut()}> 
 			<CampsiteCardImageContainer>
 				<Image image={image} styles={{height: '260px'}}/>
 			</CampsiteCardImageContainer>

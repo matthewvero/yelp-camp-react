@@ -95,6 +95,8 @@ export const CCTitleInput = styled(CCInput)`
 `
 
 export const CCTextArea = styled.textarea`
+	grid-row: 2/3;
+	grid-column: 2/3;
 	width: 100%;
 	border: none;
 	outline: none;
@@ -106,6 +108,7 @@ export const CCTextArea = styled.textarea`
 	color: ${props => props.theme.textAlt};
 	font-size: 1.3rem;
 	box-sizing: border-box;
+	
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
 		font-size: 1rem;
 		grid-row: 2/3;
@@ -113,13 +116,13 @@ export const CCTextArea = styled.textarea`
 	}
 `;
 export const CCImageInput = styled.label`
-	grid-row: 1 / 3;
+	height: 100%; 
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
 	border-radius: 10px;
 	border: none;
-	background-color: ${(props) => props.theme.background};
+	background-color: ${(props) => props.animated ? props.theme.background.active : props.theme.background};
 	color: ${(props) => props.theme.textAlt};
 	font-size: 1.3rem;
 	transition: transform 25ms linear;
@@ -129,10 +132,8 @@ export const CCImageInput = styled.label`
 	&:hover {
 		background-color: ${(props) => props.theme.backgroundHover};
 	}
-	&:active {
-		transform: scale(0.95);
-		background-color: ${(props) => props.theme.backgroundActive};
-	}
+	transform: ${props => props.animated ? `scale(0.95)` : `scale(1)`};
+
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
 		grid-row: 3/4;
 	}
@@ -146,6 +147,8 @@ export const CCImageContainer = styled.div`
 `;
 
 export const CCButtonContainer = styled.div`
+grid-row: 2/3;
+grid-column: 3/4;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -157,10 +160,10 @@ export const CCButtonContainer = styled.div`
 
 export const CCButton = styled(ButtonContainer)`
   	width: 100%;
-	height: 45%;
+	height: 100%;
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
 		width: 100%;
-		height: 45%;
+		height: 100%;
 		font-size: 1rem;
 	}
 `;
