@@ -14,7 +14,6 @@ import ProfilePage from "./pages/profilepage/profilepage";
 import MainMenu from "./components/mainmenu/main-menu.component";
 import { getUserImages } from "./firebase.utils";
 import { SignedIn } from "./events/auth-events";
-import Tilt from "./components/tilt/tilt.component";
 
 function App() {
 	const [darkMode, setDarkmode] = useState(
