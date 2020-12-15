@@ -23,6 +23,7 @@ export const SearchBarContainer = styled.div`
       background-color: ${props => props.theme.main};
       border-radius: ${props => props.theme.borderRadius};
       box-sizing: border-box;
+      box-shadow: ${props => props.theme.boxShadow};
       @media (max-width: ${props => props.theme.smallBreakPoint}){
             flex-direction: column;
             justify-content: space-around;

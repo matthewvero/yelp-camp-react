@@ -23,6 +23,7 @@ const MainMenu = ({history}) => {
       const menuVisible = useSelector(state => state.uiReducer[uiTypes.menus.mainMenu]);
       const themeContext = useContext(ThemeContext);
       const CircleButtonTouch = withTouchAnimator(CircleButtonContainer);
+      const MainMenuItemTouch = withTouchAnimator(MainMenuItem);
       const activeSubMenu = useSelector(state => state.uiReducer[uiTypes.mainMenuActiveSub])
 
       const dispatch = useDispatch()
@@ -91,11 +92,12 @@ const MainMenu = ({history}) => {
                                     <React.Fragment>
                                           <SubTitle>{user.displayName}</SubTitle>
                                           <CircleButtonTouch 
-                                                style={{marginLeft: 'auto', marginRight: '30px'}}
+                                                style={{marginLeft: 'auto', marginRight: '10px'}}
                                                 onClick={() => goToProfile()}
                                           >
                                                 <FontAwesomeIcon icon={faUser}/>
                                           </CircleButtonTouch>
+                                          <ThemeToggleButton />
                                     </React.Fragment>
                               :
                                     <MainMenuButtonContainer>
@@ -125,10 +127,10 @@ const MainMenu = ({history}) => {
                               unmountOnExit
                         >
                               <Page>
-                                    <MainMenuItem onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.settings))}>
+                                    <MainMenuItemTouch fn={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.settings))}>
                                           <SubTitle>Settings</SubTitle>
                                           <FontAwesomeIcon icon={faCog} style={{color: themeContext.textAlt, margin: '0 10px', fontSize: '1.3rem'}}/>
-                                    </MainMenuItem>
+                                    </MainMenuItemTouch>
                               </Page>
                         </CSSTransition>
                         <CSSTransition
@@ -138,9 +140,9 @@ const MainMenu = ({history}) => {
                               unmountOnExit
                         >
                               <Page>
-                                    <MainMenuItem onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
+                                    <MainMenuItemTouch fn={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
-                                    </MainMenuItem>
+                                    </MainMenuItemTouch>
                                     <SignupForm/>
                               </Page>
                         </CSSTransition>
@@ -151,9 +153,9 @@ const MainMenu = ({history}) => {
                               unmountOnExit
                         >
                               <Page>
-                                    <MainMenuItem onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
+                                    <MainMenuItemTouch fn={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
-                                    </MainMenuItem>
+                                    </MainMenuItemTouch>
                                     <LogInForm/>
                               </Page>
                         </CSSTransition>
@@ -164,9 +166,9 @@ const MainMenu = ({history}) => {
                               unmountOnExit
                         >
                               <Page>
-                                    <MainMenuItem onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
+                                    <MainMenuItemTouch fn={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
-                                    </MainMenuItem>
+                                    </MainMenuItemTouch>
                                     <SubTitle>Welcome</SubTitle>
                               </Page>
                         </CSSTransition>
@@ -179,13 +181,12 @@ const MainMenu = ({history}) => {
                               <Page>
                                     <SubTitle styles={{margin: '5px 0'}}>Settings</SubTitle>
                                     <MMDivider/>
-                                    <MainMenuItem onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
+                                    <MainMenuItemTouch fn={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
-                                    </MainMenuItem>
-                                    <MainMenuItem onClick={() => handleLogOut()}>
+                                    </MainMenuItemTouch>
+                                    <MainMenuItemTouch fn={() => handleLogOut()}>
                                           <SubTitle>Log Out</SubTitle>
-                                    </MainMenuItem>
-                                    <ThemeToggleButton/>
+                                    </MainMenuItemTouch>
                               </Page>
                         </CSSTransition>
                   </MainMenuContentSection>

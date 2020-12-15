@@ -42,19 +42,19 @@ const CampsiteCard = ({ campsite }) => {
             const height = ref.current.offsetHeight
             const tiltPercentageY = Math.ceil(y / height * 20);
 		const tiltPercentageX = Math.ceil(x / width * 20);
-		const ShadowPercentageY = Math.ceil(y / height * 20);
-		const ShadowPercentageX = Math.ceil(x / width * 20);
+		const ShadowPercentageY = Math.ceil(y / height * 10);
+		const ShadowPercentageX = Math.ceil(x / width * 10);
             setYTilt(tiltPercentageY);
 		setXTilt(tiltPercentageX);
-		setYShadow(ShadowPercentageY - 10);
-		setXShadow(ShadowPercentageX - 10);
+		setYShadow(ShadowPercentageY - 5);
+		setXShadow(ShadowPercentageX - 5);
       }
 
       const handleMouseOut = () => {
             setXTilt(10)
 		setYTilt(10)
 		setXShadow(0)
-		setYShadow(0)
+		setYShadow(-1)
       }
 
 	const handleLike = () => {

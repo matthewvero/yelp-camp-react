@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 
 const withTouchAnimator = (WrappedComponent) => {
-      return ({children, ...props}) => {
+  return ({children, fn, ...props}) => {
         const [animated, setAnimated] = useState(false);
         const [hovering, setHovering] = useState(false);
-        const handleMouseDown = () => {
+        const handlePointerDown = () => {
           setAnimated(true);
         };
-        const handleMouseUp = () => {
+        const handlePointerUp = () => {
           setAnimated(false);
+          fn &&
+          fn()
         };
         const handleMouseEnter = () => {
           setHovering(true)
@@ -21,8 +23,8 @@ const withTouchAnimator = (WrappedComponent) => {
             {...props}
             animated={animated}
             hovering={hovering}
-            onPointerDown={handleMouseDown}
-            onPointerUp={handleMouseUp}
+            onPointerDown={handlePointerDown}
+            onPointerUp={handlePointerUp}
             onMouseLeave={handleMouseLeave}
             onMouseEnter={handleMouseEnter}
           >

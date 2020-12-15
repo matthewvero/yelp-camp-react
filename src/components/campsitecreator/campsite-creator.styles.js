@@ -144,6 +144,9 @@ export const CCImageContainer = styled.div`
 	grid-row: 1 / 3;
 	border-radius: 10px;
 	overflow: hidden;
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-row: 3/4;
+	}
 	
 `;
 
@@ -166,8 +169,18 @@ export const CCButton = styled(ButtonContainer)`
 		width: 100%;
 		height: 45%;
 		font-size: 1rem;
+
 	}
 `;
+
+export const CCReviewButton = styled(CCButton)`
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		width: 100%;
+		height: 100%;
+		font-size: 1rem;
+
+	}
+`
 
 export const CCHoverEffect = styled.div`
 	height: 100%;
@@ -196,3 +209,49 @@ export const StartPageTitle = styled.span`
 		padding: 0 20px;
 	}
 `;
+
+export const CCReviewGrid = styled.div`
+	height: 100%;
+      width: 100%;
+      padding: 5px;
+      box-sizing: border-box;
+      display: grid;
+      grid-template-columns: minmax(213px, 25%) auto minmax(120px, 20%);
+      grid-template-rows: 30% auto;
+      gap: 1rem;
+      background-color: ${props => props.theme.main};
+      border-radius: ${props => props.theme.borderRadius};
+      box-shadow: ${props => props.theme.boxShadow};
+      @media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-template-columns: 100px 45% auto;
+            grid-template-rows: 70% auto;
+            padding: 5px;
+            gap: 0.5rem;
+            min-height: 150px;
+            max-height: 150px;            
+	}
+`
+
+export const CCReviewButtonContainer = styled.div`
+	grid-row: 2/3;
+	grid-column: 3/4;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-row: 2/3;
+		grid-column: 1/4;
+		flex-direction: row;
+	}
+`;
+
+export const CCReviewImageContainer = styled.div`
+	width: 100%;
+	height: 100%;
+	grid-row: 1/3;
+	border-radius: 10px;
+	overflow: hidden;
+	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+		grid-row: 1/2;
+	}
+`

@@ -60,12 +60,12 @@ export const MainMenuItem = styled.div`
       padding: 0 10%;
       margin: 5px 0;
       cursor: pointer;
-      &:hover {
-            background-color: ${props => props.theme.backgroundHover};
-      }
-      &:active {
-            background-color: ${props => props.theme.backgroundActive}
-      }
+      background-color: ${props => props.animated && 'rgba(50,50,50, 0.5)'};
+      @media (min-width: ${props => props.theme.smallBreakPoint}) {
+            &:hover {
+                  background-color: ${props => props.theme.mainMenuItemHover};
+            }
+	}
 `;
 
 export const MMDivider = styled.hr`
@@ -84,6 +84,7 @@ export const MMProfile = styled.div`
       flex-direction: row;
       justify-content: space-around;
       align-items: center;
+      padding-right: 20px;
       @media (max-width: ${props => props.theme.smallBreakPoint}) {
 	      height: 125px;
 	}

@@ -48,6 +48,7 @@ export const CampsiteCardLongPriceContainer = styled.div`
 
 export const CampsiteCardLongTitle = styled(SubTitle)`
       font-size: 1.3rem;
+      text-align: left;
       @media (max-width: ${props => props.theme.smallBreakPoint}) {
 		font-size: 0.9rem;
 	}
@@ -56,6 +57,8 @@ export const CampsiteCardLongTitle = styled(SubTitle)`
 export const CampsiteCardLongSubText = styled(SubTitle)`
       font-size: 1rem;
       font-weight: 400;
+      text-align: left;
+
       @media (max-width: ${props => props.theme.smallBreakPoint}) {
 		font-size: 0.8rem;
 	}

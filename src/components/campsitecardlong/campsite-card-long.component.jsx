@@ -34,16 +34,12 @@ const CampsiteCardLong = ({ campsite }) => {
 				</div>
 
 				<CampsiteCardLongTextContainer>
-				<CampsiteCardLongTitle style={{textAlign: 'left'}}>
+				<CampsiteCardLongTitle>
 					{campsite.title}
 				</CampsiteCardLongTitle>
 				
 				
-				<CampsiteCardLongSubText
-					style={{
-						textAlign: "left",
-					}}
-					>
+				<CampsiteCardLongSubText>
 					{campsite.description}
 				</CampsiteCardLongSubText>
 				</CampsiteCardLongTextContainer>

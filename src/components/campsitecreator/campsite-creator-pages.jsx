@@ -5,7 +5,7 @@ import {
 	faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { ThemeContext } from "styled-components";
 import ProgressIndicator from "../progressindicator/progressindicator.component";
 import {
@@ -20,12 +20,17 @@ import {
 	CCPriceInput,
 	CCTextArea,
 	StartPageTitle,
+	CCReviewGrid,
+	CCReviewButtonContainer,
+	CCReviewImageContainer,
+	CCReviewButton
 } from "./campsite-creator.styles";
 import { CreatorAPI } from "./campsite-creator.component";
 import InputImage from "../inputs/input-image/input-image.component";
-import { SubTitle, Text } from "../misc/text.styles";
-import Button from "../button/button.component";
+import { SubTitle } from "../misc/text.styles";
 import withTouchAnimator from "../touch-hoc/touch-hoc.component";
+import Image from "../image/image.component";
+import { CampsiteCardLongPriceContainer, CampsiteCardLongSubText, CampsiteCardLongTextContainer, CampsiteCardLongTitle } from "../campsitecardlong/campsite-card-long.styles";
 
 const CCImageInputTouch = withTouchAnimator(CCImageInput)
 const CCButtonTouch = withTouchAnimator(CCButton)
@@ -74,15 +79,15 @@ export const CCCreate = () => {
 			<CCGrid>
 				{image === undefined ? (
 							
-							<CCImageInputTouch
-								htmlFor="image"
-								
-							>
-								<FontAwesomeIcon
-									icon={faCamera}
-									style={{ fontSize: "3rem" }}
-								/>
-							</CCImageInputTouch>
+					<CCImageInputTouch
+						htmlFor="image"
+						
+					>
+						<FontAwesomeIcon
+							icon={faCamera}
+							style={{ fontSize: "3rem" }}
+						/>
+					</CCImageInputTouch>
 							
 					
 				) : (
@@ -170,75 +175,20 @@ export const CCReview = () => {
 	return (
 		<CCPage>
 			{!loading ? (
-				<div
-					style={{
-						height: "100%",
-						padding: "10px",
-						boxSizing: "border-box",
-						width: "100%",
-						display: "grid",
-						gridTemplateColumns: "minmax(213px, 25%) auto 20%",
-						gridTemplateRows: "30% auto",
-						gap: "1rem",
-					}}
-				>
-					<div
-						style={{
-							gridRow: "1 / 3",
-							borderRadius: "10px",
-							overflow: "hidden",
-						}}
-					>
-						<img
-							style={{
-								height: "100%",
-								width: "100%",
-								borderRadius: "10px",
-								overflow: "hidden",
-							}}
-							alt="Your campground"
-							src={previewImage}
-						/>
-					</div>
+				<CCReviewGrid>
+					<CCReviewImageContainer>
+						<Image image={previewImage} />
+					</CCReviewImageContainer>
 
-					<SubTitle
-						style={{
-							gridColumn: "2/3",
-							textAlign: "left",
-							margin: 'auto 0'
-						}}
-					>
-						{title}
-					</SubTitle>
-
-					<div
-						style={{
-							gridColumn: "2/3",
-							gridRow: "2/3",
-							overflow: "scroll",
-						}}
-					>
-						<Text
-							style={{
-								textAlign: "left",
-							}}
-						>
-							{description}
-						</Text>
-					</div>
-
-					<SubTitle
-						style={{
-							color: themeContext.color,
-							alignSelf: "start",
-							margin: 'auto 0'
-						}}
-					>
-						£{price} /Night
-					</SubTitle>
-
-					<CCButtonContainer>
-						<CCButton
+					<CampsiteCardLongTextContainer>
+						<CampsiteCardLongTitle>{title}</CampsiteCardLongTitle>
+						<CampsiteCardLongSubText>{description}</CampsiteCardLongSubText>
+					</CampsiteCardLongTextContainer>
+					<CampsiteCardLongPriceContainer>
+						<CampsiteCardLongSubText style={{color: themeContext.color}}>{price}/ Night</CampsiteCardLongSubText>
+					</CampsiteCardLongPriceContainer>
+					<CCReviewButtonContainer>
+						<CCReviewButton
 							onClick={() => handleBack()}
 						>
 							<FontAwesomeIcon
@@ -246,8 +196,8 @@ export const CCReview = () => {
 								icon={faChevronLeft}
 							/>{" "}
 							Go back
-						</CCButton>
-						<CCButton
+						</CCReviewButton>
+						<CCReviewButton
 							onClick={() => handleSubmit()}
 						>
 							Create{" "}
@@ -257,9 +207,9 @@ export const CCReview = () => {
 								}}
 								icon={faChevronRight}
 							/>
-						</CCButton>
-					</CCButtonContainer>
-				</div>
+						</CCReviewButton>
+					</CCReviewButtonContainer>
+				</CCReviewGrid>
 			) : (
 				<ProgressIndicator
 					size={120}

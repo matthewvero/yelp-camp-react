@@ -33,6 +33,7 @@ const campsiteCardsContainerStyles = {
 const Homepage = () => {
 	const themeContext = useContext(ThemeContext);
 	const [campsites, setCampsites] = useState([]);
+	const [searchResults, setSearchResults] = useState([])
 	useEffect(() => {
 		const getData = async () => {
 			let campsitesArr = [];
@@ -44,6 +45,19 @@ const Homepage = () => {
 		};
 		getData();
 	}, []);
+
+	useEffect(() => {
+		setSearchResults(campsites)
+	}, [campsites])
+
+	const handleChange = (event) => {
+		const input = event.target.value;
+		const newCampsiteArr = campsites.filter(el => 
+			el.data.title.toLowerCase().includes(input.toLowerCase()) 
+			|| 
+			el.data.description.toLowerCase().includes(input.toLowerCase()))
+		setSearchResults(newCampsiteArr)
+	}
 
 	return (
 		<PageContainer>
@@ -76,15 +90,7 @@ const Homepage = () => {
 					>
 						Our most popular Campsites!
 					</Text>
-					<form
-						onSubmit={(e) => e.preventDefault()}
-						style={{
-							height: "100%",
-							width: "auto",
-							display: "flex",
-							alignItems: "center",
-						}}
-					>
+					
 						<div style={formStyles}>
 							<FontAwesomeIcon
 								icon={faSearch}
@@ -98,13 +104,13 @@ const Homepage = () => {
 							<FormInputText
 								style={{ height: "70%" }}
 								placeholder="Search Campsites..."
+								onChange={e => handleChange(e)}
 							/>
 						</div>
-					</form>
 				</SearchBarContainer>
 
 				<div style={campsiteCardsContainerStyles}>
-					{campsites.map((site) => (
+					{searchResults.map((site) => (
 						<CampsiteCard
 							campsite={site.data}
 							key={site.id}
