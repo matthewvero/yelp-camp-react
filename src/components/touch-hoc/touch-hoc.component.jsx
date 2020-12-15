@@ -16,14 +16,13 @@ const withTouchAnimator = (WrappedComponent) => {
         const handleMouseLeave = () => {
           setHovering(false)
         }
-        console.log(props)
         return (
           <WrappedComponent
             {...props}
             animated={animated}
             hovering={hovering}
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
+            onPointerDown={handleMouseDown}
+            onPointerUp={handleMouseUp}
             onMouseLeave={handleMouseLeave}
             onMouseEnter={handleMouseEnter}
           >

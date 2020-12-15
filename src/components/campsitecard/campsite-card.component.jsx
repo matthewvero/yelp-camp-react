@@ -97,7 +97,9 @@ const CampsiteCard = ({ campsite }) => {
 			shadowY={YShadow * -1}
 			onMouseMove={e => handleHover(e)}
 			ref={ref}
-			onMouseOut={() => handleMouseOut()}> 
+			onMouseOut={() => handleMouseOut()}
+			> 
+			
 			<CampsiteCardImageContainer>
 				<Image image={image} styles={{height: '260px'}}/>
 			</CampsiteCardImageContainer>

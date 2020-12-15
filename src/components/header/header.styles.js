@@ -52,10 +52,10 @@ export const HeaderButton = styled.div`
 	background-color: ${(props) => props.animated ? props.theme.backgroundActive : props.theme.backgroundAlt};
 	color: ${(props) => props.theme.textAlt};
 	font-size: 1.3rem;
-	transition: transform 25ms linear;
+	transition: transform 100ms linear;
 	user-select: none;
+	transform: scale(${props => props.animated ? '0.95' : '1'}); 
 	cursor: pointer;
-	transform: scale(${props => props.animated ? '0.95' : '1'});
 	@media (min-width: ${props => props.theme.smallBreakPoint}) {
 		&:hover {
 			background-color: ${(props) => props.theme.backgroundHover};
