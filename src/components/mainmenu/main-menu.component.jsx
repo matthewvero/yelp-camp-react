@@ -8,7 +8,7 @@ import { SubTitle } from '../misc/text.styles'
 import ProfilePicture from '../profilepicture/profilepicture.component'
 import { MainMenuContainer, MainMenuItem, MMDivider, MainMenuProfilePicture, MMProfile, Page, MainMenuContentSection, MainMenuButtonContainer } from './main-menu.styles'
 import uiTypes from '../../redux/ui-redux/ui.types'
-import { setMenuVisibility } from '../../redux/ui-redux/ui.actions'
+import { setMainMenuSubMenu, setMenuVisibility } from '../../redux/ui-redux/ui.actions'
 import SignupForm from '../authentication/signupform/signupform.component'
 import LogInForm from '../authentication/loginform/login-form.component'
 import { auth } from '../../firebase'
@@ -20,16 +20,14 @@ import ThemeToggleButton from '../themetogglebutton/themetogglebutton.component'
 import withTouchAnimator from '../touch-hoc/touch-hoc.component'
 const MainMenu = ({history}) => {
       const user = useSelector(state => state.authReducer.user)
-      const menuVisible = useSelector(state => state.uiReducer[uiTypes.mainMenu]);
+      const menuVisible = useSelector(state => state.uiReducer[uiTypes.menus.mainMenu]);
       const themeContext = useContext(ThemeContext);
       const CircleButtonTouch = withTouchAnimator(CircleButtonContainer);
-      const [activeMainMenuPage, setActiveMainMenuPage] = useState('default')
+      const activeSubMenu = useSelector(state => state.uiReducer[uiTypes.mainMenuActiveSub])
 
       const dispatch = useDispatch()
       const ref = useRef()
-      const handleMenuClick = (menu) => {
-            setActiveMainMenuPage(menu)
-      }
+
       const handleLogOut = () => {
             auth.signOut();
             dispatch(destroySession())
@@ -42,21 +40,21 @@ const MainMenu = ({history}) => {
       }
 
       const handleSignUp = () => {
-            setActiveMainMenuPage('welcome')
+            dispatch(setMainMenuSubMenu(uiTypes.subMenus.welcome));
       }
 
       useEffect(() => {
             !menuVisible &&
-            setActiveMainMenuPage('default');
+            dispatch(setMainMenuSubMenu(uiTypes.subMenus.default));
             
-      }, [menuVisible])
+      }, [dispatch, menuVisible])
 
       useEffect(() => {
 		function handleClickOutside(event) {
 			// Close menu when clicked outside
 			menuVisible &&
 				!ref.current.contains(event.target) &&
-                        dispatch(setMenuVisibility({menu: uiTypes.mainMenu, visible: false}));
+                        dispatch(setMenuVisibility({menu: uiTypes.menus.mainMenu, visible: false}));
 		}
 
 		// Bind the event listener
@@ -103,13 +101,13 @@ const MainMenu = ({history}) => {
                                     <MainMenuButtonContainer>
                                           <HeaderButton 
                                                 styles={{margin: '10px', padding: '10px'}}
-                                                onClick={() => handleMenuClick('login')}
+                                                onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.login))}
                                           >
                                                 Log In
                                           </HeaderButton>
                                           <HeaderButton 
                                                 styles={{margin: '10px', padding: '10px'}}
-                                                onClick={() => handleMenuClick('signup')}
+                                                onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.signup))}
                                           >
                                                 Sign Up
                                           </HeaderButton>
@@ -121,46 +119,46 @@ const MainMenu = ({history}) => {
                   <MainMenuContentSection >
                   
                         <CSSTransition
-                              in={activeMainMenuPage === 'default'}
+                              in={activeSubMenu === uiTypes.subMenus.default}
                               classNames='mainMenuPage'
                               timeout={100}
                               unmountOnExit
                         >
                               <Page>
-                                    <MainMenuItem onClick={() => setActiveMainMenuPage('settings')}>
+                                    <MainMenuItem onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.settings))}>
                                           <SubTitle>Settings</SubTitle>
                                           <FontAwesomeIcon icon={faCog} style={{color: themeContext.textAlt, margin: '0 10px', fontSize: '1.3rem'}}/>
                                     </MainMenuItem>
                               </Page>
                         </CSSTransition>
                         <CSSTransition
-                              in={activeMainMenuPage === 'signup'}
+                              in={activeSubMenu === uiTypes.subMenus.signup}
                               classNames='mainMenuPage'
                               timeout={100}
                               unmountOnExit
                         >
                               <Page>
-                                    <MainMenuItem onClick={() => setActiveMainMenuPage('default')}>
+                                    <MainMenuItem onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
                                     </MainMenuItem>
                                     <SignupForm/>
                               </Page>
                         </CSSTransition>
                         <CSSTransition
-                              in={activeMainMenuPage === 'login'}
+                              in={activeSubMenu === uiTypes.subMenus.login}
                               classNames='mainMenuPage'
                               timeout={100}
                               unmountOnExit
                         >
                               <Page>
-                                    <MainMenuItem onClick={() => setActiveMainMenuPage('default')}>
+                                    <MainMenuItem onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
                                     </MainMenuItem>
                                     <LogInForm/>
                               </Page>
                         </CSSTransition>
                         <CSSTransition
-                              in={activeMainMenuPage === 'welcome'}
+                              in={activeSubMenu === uiTypes.subMenus.welcome}
                               classNames='mainMenuPage'
                               timeout={100}
                               unmountOnExit
@@ -170,16 +168,17 @@ const MainMenu = ({history}) => {
                               </Page>
                         </CSSTransition>
                         <CSSTransition
-                              in={activeMainMenuPage === 'settings'}
+                              in={activeSubMenu === uiTypes.subMenus.settings}
                               classNames='mainMenuPage'
                               timeout={100}
                               unmountOnExit
                         >
                               <Page>
-                                    <MainMenuItem onClick={() => setActiveMainMenuPage('default')}>
+                                    <MainMenuItem onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
                                     </MainMenuItem>
                                     <SubTitle styles={{margin: '5px 0'}}>Settings</SubTitle>
+                                    <MMDivider/>
                                     <MainMenuItem onClick={() => handleLogOut()}>
                                           <SubTitle>Log Out</SubTitle>
                                     </MainMenuItem>

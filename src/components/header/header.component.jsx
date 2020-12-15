@@ -1,15 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { withRouter } from "react-router";
-import { CircleButtonContainer, HeaderContainer, HeaderLogo } from "./header.styles";
+import { CircleButtonContainer, HeaderButton, HeaderContainer, HeaderLogo } from "./header.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faMountain } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from "styled-components";
 import ThemeToggleButton from "../themetogglebutton/themetogglebutton.component";
-import HeaderDropDownButton from "../headerdropdownbutton/header-dropdown-button.component";
-import Login from "../authentication/login/login.component";
-import Signup from "../authentication/signup/signup.component";
-import { useDispatch } from "react-redux";
-import { toggleMenu } from "../../redux/ui-redux/ui.actions";
+import { useDispatch, useSelector } from "react-redux";
+import { setMainMenuSubMenu, setMenuVisibility, toggleMenu } from "../../redux/ui-redux/ui.actions";
 import uiTypes from '../../redux/ui-redux/ui.types'
 import withTouchAnimator from "../touch-hoc/touch-hoc.component";
 
@@ -18,8 +15,22 @@ const Header = ({ history }) => {
 	const themeContext = useContext(ThemeContext);
 	const dispatch = useDispatch();
 	const CircleButtonTouch = withTouchAnimator(CircleButtonContainer);
-
 	const [collapsed, setCollapsed] = useState(window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`).matches);
+	const user = useSelector(state => state.authReducer.user)
+	const handleLogIn = () => {
+		dispatch(setMenuVisibility({menu: uiTypes.mainMenu, visible: true}));
+		dispatch(setMainMenuSubMenu(uiTypes.subMenus.login))
+	
+	}
+
+	const handleSignUp = () => {
+		dispatch(setMenuVisibility({menu: uiTypes.mainMenu, visible: true}));
+		dispatch(setMainMenuSubMenu(uiTypes.subMenus.signup))
+	
+	}
+
+	
+
       useEffect(() => { // Need to add this to redux to keep code DRY.
             const windowSize = window.matchMedia(`(max-width: ${themeContext.mediumBreakPoint})`);
             const handleChange = e => {
@@ -33,7 +44,9 @@ const Header = ({ history }) => {
             return () => {
                   windowSize.removeEventListener('change', handleChange);
             }
-      }, [themeContext.mediumBreakPoint])
+	}, [themeContext.mediumBreakPoint])
+	
+	const HeaderButtonTouch = withTouchAnimator(HeaderButton)
 
 	return (
 		<HeaderContainer ref={myRef}>
@@ -58,25 +71,23 @@ const Header = ({ history }) => {
 			}}
 			>
 			{
-			!collapsed && 
+			!collapsed && !user.hasOwnProperty('uid') &&
 				<React.Fragment>
 				
-				<HeaderDropDownButton 
-					title="Log In"
-					contains={uiTypes.logInMenu}
+				<HeaderButtonTouch
+					onClick={() => handleLogIn()}
 				>
-					<Login />
-				</HeaderDropDownButton>
-				
-				
-				<HeaderDropDownButton
-					title='Sign Up'
-					contains={uiTypes.signUpMenu}
+					Log In
+				</HeaderButtonTouch>
+
+				<HeaderButtonTouch
+					onClick={() => handleSignUp()}
 				>
-				<Signup />
-				</HeaderDropDownButton>
+					Sign Up
+				</HeaderButtonTouch>
 				
 				<ThemeToggleButton />
+
 				</React.Fragment>
 			}
 				<CircleButtonTouch onClick={() => dispatch(toggleMenu(uiTypes.mainMenu))}><FontAwesomeIcon icon={faBars}/></CircleButtonTouch>

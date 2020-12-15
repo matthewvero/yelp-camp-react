@@ -150,7 +150,6 @@ export const CCImageContainer = styled.div`
 export const CCButtonContainer = styled.div`
 	grid-row: 2/3;
 	grid-column: 3/4;
-	gap: 1rem;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -162,10 +161,10 @@ export const CCButtonContainer = styled.div`
 
 export const CCButton = styled(ButtonContainer)`
   	width: 100%;
-	height: 100%;
+	height: 45%;
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
 		width: 100%;
-		height: 100%;
+		height: 45%;
 		font-size: 1rem;
 	}
 `;

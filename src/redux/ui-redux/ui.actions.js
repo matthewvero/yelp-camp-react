@@ -10,3 +10,7 @@ export const setMenuVisibility = (payload) => ({
 	payload: payload
 })
 
+export const setMainMenuSubMenu = (payload) => ({
+	type: uiTypes.setMainMenuActiveSub,
+	payload: payload
+})
