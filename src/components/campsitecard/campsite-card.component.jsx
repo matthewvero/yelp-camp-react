@@ -104,7 +104,7 @@ const CampsiteCard = ({ campsite }) => {
 				<Image image={image} styles={{height: '260px'}}/>
 			</CampsiteCardImageContainer>
 
-			<CampsiteCardHeart icon={faHeart} liked={liked ? 1 : 0}  onMouseUp={() => handleLike()}/>
+			<CampsiteCardHeart icon={faHeart} liked={liked ? 1 : 0}  onPointerUp={() => handleLike()}/>
 
 			<div style={cardContentContainer}>
 				<span style={{ color: themeContext.color }}>

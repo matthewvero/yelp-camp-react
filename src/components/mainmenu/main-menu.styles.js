@@ -9,10 +9,12 @@ export const MainMenuContainer = styled.div`
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      align-items: center;
       padding-top: 75px;
-      backdrop-filter: blur(60px);
+      backdrop-filter: blur(40px);
       box-shadow: 0 20px 10px ${props => props.theme.shadowColor};
       overflow-y: scroll;
+      background-color: ${props => props.theme.mainMenuItemBackground};
       &.mainMenu-enter {
 		transform: translateX(100%);
 	}
@@ -50,7 +52,7 @@ export const MainMenuButtonContainer = styled.div`
 export const MainMenuItem = styled.div`
       width: 70%;
       height: 50px;
-      border-radius: 10px;
+      border-radius: ${props => props.theme.borderRadius};
       display: flex;
       flex-direction: row;
       justify-content: start;
@@ -80,7 +82,7 @@ export const MMProfile = styled.div`
       box-sizing: border-box;
       display: flex;
       flex-direction: row;
-      justify-content: start;
+      justify-content: space-around;
       align-items: center;
       @media (max-width: ${props => props.theme.smallBreakPoint}) {
 	      height: 125px;
@@ -102,6 +104,8 @@ export const Page = styled.div`
       align-items: center;
       justify-content: start;
       box-sizing: border-box;
+
+
       &.mainMenuPage-enter {
 		opacity: 0;
 	}
@@ -126,6 +130,7 @@ export const MainMenuContentSection = styled.div`
       display: flex;
       flex-direction: column;
       justify-content: start;
+      align-items: center;
       position: relative;
       box-sizing: border-box;
 `;

@@ -164,7 +164,10 @@ const MainMenu = ({history}) => {
                               unmountOnExit
                         >
                               <Page>
-                                    <h1>Welcome</h1>
+                                    <MainMenuItem onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
+                                          <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
+                                    </MainMenuItem>
+                                    <SubTitle>Welcome</SubTitle>
                               </Page>
                         </CSSTransition>
                         <CSSTransition
@@ -174,11 +177,11 @@ const MainMenu = ({history}) => {
                               unmountOnExit
                         >
                               <Page>
+                                    <SubTitle styles={{margin: '5px 0'}}>Settings</SubTitle>
+                                    <MMDivider/>
                                     <MainMenuItem onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
                                     </MainMenuItem>
-                                    <SubTitle styles={{margin: '5px 0'}}>Settings</SubTitle>
-                                    <MMDivider/>
                                     <MainMenuItem onClick={() => handleLogOut()}>
                                           <SubTitle>Log Out</SubTitle>
                                     </MainMenuItem>
