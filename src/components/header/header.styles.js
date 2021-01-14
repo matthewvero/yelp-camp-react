@@ -2,7 +2,7 @@ import styled from "styled-components/macro";
 
 export const HeaderContainer = styled.div`
 	position: fixed;
-	z-index: 50;
+	z-index: 1000000;
 	left: 0px;
 	top: 0px;
 	height: 65px;

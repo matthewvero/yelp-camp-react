@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./App.css";
 import { Switch, Route } from "react-router";
 import LandingPage from "./pages/landingpage/landingpage";
@@ -6,54 +6,18 @@ import Homepage from "./pages/homepage/homepage";
 import Header from "./components/header/header.component";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "../src/theme/themes";
-import { useDispatch } from "react-redux";
-import { auth } from "./firebase";
-import { setUser, setUserProfile } from "./redux/auth-redux/auth.actions";
 import ProfilePage from "./pages/profilepage/profilepage";
 
 import MainMenu from "./components/mainmenu/main-menu.component";
-import { getUserImages } from "./firebase.utils";
-import { SignedIn } from "./events/auth-events";
+import { useDarkMode } from "./utils/ui-hooks";
+import { useAuthListener } from "./utils/auth-hooks";
+import CampsitePage from "./pages/campsitepage/campsitepage.component";
 
 function App() {
-	const [darkMode, setDarkmode] = useState(
-		localStorage.getItem("darkMode") == "true" ? true : false
-	);
-	useEffect(() => {
-		const localStorageUpdated = () => {
-			setDarkmode(
-				localStorage.getItem("darkMode") == "true"
-					? true
-					: false
-			);
-		};
-		window.addEventListener("darkModeChanged", localStorageUpdated);
-		return () => {
-			window.removeEventListener("darkModeChanged", localStorageUpdated);
-		};
-	}, []);
+	const darkMode = useDarkMode();
 
-	const dispatch = useDispatch();
-
-	useEffect(() => {
-		auth.onAuthStateChanged(function (user) {
-
-			if (user) {
-				const getImages = async () => {
-					const profileImageURLs = await getUserImages("profileImages", user.uid);
-					const coverImageURLs = await getUserImages("coverImages", user.uid);
-					dispatch(setUserProfile({
-						displayName: user.displayName, 
-						profilePicture: profileImageURLs, 
-						coverImages: coverImageURLs
-					}))
-				};
-				getImages();
-				dispatch(setUser(user));
-			}
-		});
-	}, [dispatch]);
-
+	useAuthListener()
+	
 	return (
 		<div className="App">
 			<ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
@@ -68,6 +32,13 @@ function App() {
 						path="/profile/:id"
 						render={(props) => (
 							<ProfilePage {...props} isAuthed={true} />
+						    )}
+					/>
+					<Route
+						exact
+						path="/campsite/:id"
+						render={(props) => (
+							<CampsitePage {...props} />
 						    )}
 					/>
 				</Switch>

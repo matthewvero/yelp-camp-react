@@ -11,20 +11,21 @@ export const ImageContainer = styled.div`
 export const ImageSwitcher = styled.div`
 	width: 100%;
 	height: 100%;
+	z-index: 2;
+	position: absolute;
+
 	&.image-enter {
 		opacity: 0;
 	}
 	&.image-enter-active {
-		position: relative;
-		transition: 500ms opacity;
+		transition: opacity 500ms;
 		opacity: 1;
 	}
 	&.image-exit {
 		opacity: 1;
 	}
 	&.image-exit-active {
-		position: relative;
-		transition: 500ms opacity;
+		transition: opacity 500ms;
 		opacity: 0;
 	}
 `;

@@ -9,7 +9,7 @@ import { faMountain, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FormInputText } from "../../components/inputs/input-text/inputs.styles";
 import CampsiteCard from "../../components/campsitecard/campsite-card.component";
 import { db } from "../../firebase";
-import { HomepageHeadingContainer, SearchBarContainer } from "./homepage.styles";
+import { HomePageCardsGrid, HomepageHeadingContainer, SearchBarContainer } from "./homepage.styles";
 import { Text, Title } from "../../components/misc/text.styles";
 
 const formStyles = {
@@ -17,17 +17,6 @@ const formStyles = {
 	height: "100%",
 	display: "flex",
 	alignItems: "center",
-};
-
-
-const campsiteCardsContainerStyles = {
-	width: "100%",
-	height: "auto",
-	display: "flex",
-	flexDirection: "row",
-	flexWrap: "wrap",
-	justifyContent: "space-between",
-	alignItems: "space-between",
 };
 
 const Homepage = () => {
@@ -109,14 +98,14 @@ const Homepage = () => {
 						</div>
 				</SearchBarContainer>
 
-				<div style={campsiteCardsContainerStyles}>
+				<HomePageCardsGrid>
 					{searchResults.map((site) => (
 						<CampsiteCard
 							campsite={site.data}
 							key={site.id}
 						/>
 					))}
-				</div>
+				</HomePageCardsGrid>
 			</ResponsivePageContainer>
 		</PageContainer>
 	);

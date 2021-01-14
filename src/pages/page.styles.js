@@ -9,7 +9,7 @@ export const PageContainer = styled.div`
 	background-color: ${(props) => props.theme.background};
 	padding-top: 66px;
 	box-sizing: border-box;
-	overflow: visible;
+	overflow: scroll;
 	scroll-padding-top: 80px;
 	scroll-behavior: smooth;
 `;

@@ -96,6 +96,7 @@ export const ResponsiveContentContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	min-height: 300px;
 	@media (max-width: ${props => props.theme.largeBreakPoint}) {
 		width: 100%;
 		margin: 5px 0;
@@ -129,6 +130,7 @@ export const CollapsibleContainerTitleBar = styled.div`
 	align-items: center;
 	padding: 0 20px;
 	border-radius: 10px;
+	user-select: none;
 	cursor: pointer;
 	&:hover {
 		background-color: ${props => props.theme.backgroundHover}

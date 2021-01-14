@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "styled-components";
 import { storage } from "../../firebase";
+import { useCampsiteImageURLS } from "../../utils/campsite-hooks";
 import Image from "../image/image.component";
 import { CampsiteCardLongContainer, CampsiteCardLongTextContainer, CampsiteCardLongPriceContainer, CampsiteCardLongTitle, CampsiteCardLongSubText } from "./campsite-card-long.styles";
 
@@ -8,17 +9,7 @@ const CampsiteCardLong = ({ campsite }) => {
 	const themeContext = useContext(ThemeContext);
 	const [image, setImage] = useState();
 
-	useEffect(() => {
-		const getImage = async () => {
-			const storageRef = storage.ref();
-			const listRef = await storageRef
-				.child(`/images/${campsite.id}`)
-				.listAll();
-			listRef.items.length &&
-			setImage(await listRef.items[0].getDownloadURL());
-		};
-		getImage();
-	}, [campsite.id]);
+	const images = useCampsiteImageURLS(campsite.id)
 
 	return (
 			<CampsiteCardLongContainer>
@@ -30,7 +21,7 @@ const CampsiteCardLong = ({ campsite }) => {
 						
 					}}
 				>
-					<Image image={image} />
+					<Image image={images && images[0]} />
 				</div>
 
 				<CampsiteCardLongTextContainer>

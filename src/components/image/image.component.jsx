@@ -1,43 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { Loader } from "../misc/loadinganimations.styles";
 import { ImageContainer, ImageSwitcher } from "./image.styles";
 
 const Image = ({ image, styles }) => {
+	const [loaded, setLoaded] = useState(false)
 	return (
 		<ImageContainer style={styles}>
 			<CSSTransition
-				in={image ? true : false}
-				classNames="image"
-				timeout={1000}
+				in={!loaded}
+				classNames='image'
+				timeout={500}
 				unmountOnExit
 			>
 				<ImageSwitcher>
-					<img
-						style={{
-							height: "100%",
-							width: "100%",
-							objectFit: "cover",
-							
-						}}
-						alt="Your campground"
-						src={image}
-					/>
+					<Loader/>
 				</ImageSwitcher>
 			</CSSTransition>
+			
+			
+				
+			<img
+				style={{
+					height: "100%",
+					width: "100%",
+					objectFit: "cover",
+					top: '0',
+					left: '0',
+					visibility: `${loaded ? 'visible' : 'hidden'}`
+				}}
+				alt="dynamic"
+				src={image}
+				onLoad={() => setLoaded(true)}
+			/>
+			
 
-			<CSSTransition
-				in={image ? false : true}
-				classNames="image"
-				timeout={1000}
-				unmountOnExit
-			>
-				<ImageSwitcher>
-					<Loader
-						style={{ width: "100%", height: "100%" }}
-					/>
-				</ImageSwitcher>
-			</CSSTransition>
+			
 		</ImageContainer>
 	);
 };

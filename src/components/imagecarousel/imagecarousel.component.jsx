@@ -1,78 +1,81 @@
-import React, { useEffect, useState } from "react";
-import { CSSTransition } from "react-transition-group";
-import {
-	Fader,
-	ImageCarouselContainer,
-	ImageCarouselSlide,
-} from "./imagecarousel.styles";
-const images = [
-	"https://images.unsplash.com/photo-1588392382834-a891154bca4d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2555&q=80",
-	"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2551&q=80",
-	"https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2550&q=80",
-	"https://images.unsplash.com/photo-1537565266759-34bbc16be345?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2550&q=80",
-];
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react'
+import { CSSTransition } from 'react-transition-group';
+import { usePreloadImages } from '../../utils/ui-hooks';
+import Image from '../image/image.component'
+import { Loader } from '../misc/loadinganimations.styles';
+import { ImageCarouselBtnBack, ImageCarouselBtnForward, ImageCarouselContainer, ImageCarouselSlide, ImageCarouselSlideIndicator, ImageCarouselSlideIndicatorGroup } from './imagecarousel.styles'
+const ImageCarousel = ({images}) => {
 
-const ImageCarousel = () => {
-	const [activeImage, setActiveImage] = useState(0);
-	const [imagesArr, setImagesArr] = useState([]);
+      // Ensure images load in background
+      const loadedImages = usePreloadImages(images);
+      const back = '-';
+      const forward = '+'
+      const [activeImage, setActiveImage] = useState(0);
+      const [direction, setDirection] = useState()
 
-	useEffect(() => {
-		let loadedImages = [];
-		images.forEach((el) => {
-			let img = new Image();
-			img.onload = () => {
-				loadedImages.push(
-					<img
-						style={{
-							maxHeight: "100%",
-							maxWidth: "100%",
-							objectFit: "cover",
-						}}
-						src={el}
-						alt="nature background"
-					/>
-				);
-			};
+      // Create endlessl loop with buttons
+      // change animation direction accordingly
+      const incrementer = (arr, idx, direction, absolute) => {
+            if (absolute !== undefined) {
+                  setDirection(absolute > idx ? forward : back);
+                  setActiveImage(absolute);
+                  return;
+            }
+            setDirection(direction)
+            if (direction === back && idx - 1 < 0) {
+                  setActiveImage(arr.length - 1)
+            } else if (direction === forward && idx + 1 === arr.length) {
+                  setActiveImage(0)
+            } else {
+                  setActiveImage(direction === back ? idx - 1 : idx + 1)
+            }
+      }
 
-			img.src = el;
-		});
-		setImagesArr(loadedImages);
-	}, []);
+      return (
 
-	useEffect(() => {
-		let interval;
+            <ImageCarouselContainer>
 
-		setTimeout(() => {
-			setActiveImage((val) => (val + 1) % images.length);
-			interval = setInterval(() => {
-				setActiveImage((val) => (val + 1) % images.length);
-			}, 4000);
-		}, 1000);
+            {
+                  loadedImages.length > 1 &&
+                  <React.Fragment>
+                        <ImageCarouselBtnForward icon={ faChevronRight } onPointerDown={() => incrementer(images, activeImage, '+')}/>
+                        <ImageCarouselBtnBack icon={faChevronLeft} onPointerDown={() => incrementer(images, activeImage, '-')}/>
+                        <ImageCarouselSlideIndicatorGroup>
+                              {
+                                    loadedImages.map((e, idx) => (
+                                          <ImageCarouselSlideIndicator 
+                                                idx={idx} 
+                                                activeImage={activeImage} 
+                                                arrLength={images.length} 
+                                                onPointerDown={() => incrementer(images, activeImage, null, idx)}
+                                                key={idx}
+                                          />
+                                    ))
+                              }
+                        </ImageCarouselSlideIndicatorGroup>
+                  </React.Fragment>
+            }
 
-		return () => clearInterval(interval);
-	}, []);
+            {
+                  loadedImages.map((element, idx) => (
+                        <CSSTransition
+                              in={activeImage === idx }
+                              classNames='imagecarousel'
+                              timeout={200}
+                              unmountOnExit
+                              key={idx}
+                        >
+                              <ImageCarouselSlide  enter={`${direction}100%`}>
+                                    {element}
+                              </ImageCarouselSlide>
+                        </CSSTransition>
+                        
+                  ))
+            }
 
-	return (
-		<ImageCarouselContainer>
-			{imagesArr.length > 0 && (
-				<Fader>
-					{imagesArr.map((el, idx) => (
-						<CSSTransition
-							classNames="image"
-							timeout={3000}
-							key={idx}
-							in={activeImage === idx}
-							unmountOnExit
-						>
-							<ImageCarouselSlide>
-								{el}
-							</ImageCarouselSlide>
-						</CSSTransition>
-					))}
-				</Fader>
-			)}
-		</ImageCarouselContainer>
-	);
-};
+            </ImageCarouselContainer>
+      )
+}
 
-export default ImageCarousel;
+export default ImageCarousel

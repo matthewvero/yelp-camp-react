@@ -31,3 +31,20 @@ export const SearchBarContainer = styled.div`
             padding: 10px 0;
       }
 `;
+
+export const HomePageCardsGrid = styled.div`
+      width: 100%;
+      height: auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 400px; 
+      gap: 0.7rem;
+      @media (max-width: ${props => props.theme.largeBreakPoint}) {
+            grid-template-columns: repeat(2, 1fr);
+
+      }
+      @media (max-width: ${props => props.theme.smallBreakPoint}) {
+            grid-template-columns: repeat(1, 100%);
+            grid-auto-rows: 300px;
+      }
+`;

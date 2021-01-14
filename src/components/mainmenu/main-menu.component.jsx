@@ -1,4 +1,4 @@
-import { faChevronLeft, faCog, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faCog, faHeart, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,20 +15,18 @@ import { auth } from '../../firebase'
 import { destroySession } from '../../redux/auth-redux/auth.actions'
 import { ThemeContext } from 'styled-components'
 import { withRouter } from 'react-router'
-import Button from '../button/button.component'
 import ThemeToggleButton from '../themetogglebutton/themetogglebutton.component'
 import withTouchAnimator from '../touch-hoc/touch-hoc.component'
+import { useClickOutside } from '../../utils/ui-hooks'
 const MainMenu = ({history}) => {
       const user = useSelector(state => state.authReducer.user)
-      const menuVisible = useSelector(state => state.uiReducer[uiTypes.menus.mainMenu]);
+      const menuVisible = useSelector(state => state.uiReducer[uiTypes.menus.mainMenuVisible]);
       const themeContext = useContext(ThemeContext);
       const CircleButtonTouch = withTouchAnimator(CircleButtonContainer);
       const MainMenuItemTouch = withTouchAnimator(MainMenuItem);
       const activeSubMenu = useSelector(state => state.uiReducer[uiTypes.mainMenuActiveSub])
-
       const dispatch = useDispatch()
       const ref = useRef()
-
       const handleLogOut = () => {
             auth.signOut();
             dispatch(destroySession())
@@ -50,21 +48,7 @@ const MainMenu = ({history}) => {
             
       }, [dispatch, menuVisible])
 
-      useEffect(() => {
-		function handleClickOutside(event) {
-			// Close menu when clicked outside
-			menuVisible &&
-				!ref.current.contains(event.target) &&
-                        dispatch(setMenuVisibility({menu: uiTypes.menus.mainMenu, visible: false}));
-		}
-
-		// Bind the event listener
-		document.addEventListener("click", handleClickOutside);
-		return () => {
-			// Unbind the event listener on clean up
-			document.removeEventListener("click", handleClickOutside);
-		};
-      }, [dispatch, menuVisible]);
+      useClickOutside(() => dispatch(setMenuVisibility({menu: uiTypes.menus.mainMenuVisible, visible: false})), menuVisible, ref)
       
       useEffect(() => {
             window.addEventListener('SignedIn', handleSignUp)
@@ -73,9 +57,11 @@ const MainMenu = ({history}) => {
             }
       }, [])
 
+
+
       return (
             <CSSTransition
-                  in={menuVisible}
+                  in={menuVisible === true}
                   classNames='mainMenu'
                   timeout={200}
                   unmountOnExit
@@ -127,10 +113,15 @@ const MainMenu = ({history}) => {
                               unmountOnExit
                         >
                               <Page>
+                                    <MainMenuItemTouch >
+                                          <SubTitle>Likes</SubTitle>
+                                          <FontAwesomeIcon icon={faHeart} style={{color: themeContext.textAlt, margin: '0 10px', fontSize: '1.3rem'}}/>
+                                    </MainMenuItemTouch>
                                     <MainMenuItemTouch fn={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.settings))}>
                                           <SubTitle>Settings</SubTitle>
                                           <FontAwesomeIcon icon={faCog} style={{color: themeContext.textAlt, margin: '0 10px', fontSize: '1.3rem'}}/>
                                     </MainMenuItemTouch>
+                                    
                               </Page>
                         </CSSTransition>
                         <CSSTransition

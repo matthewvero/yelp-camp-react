@@ -90,7 +90,7 @@ const Header = ({ history }) => {
 
 				</React.Fragment>
 			}
-				<CircleButtonTouch onClick={() => dispatch(toggleMenu(uiTypes.mainMenu))}><FontAwesomeIcon icon={faBars}/></CircleButtonTouch>
+				<CircleButtonTouch onClick={() => dispatch(toggleMenu(uiTypes.menus.mainMenuVisible))}><FontAwesomeIcon icon={faBars}/></CircleButtonTouch>
 
 			</div>
 			

@@ -1,14 +1,14 @@
 import React from "react";
 import Button from "../../components/button/button.component";
-import ImageCarousel from "../../components/imagecarousel/imagecarousel.component";
 import { faMountain } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { LandingPageContainer } from "./landingpage.styles";
+import BackgroundCarousel from "../../components/backgroundcarousel/backgroundcarousel.component";
 
 const LandingPage = ({ history }) => {
 	return (
 		<LandingPageContainer>
-			<ImageCarousel />
+			<BackgroundCarousel />
 			<div
 				style={{
 					position: "absolute",

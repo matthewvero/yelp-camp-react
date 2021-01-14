@@ -8,10 +8,12 @@ import {
 	NoProfileImage,
 	NoProfileImageIcon,
 	ProfilePictureContainer,
+	Switcher,
 } from "./profilepicture.styles";
 import { faCamera, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
+import { CSSTransition } from "react-transition-group";
 
 const ProfilePicture = ({userID, editable}) => {
 	const [image, setImage] = useState([]);
@@ -38,28 +40,48 @@ const ProfilePicture = ({userID, editable}) => {
 	};
 
 	return (
+		<div style={{height: '100%', width: '100%', position: 'relative'}}>
+		
+		{editable &&
+			<UpdateImageButtonContainer htmlFor="profileImage">
+			<FontAwesomeIcon icon={faCamera} />
+			</UpdateImageButtonContainer>
+		}
+		
 		<ProfilePictureContainer>
-			{editable &&
-				<UpdateImageButtonContainer htmlFor="profileImage">
-					<FontAwesomeIcon icon={faCamera} />
-				</UpdateImageButtonContainer>
-			}
-
 			<InputImage
 				setImageFn={updateProfileImage}
 				id="profileImage"
 			/>
 
-			{image && image.length ? (
-				<Image image={image} />
-			) : (
-				<NoProfileImage>
-					<NoProfileImageIcon
-						icon={faUser}
-					/>
-				</NoProfileImage>
-			)}
+			<CSSTransition
+				in={image ? true : false}
+				classNames='switcher'
+				timeout={100}
+				unmountOnExit
+			>
+				<Switcher>
+					<Image image={image} />
+				</Switcher>
+			</CSSTransition>
+			
+			<CSSTransition
+				in={image ? false : true}
+				classNames='switcher'
+				timeout={100}
+				unmountOnExit
+			>
+				<Switcher>
+					<NoProfileImage>
+						<NoProfileImageIcon
+							icon={faUser}
+						/>
+					</NoProfileImage>
+				</Switcher>
+			</CSSTransition>
+			
 		</ProfilePictureContainer>
+		</div>
 	);
 };
 

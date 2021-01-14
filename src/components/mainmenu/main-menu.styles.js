@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro';
 
 export const MainMenuContainer = styled.div`
-      z-index: 8;
+      z-index: 1000;
       position: fixed;
       right: 0px;
       top: 0px;
@@ -11,23 +11,25 @@ export const MainMenuContainer = styled.div`
       flex-direction: column;
       align-items: center;
       padding-top: 75px;
-      backdrop-filter: blur(40px);
-      box-shadow: 0 20px 10px ${props => props.theme.shadowColor};
+      backdrop-filter: blur(50px);
+      box-shadow: 0 10px 5px ${props => props.theme.shadowColor};
       overflow-y: scroll;
       background-color: ${props => props.theme.mainMenuItemBackground};
+      will-change: opacity;
+
       &.mainMenu-enter {
-		transform: translateX(100%);
+		opacity: 0;
 	}
 	&.mainMenu-enter-active {
             transition: all 100ms ease-out;
-		transform: translateX(0%);
+		opacity: 1;
 	}
 	&.mainMenu-exit {
-		transform: translateX(0%);
+            opacity: 1;
 	}
 	&.mainMenu-exit-active {
             transition: all 100ms ease-out;
-		transform: translateX(100%);
+		opacity: 0;
       }
       @media (max-width: ${props => props.theme.smallBreakPoint}) {
 		width: 100vw;

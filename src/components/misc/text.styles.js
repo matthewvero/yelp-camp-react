@@ -49,3 +49,13 @@ export const Text = styled.p`
             font-size: 0.9rem;
 	    }
 `;
+
+export const SubText = styled.p`
+  font-size: 1rem;
+  font-weight: 400;
+  color: ${props => props.theme.subText};
+  margin: 0;
+  @media (max-width: ${props => props.theme.smallBreakPoint}) {
+            font-size: 0.8rem;
+	    }
+`;

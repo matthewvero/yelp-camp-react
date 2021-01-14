@@ -175,10 +175,7 @@ export const CCButton = styled(ButtonContainer)`
 
 export const CCReviewButton = styled(CCButton)`
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
-		width: 100%;
 		height: 100%;
-		font-size: 1rem;
-
 	}
 `
 

@@ -37,16 +37,16 @@ export const FormInputButton = styled.button`
 `;
 
 export const UpdateImageButtonContainer = styled.label`
-	z-index: 1;
+	z-index: 10;
 	position: absolute;
-	bottom: 0;
-	right: 0;
+	bottom: 10px;
+	right: 10px;
 	height: 50px;
 	width: 50px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: rgba(50, 50, 50, 0.5);
+	background-color: ${props => props.theme.backgroundTransparent};
 	font-size: 2rem;
 	color: white;
 	transition: all 50ms linear;
@@ -54,6 +54,6 @@ export const UpdateImageButtonContainer = styled.label`
 	cursor: pointer;
 	&:hover {
 		transform: scale(1.1);
-		background-color: rgba(50, 50, 50, 0.7);
+		background-color: ${props => props.theme.backgroundTransparentActive};
 	}
 `;

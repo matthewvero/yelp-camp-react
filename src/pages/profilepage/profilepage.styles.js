@@ -7,7 +7,7 @@ export const ProfilePictureResponsiveContainer = styled.div`
       position: absolute;
       left: 5%;
       bottom: -30%;
-      z-index: 1;
+      z-index: 10;
       border: solid 5px ${props => props.theme.main};
       border-radius: 50%;
       @media (max-width: ${props => props.theme.mediumBreakPoint}) {

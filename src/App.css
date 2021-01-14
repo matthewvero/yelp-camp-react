@@ -13,7 +13,8 @@ body {
 html {
 	overflow: scroll;
 	scroll-behavior: smooth;
-	background-color: #222222;
+	overscroll-behavior-y: none;
+
 }
 
 
