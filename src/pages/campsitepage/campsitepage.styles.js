@@ -31,3 +31,16 @@ export const CampsitePageInfoGrid = styled.div`
       gap: 1rem;
       align-items: center;
 `
+
+export const CampsitePageCommentSection = styled.div`
+      height: 250px; 
+      width: 90%; 
+      background-color: ${props => props.theme.background}; 
+      padding: 20px;
+      border-radius: 10px;
+      display: "flex";
+      flex-direction: column;
+      align-items: flex-start;
+      overflow-y: scroll;
+      text-align: left;
+`

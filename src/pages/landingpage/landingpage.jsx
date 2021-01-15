@@ -25,7 +25,7 @@ const LandingPage = ({ history }) => {
 					Welcome To YelpCamp{" "}
 					<FontAwesomeIcon icon={faMountain} />
 				</h1>
-				<Button fn={() => history.push("home")} styles={{padding: '10px'}}>
+				<Button fn={() => history.push("home")} style={{padding: '10px'}}>
 					View Campsites
 				</Button>
 			</div>

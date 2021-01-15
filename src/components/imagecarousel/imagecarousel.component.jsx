@@ -2,8 +2,6 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons
 import React, { useState } from 'react'
 import { CSSTransition } from 'react-transition-group';
 import { usePreloadImages } from '../../utils/ui-hooks';
-import Image from '../image/image.component'
-import { Loader } from '../misc/loadinganimations.styles';
 import { ImageCarouselBtnBack, ImageCarouselBtnForward, ImageCarouselContainer, ImageCarouselSlide, ImageCarouselSlideIndicator, ImageCarouselSlideIndicatorGroup } from './imagecarousel.styles'
 const ImageCarousel = ({images}) => {
 

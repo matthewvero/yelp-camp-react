@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ButtonContainer } from "./button.styles";
 
-const Button = ({ children, fn, styles }) => {
+const Button = ({ children, fn, style }) => {
 	const [animated, setAnimated] = useState(false)
 	const handleClick = () => {
 		fn();
@@ -10,7 +10,7 @@ const Button = ({ children, fn, styles }) => {
 
 	return (
 		<ButtonContainer 
-			style={styles}
+			style={style}
 			onMouseDown={() => setAnimated(true)}
 			onMouseUp={() => handleClick()}
 			animated={animated}>

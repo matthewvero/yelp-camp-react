@@ -67,7 +67,7 @@ export const ImageCarouselSlideIndicator = styled.div`
 		const {activeImage, idx, arrLength} = props;
 		const arrayLength = arrLength - 1;
 		if (props.activeImage === props.idx){
-			return '1.5'
+			return '1.6'
 		} else if (activeImage > idx) {
 			const increments = 1 / activeImage;
 			const height = increments * idx;
@@ -82,6 +82,7 @@ export const ImageCarouselSlideIndicator = styled.div`
 	cursor: pointer;
 `
 
+
 export const ImageCarouselSlideIndicatorGroup = styled.div`
 	position: absolute;
 	z-index: 2;
@@ -90,7 +91,7 @@ export const ImageCarouselSlideIndicatorGroup = styled.div`
 	transform: translateX(-50%);
 	display: flex;
 	align-items: center;
-	height: 30px;
+	height: 35px;
 	border-radius: 10px;
 	transition: transform 100ms ease-out;
 	backdrop-filter: blur(20px);
@@ -100,6 +101,4 @@ export const ImageCarouselSlideIndicatorGroup = styled.div`
 	}
 	
 `
-
-
 

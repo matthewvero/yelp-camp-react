@@ -88,13 +88,13 @@ const MainMenu = ({history}) => {
                               :
                                     <MainMenuButtonContainer>
                                           <HeaderButton 
-                                                styles={{margin: '10px', padding: '10px'}}
+                                                style={{margin: '10px', padding: '10px'}}
                                                 onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.login))}
                                           >
                                                 Log In
                                           </HeaderButton>
                                           <HeaderButton 
-                                                styles={{margin: '10px', padding: '10px'}}
+                                                style={{margin: '10px', padding: '10px'}}
                                                 onClick={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.signup))}
                                           >
                                                 Sign Up
@@ -170,7 +170,7 @@ const MainMenu = ({history}) => {
                               unmountOnExit
                         >
                               <Page>
-                                    <SubTitle styles={{margin: '5px 0'}}>Settings</SubTitle>
+                                    <SubTitle style={{margin: '5px 0'}}>Settings</SubTitle>
                                     <MMDivider/>
                                     <MainMenuItemTouch fn={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>

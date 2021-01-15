@@ -84,7 +84,8 @@ export const likeCampsite = async (campsiteID, userID, liked) => {
 
 			campsiteRef.update({
 				likedBy: firebase.firestore.FieldValue.arrayRemove(userID)
-			}).catch(err => alert('Something Went Wrong'))
+			})
+			.catch(err => alert('Something Went Wrong'))
 		: 
 			campsiteRef.update({
 				likedBy: firebase.firestore.FieldValue.arrayUnion(userID)
@@ -95,7 +96,21 @@ export const likeCampsite = async (campsiteID, userID, liked) => {
 	}
 }
 
+// COMMENT UTILITIES
 
+export const addComment = async (userID, comment, campsiteID) => {
+	if (userID) {
+		const data = {
+			user: userID,
+			comment,
+			campsiteID
+		}
+		const commentRef = db.collection('comments');
+		commentRef.add(data)
+	} else {
+		alert('You need to be signed in to do that')
+	}
+}
 
 // USER UTILITIES
 

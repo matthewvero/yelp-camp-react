@@ -4,8 +4,8 @@ import { ContentContainer } from "../misc/containers.styles";
 
 export const CampsiteCardThing = styled.div`
 	z-index: 3;
-	height: 100px;
-	width: 100px;
+	height: 110px;
+	width: 110px;
 	position: absolute;
 	top: -100px;
 	right: -100px;
@@ -30,52 +30,13 @@ export const CampsiteCardContainer = styled(ContentContainer)`
 		box-shadow: ${props => props.theme.boxShadowRaised};
 	}
 	&:hover ${CampsiteCardThing} {
-		transform: translate(-60%, 55%);
+		transform: translate(-75%, 40%);
 
 	}
 	@media (max-width: ${props => props.theme.smallBreakPoint}){
 		min-height: 300px;
 		max-height: 300px;
 	}
-`;
-
-
-export const CampsiteCardHeart = styled(FontAwesomeIcon)`
-	&:before {
-		content: " ";
-		height: 10px;
-		width: 10px;
-		background-color: white;
-	}
-	z-index: 3;
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	font-size: 2rem;
-	transition: all 0.3s;
-	
-	cursor: pointer;
-	color: ${props => {
-		if (props.active && !props.liked) {
-			return 'rgb(255, 100, 100)'
-		} else if (props.hovering){
-			return 'pink'
-		} else if (props.liked) {
-			return 'rgb(255, 100, 100)'
-		} else {
-			return 'white'
-		}
-	}};
-	transform: ${props => {
-		if (props.active ) {
-			return 'scale(1.2)'
-		} else if (props.hovering){
-			return 'scale(1.1)'
-		} else {
-			return 'scale(1)'
-		}
-	}};
-
 `;
 
 export const CampsiteCardImageContainer = styled.div`

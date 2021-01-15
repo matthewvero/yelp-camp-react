@@ -149,3 +149,8 @@ export const CollapsibleContainerIcon = styled(FontAwesomeIcon)`
 	    }
 	font-size: 2rem;
 `
+
+export const HR = styled.hr`
+	width: 90%;
+	border: solid 1px ${props => props.theme.main};
+`

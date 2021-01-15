@@ -3,17 +3,22 @@ import { db, storage } from "../firebase";
 
 
 export function useLikeListener(campsite, user) {
-      const [liked, setLiked] = useState(false);
+	const [liked, setLiked] = useState(false);
+	const [likedBy, setLikedBy] = useState([])
       useEffect(() => {
-		const unsub = db.collection('campsites')
-		.doc(campsite.id)
-		.onSnapshot(snapshot => {
-			const data = snapshot.data();
-			setLiked(data.likedBy.includes(user.uid))
-		})
-		return () => unsub();
-      }, [campsite.id, user.uid])
-      return liked
+		if(campsite){
+			const unsub = db.collection('campsites')
+			.doc(campsite.id)
+			.onSnapshot(snapshot => {
+				const data = snapshot.data();
+				setLikedBy(data.likedBy)
+				user &&
+				setLiked(data.likedBy.includes(user.uid))
+			})
+			return () => unsub();
+		}
+      }, [campsite, user, user])
+      return {liked, likedBy}
 }
 
 export function useGetCampsite(id) {

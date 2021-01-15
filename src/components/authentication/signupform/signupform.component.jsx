@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { SignedUp } from "../../../events/auth-events";
-import { auth } from "../../../firebase";
+import { auth, db } from "../../../firebase";
 import { setUser } from "../../../redux/auth-redux/auth.actions";
 import {
 	FormInputButton,
@@ -33,6 +33,10 @@ const SignupForm = () => {
 			.updateProfile({
 				displayName: username,
 			});
+			db.collection('userProfiles').add({
+				userID: res.user.uid,
+				displayName: username
+			}).catch(err => console.log(err))
 			dispatch(
 				setUser({
 					...res,
