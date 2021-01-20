@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { ThemeContext } from "styled-components";
-import { storage } from "../../firebase";
 import { useCampsiteImageURLS } from "../../utils/campsite-hooks";
 import Image from "../image/image.component";
 import { CampsiteCardLongContainer, CampsiteCardLongTextContainer, CampsiteCardLongPriceContainer, CampsiteCardLongTitle, CampsiteCardLongSubText } from "./campsite-card-long.styles";
 
 const CampsiteCardLong = ({ campsite }) => {
 	const themeContext = useContext(ThemeContext);
-	const [image, setImage] = useState();
 
 	const images = useCampsiteImageURLS(campsite.id)
 

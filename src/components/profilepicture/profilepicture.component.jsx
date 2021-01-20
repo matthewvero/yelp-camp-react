@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { addProfileImage, getUserImages } from "../../firebase.utils";
 import Image from "../image/image.component";
@@ -19,6 +19,8 @@ const ProfilePicture = ({userID, editable}) => {
 	const [image, setImage] = useState([]);
 	const user = useSelector(state => state.authReducer.user);
 	const userProfile = useSelector(state => state.authReducer.userProfile)
+	const imageRef = useRef()
+	const noImageRef = useRef()
 	useEffect(() => {
 		if(userID === user.uid){
 			setImage(userProfile.profilePicture)
@@ -59,8 +61,9 @@ const ProfilePicture = ({userID, editable}) => {
 				classNames='switcher'
 				timeout={100}
 				unmountOnExit
+				nodeRef={imageRef}
 			>
-				<Switcher>
+				<Switcher ref={imageRef}>
 					<Image image={image} />
 				</Switcher>
 			</CSSTransition>
@@ -70,8 +73,9 @@ const ProfilePicture = ({userID, editable}) => {
 				classNames='switcher'
 				timeout={100}
 				unmountOnExit
+				nodeRef={noImageRef}
 			>
-				<Switcher>
+				<Switcher ref={noImageRef}>
 					<NoProfileImage>
 						<NoProfileImageIcon
 							icon={faUser}

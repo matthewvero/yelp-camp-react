@@ -49,12 +49,12 @@ export const HeaderButton = styled.div`
 	align-items: center;
 	align-self: center;
 	border-radius: 500px;
-	background-color: ${(props) => props.animated ? props.theme.backgroundActive : props.theme.backgroundAlt};
+	background-color: ${(props) => props.$active ? props.theme.backgroundActive : props.theme.backgroundAlt};
 	color: ${(props) => props.theme.textAlt};
 	font-size: 1.3rem;
 	transition: transform 100ms linear;
 	user-select: none;
-	transform: scale(${props => props.animated ? '0.95' : '1'}); 
+	transform: scale(${props => props.$active ? '0.95' : '1'}); 
 	cursor: pointer;
 	@media (min-width: ${props => props.theme.smallBreakPoint}) {
 		&:hover {

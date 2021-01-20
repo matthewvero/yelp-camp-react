@@ -154,3 +154,17 @@ export const HR = styled.hr`
 	width: 90%;
 	border: solid 1px ${props => props.theme.main};
 `
+
+export const CommunityContentSection = styled.div`
+      height: 100%; 
+      width: 100%; 
+      background-color: ${props => props.theme.background}; 
+      padding: 20px;
+      border-radius: 10px;
+      display: "flex";
+      flex-direction: column;
+      align-items: flex-start;
+      overflow-y: scroll;
+	text-align: left;
+	box-sizing: border-box;
+`

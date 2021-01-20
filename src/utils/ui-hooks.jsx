@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useCampsiteImageURLS } from "./campsite-hooks";
 
 export function useDarkMode() {
 
@@ -83,6 +82,8 @@ export function usePreloadImages(images) {
 			img.src = el;
             });
 		setImagesArr(loadedImages);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [images]);
       return imagesArr
 }
+

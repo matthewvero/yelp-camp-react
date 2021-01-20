@@ -1,4 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components/macro";
 import { ContentContainer } from "../misc/containers.styles";
 
@@ -7,12 +6,14 @@ export const CampsiteCardThing = styled.div`
 	height: 110px;
 	width: 110px;
 	position: absolute;
-	top: -100px;
-	right: -100px;
+	top: -110px;
+	right: -110px;
 	background-color: ${props => props.theme.main};
 	border-radius: 20%;
-	transition: all 100ms ease-in;
+	transition: all 75ms ease-in;
 	box-shadow: ${props => props.theme.boxShadow};
+	border: 5px solid dodgerblue;
+	will-change: transform;
 `;
 
 

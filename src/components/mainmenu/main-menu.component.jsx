@@ -1,6 +1,6 @@
 import { faChevronLeft, faCog, faHeart, faUser } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import { CircleButtonContainer, HeaderButton } from '../header/header.styles'
@@ -26,7 +26,13 @@ const MainMenu = ({history}) => {
       const MainMenuItemTouch = withTouchAnimator(MainMenuItem);
       const activeSubMenu = useSelector(state => state.uiReducer[uiTypes.mainMenuActiveSub])
       const dispatch = useDispatch()
-      const ref = useRef()
+      const menuRef = useRef()
+      const subMenuRef = useRef()
+      const settingsRef = useRef()
+      const loginRef = useRef()
+      const signUpRef = useRef()
+      const welcomeRef = useRef()
+      
       const handleLogOut = () => {
             auth.signOut();
             dispatch(destroySession())
@@ -48,13 +54,14 @@ const MainMenu = ({history}) => {
             
       }, [dispatch, menuVisible])
 
-      useClickOutside(() => dispatch(setMenuVisibility({menu: uiTypes.menus.mainMenuVisible, visible: false})), menuVisible, ref)
+      useClickOutside(() => dispatch(setMenuVisibility({menu: uiTypes.menus.mainMenuVisible, visible: false})), menuVisible, menuRef)
       
       useEffect(() => {
             window.addEventListener('SignedIn', handleSignUp)
             return () => {
                   window.removeEventListener('SignedIn', handleSignUp)
             }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [])
 
 
@@ -65,9 +72,10 @@ const MainMenu = ({history}) => {
                   classNames='mainMenu'
                   timeout={200}
                   unmountOnExit
+                  nodeRef={menuRef}
             >
             
-            <MainMenuContainer ref={ref}>
+            <MainMenuContainer ref={menuRef}>
                   <MMProfile >
                         <MainMenuProfilePicture>
                               <ProfilePicture userID={user.uid} editable={false}/>
@@ -111,8 +119,9 @@ const MainMenu = ({history}) => {
                               classNames='mainMenuPage'
                               timeout={100}
                               unmountOnExit
+                              nodeRef={subMenuRef}
                         >
-                              <Page>
+                              <Page ref={subMenuRef}>
                                     <MainMenuItemTouch >
                                           <SubTitle>Likes</SubTitle>
                                           <FontAwesomeIcon icon={faHeart} style={{color: themeContext.textAlt, margin: '0 10px', fontSize: '1.3rem'}}/>
@@ -129,8 +138,9 @@ const MainMenu = ({history}) => {
                               classNames='mainMenuPage'
                               timeout={100}
                               unmountOnExit
+                              nodeRef={signUpRef}
                         >
-                              <Page>
+                              <Page ref={signUpRef}>
                                     <MainMenuItemTouch fn={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
                                     </MainMenuItemTouch>
@@ -142,8 +152,9 @@ const MainMenu = ({history}) => {
                               classNames='mainMenuPage'
                               timeout={100}
                               unmountOnExit
+                              nodeRef={loginRef}
                         >
-                              <Page>
+                              <Page ref={loginRef}>
                                     <MainMenuItemTouch fn={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
                                     </MainMenuItemTouch>
@@ -155,8 +166,9 @@ const MainMenu = ({history}) => {
                               classNames='mainMenuPage'
                               timeout={100}
                               unmountOnExit
+                              nodeRef={welcomeRef}
                         >
-                              <Page>
+                              <Page ref={welcomeRef}>
                                     <MainMenuItemTouch fn={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>
                                           <FontAwesomeIcon icon={faChevronLeft} style={{color: themeContext.color, margin: '0 10px', fontSize: '1.3rem'}}/>
                                     </MainMenuItemTouch>
@@ -168,8 +180,9 @@ const MainMenu = ({history}) => {
                               classNames='mainMenuPage'
                               timeout={100}
                               unmountOnExit
+                              nodeRef={settingsRef}
                         >
-                              <Page>
+                              <Page ref={settingsRef}>
                                     <SubTitle style={{margin: '5px 0'}}>Settings</SubTitle>
                                     <MMDivider/>
                                     <MainMenuItemTouch fn={() => dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))}>

@@ -13,11 +13,11 @@ export const CampsitePageGrid = styled.div`
       margin-top: 10px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr 1fr;
+      grid-template-rows: auto 475px 1fr;
       gap: 1rem;
       @media (max-width: ${props => props.theme.mediumBreakPoint}) { 
             grid-template-columns: 1fr;
-            grid-auto-rows: 1fr;
+            grid-auto-rows: auto;
       }
 `
 export const CampsitePageInfoGrid = styled.div`
@@ -32,15 +32,3 @@ export const CampsitePageInfoGrid = styled.div`
       align-items: center;
 `
 
-export const CampsitePageCommentSection = styled.div`
-      height: 250px; 
-      width: 90%; 
-      background-color: ${props => props.theme.background}; 
-      padding: 20px;
-      border-radius: 10px;
-      display: "flex";
-      flex-direction: column;
-      align-items: flex-start;
-      overflow-y: scroll;
-      text-align: left;
-`

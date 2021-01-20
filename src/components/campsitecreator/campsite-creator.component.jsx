@@ -104,6 +104,7 @@ const CampsiteCreator = () => {
 					classNames="page"
 					timeout={200}
 					unmountOnExit
+					
 				>
 					<CCStart />
 				</CSSTransition>
@@ -112,6 +113,7 @@ const CampsiteCreator = () => {
 					classNames="page"
 					timeout={200}
 					unmountOnExit
+					
 				>
 					<CCCreate />
 				</CSSTransition>
@@ -120,6 +122,7 @@ const CampsiteCreator = () => {
 					classNames="page"
 					timeout={200}
 					unmountOnExit
+					
 				>
 					<CCReview />
 				</CSSTransition>

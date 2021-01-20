@@ -55,6 +55,7 @@ export const SubText = styled.p`
   font-weight: 400;
   color: ${props => props.theme.subText};
   margin: 0;
+  vertical-align: middle;
   @media (max-width: ${props => props.theme.smallBreakPoint}) {
             font-size: 0.8rem;
 	    }

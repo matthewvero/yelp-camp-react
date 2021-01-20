@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { auth } from "../firebase";
 import { getUserImages } from "../firebase.utils";

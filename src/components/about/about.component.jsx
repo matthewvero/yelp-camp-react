@@ -6,7 +6,8 @@ import { SectionTitle, SubTitle, Text } from '../misc/text.styles';
 import { AboutSection } from './about.styles';
 
 const About = ({profileInfo, editable}) => {
-      const [editing, setEditing] = useState(false)
+      // const [editing, setEditing] = useState(false)
+      // Finish This
       const themeContext = useContext(ThemeContext);
       const [collapsed, setCollapsed] = useState(window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`).matches);
       useEffect(() => {
@@ -22,6 +23,7 @@ const About = ({profileInfo, editable}) => {
             return () => {
                   windowSize.removeEventListener('change', handleChange);
             }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [])
 
       return (

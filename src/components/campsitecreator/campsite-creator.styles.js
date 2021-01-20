@@ -122,7 +122,7 @@ export const CCImageInput = styled.label`
 	align-items: center;
 	border-radius: 10px;
 	border: none;
-	background-color: ${(props) => props.animated ? props.theme.background.active : props.theme.background};
+	background-color: ${(props) => props.$active ? props.theme.backgroundActive : props.theme.background};
 	color: ${(props) => props.theme.textAlt};
 	font-size: 1.3rem;
 	transition: transform 25ms linear;
@@ -133,7 +133,7 @@ export const CCImageInput = styled.label`
 	&:hover {
 		background-color: ${(props) => props.theme.backgroundHover};
 	}
-	transform: ${props => props.animated ? `scale(0.95)` : `scale(1)`};
+	transform: ${props => props.$active ? `scale(0.95)` : `scale(1)`};
 
 	@media (max-width: ${props => props.theme.smallBreakPoint}) {
 		grid-row: 3/4;

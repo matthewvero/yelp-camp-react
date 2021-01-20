@@ -62,7 +62,7 @@ export const MainMenuItem = styled.div`
       padding: 0 10%;
       margin: 5px 0;
       cursor: pointer;
-      background-color: ${props => props.animated && 'rgba(50,50,50, 0.5)'};
+      background-color: ${props => props.$active && 'rgba(50,50,50, 0.5)'};
       @media (min-width: ${props => props.theme.smallBreakPoint}) {
             &:hover {
                   background-color: ${props => props.theme.mainMenuItemHover};

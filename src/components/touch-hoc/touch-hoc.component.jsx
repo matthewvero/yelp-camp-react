@@ -26,8 +26,8 @@ const withTouchAnimator = (WrappedComponent) => {
         return (
           <WrappedComponent
             {...props}
-            active={active}
-            hovering={hovering}
+            $active={active}
+            $hovering={hovering}
             onPointerDown={e => handlePointerDown(e)}
             onPointerUp={e => handlePointerUp(e)}
             onMouseLeave={handleMouseLeave}

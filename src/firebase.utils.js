@@ -112,6 +112,27 @@ export const addComment = async (userID, comment, campsiteID) => {
 	}
 }
 
+// REVIEW UTILITIES
+
+export const addReview = async (userID, campsiteID, data) => {
+	if (userID) {
+		const reviewRef = db.collection('reviews');
+		reviewRef.add({
+			campsiteID,
+			userID,
+			data
+		})
+	} else {
+		alert('You need to be signed in to do that')
+	}
+}
+
+export const getReviews = async (campsiteID) => {
+	const reviewRef = await db.collection('reviews').where('campsiteID', '==', campsiteID ).get()
+	const reviews = reviewRef.docs.map(el => el.data())
+	return reviews
+}
+
 // USER UTILITIES
 
 export function logOut(history) {

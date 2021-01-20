@@ -50,6 +50,8 @@ const CampsiteCard = ({ campsite, history }) => {
 				top: '15px',
 				right: '20px',
 				fontWeight: '600',
+				color: 'white',
+				filter: 'drop-shadow(0 0 2px black)'
 			}}>
 				{likedBy.length}
 			</Text>

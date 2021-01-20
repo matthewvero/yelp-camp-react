@@ -17,7 +17,7 @@ export function useLikeListener(campsite, user) {
 			})
 			return () => unsub();
 		}
-      }, [campsite, user, user])
+      }, [campsite, user])
       return {liked, likedBy}
 }
 

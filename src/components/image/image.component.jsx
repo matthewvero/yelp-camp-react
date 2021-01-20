@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { Loader } from "../misc/loadinganimations.styles";
 import { ImageContainer, ImageSwitcher } from "./image.styles";
 
 const Image = ({ image, style }) => {
 	const [loaded, setLoaded] = useState(false)
+	const imageRef = useRef(null)
 	return (
 		<ImageContainer style={style}>
 			<CSSTransition
@@ -12,8 +13,9 @@ const Image = ({ image, style }) => {
 				classNames='image'
 				timeout={500}
 				unmountOnExit
+				nodeRef={imageRef}
 			>
-				<ImageSwitcher>
+				<ImageSwitcher ref={imageRef}>
 					<Loader/>
 				</ImageSwitcher>
 			</CSSTransition>

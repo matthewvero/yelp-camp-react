@@ -22,7 +22,8 @@ const ProfilePage = ({match}) => {
 	const [camps, setCamps] = useState();
 	const [profileInfo, setProfileInfo] = useState({});
 	const [editable, setEditable] = useState(false);
-	const [editing, setEditing] = useState(false)
+	// const [editing, setEditing] = useState(false)
+	// Finish this
 
 	useEffect(() => {
 		const setUserProfile = async () => {

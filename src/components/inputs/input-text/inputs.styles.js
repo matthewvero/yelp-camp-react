@@ -11,6 +11,19 @@ export const FormInputText = styled.input`
 	outline: none;
 `;
 
+export const FormInputTextArea = styled.textarea`
+	width: 100%;
+	font-size: 1.3rem;
+	box-sizing: border-box;
+	background-color: ${(props) => props.theme.background};
+	color: ${(props) => props.theme.textAlt};
+	border: none;
+	border-radius: 10px;
+	outline: none;
+	font-family: Helvetica, sans-serif;
+	resize: none;
+`
+
 export const FormInputLabel = styled.label`
 	margin: 1%;
 	font-size: 1rem;

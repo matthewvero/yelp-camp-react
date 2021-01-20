@@ -14,9 +14,9 @@ export const LikeButtonHeart = styled(FontAwesomeIcon)`
 	filter: drop-shadow(0 0 2px black);
 	cursor: pointer;
 	color: ${props => {
-		if (props.active && !props.liked) {
+		if (props.$active && !props.liked) {
 			return 'rgb(255, 100, 100)'
-		} else if (props.hovering){
+		} else if (props.$hovering){
 			return 'pink'
 		} else if (props.liked) {
 			return 'rgb(255, 100, 100)'
@@ -25,7 +25,7 @@ export const LikeButtonHeart = styled(FontAwesomeIcon)`
 		}
 	}};
 	transform: ${props => {
-		if (props.active ) {
+		if (props.$active ) {
 			return 'scale(1.2)'
 		} else if (props.hovering){
 			return 'scale(1.1)'
