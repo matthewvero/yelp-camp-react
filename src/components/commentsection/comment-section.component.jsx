@@ -6,6 +6,7 @@ import { useCommentListener } from '../../utils/comment-hooks';
 import Comment from '../comment/comment.component';
 import { FormInputText } from '../inputs/input-text/inputs.styles';
 import { CommunityContentSection, ContentContainer } from '../misc/containers.styles';
+import { Text } from '../misc/text.styles';
 import { CommentSectionGrid } from './comment-section.styles'
 
 const CommentSection = ({campsiteID, userID}) => {
@@ -16,8 +17,6 @@ const CommentSection = ({campsiteID, userID}) => {
 		addComment(userID, commentInput, campsiteID);
 		setCommentInput('');
       }
-
-
 
       // useEffect(() => {
 	// 	const getUsername = async () => {
@@ -37,7 +36,8 @@ const CommentSection = ({campsiteID, userID}) => {
                               style={{
                                     display: 'flex', 
                                     gridRow: '1/2',
-                                    gridColumn: '1/2'
+                                    gridColumn: '1/2',
+                                    boxSizing: 'border-box'
                               }}
                         >
                         
@@ -45,7 +45,7 @@ const CommentSection = ({campsiteID, userID}) => {
                               placeholder='Add a Comment...' 
                               style={{
                                     width: '90%', 
-                                    padding: '15px 20px', 
+                                    padding: '0 20px',
                                     justifySelf: 'flex-start',
                                     borderTopRightRadius: '0',
                                     borderBottomRightRadius: '0',
@@ -92,10 +92,13 @@ const CommentSection = ({campsiteID, userID}) => {
                         }
                         </div>
                         <CommunityContentSection style={{gridRow: '2/3'}}>
-                              {
+                              {     
+                                    comments.length ? 
                                     comments.map((el, idx) => (
                                           <Comment key={idx} data={el} userID={userID}/>
                                     ))
+                                    :
+                                    <Text style={{textAlign: 'center'}}>No Comments Yet...</Text>
                               }
                               
                         </CommunityContentSection>

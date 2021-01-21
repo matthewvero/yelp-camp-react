@@ -41,6 +41,10 @@ const ProfilePicture = ({userID, editable}) => {
 		});
 	};
 
+	useEffect(() => {
+		console.log(image)
+	}, [image])
+
 	return (
 		<div style={{height: '100%', width: '100%', position: 'relative'}}>
 		
@@ -57,7 +61,7 @@ const ProfilePicture = ({userID, editable}) => {
 			/>
 
 			<CSSTransition
-				in={image ? true : false}
+				in={image && image.length ? true : false}
 				classNames='switcher'
 				timeout={100}
 				unmountOnExit
@@ -69,7 +73,7 @@ const ProfilePicture = ({userID, editable}) => {
 			</CSSTransition>
 			
 			<CSSTransition
-				in={image ? false : true}
+				in={image && image.length ? false : true}
 				classNames='switcher'
 				timeout={100}
 				unmountOnExit

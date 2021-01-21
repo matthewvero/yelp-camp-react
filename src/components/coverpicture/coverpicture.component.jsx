@@ -40,6 +40,9 @@ const CoverPicture = ({userID, editable}) => {
 	}, [user, userID, userProfile.coverImages]);
 
 
+	useEffect(() => {
+		console.log(images)
+	}, [images])
 	return (
 		<CoverPictureContainer>
 			{editable &&
@@ -51,8 +54,9 @@ const CoverPicture = ({userID, editable}) => {
 			<InputImage setImageFn={updateCoverImage} id="coverImage" />
 
 			{
-				
-			images ? (
+			
+			images &&
+			images.length ? (
 
 				<Image image={images[0]} />
 

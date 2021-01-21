@@ -7,7 +7,7 @@ export function useCommentListener(campsiteID) {
             const queryRef = db.collection('comments').where('campsiteID', '==', campsiteID);
             const unsub = queryRef.onSnapshot(snapshot => {
                   const commentArr = snapshot.docs.map(el => el.data());
-                  console.log(commentArr)
+                  
                   setComments(commentArr)
             })
             return () => {

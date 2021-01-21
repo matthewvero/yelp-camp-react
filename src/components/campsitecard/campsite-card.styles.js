@@ -6,14 +6,15 @@ export const CampsiteCardThing = styled.div`
 	height: 110px;
 	width: 110px;
 	position: absolute;
-	top: -110px;
-	right: -110px;
+	top: -60px;
+	right: -30px;
 	background-color: ${props => props.theme.main};
 	border-radius: 20%;
-	transition: all 75ms ease-in;
-	box-shadow: ${props => props.theme.boxShadow};
+	transition: all 100ms ease-in;
+	box-shadow: 0 0 10px black;
 	border: 5px solid dodgerblue;
-	will-change: transform;
+	will-change: opacity;
+	opacity: 0;
 `;
 
 
@@ -31,7 +32,7 @@ export const CampsiteCardContainer = styled(ContentContainer)`
 		box-shadow: ${props => props.theme.boxShadowRaised};
 	}
 	&:hover ${CampsiteCardThing} {
-		transform: translate(-75%, 40%);
+		opacity: 1;
 
 	}
 	@media (max-width: ${props => props.theme.smallBreakPoint}){

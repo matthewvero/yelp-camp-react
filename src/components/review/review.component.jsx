@@ -23,7 +23,7 @@ const Review = ({review}) => {
       }, [review])
 
       const handleResize = () => {
-            setCollapse(reviewRef.current.offsetWidth < 610);
+            setCollapse(reviewRef.current.offsetWidth < 625);
       }
            
       const debounceResize = useDebounce(handleResize, 100)

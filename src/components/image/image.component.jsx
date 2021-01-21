@@ -4,12 +4,13 @@ import { Loader } from "../misc/loadinganimations.styles";
 import { ImageContainer, ImageSwitcher } from "./image.styles";
 
 const Image = ({ image, style }) => {
+	console.log(image)
 	const [loaded, setLoaded] = useState(false)
 	const imageRef = useRef(null)
 	return (
 		<ImageContainer style={style}>
 			<CSSTransition
-				in={!loaded}
+				in={ !loaded}
 				classNames='image'
 				timeout={500}
 				unmountOnExit

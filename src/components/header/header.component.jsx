@@ -18,13 +18,13 @@ const Header = ({ history }) => {
 	const [collapsed, setCollapsed] = useState(window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`).matches);
 	const user = useSelector(state => state.authReducer.user)
 	const handleLogIn = () => {
-		dispatch(setMenuVisibility({menu: uiTypes.mainMenu, visible: true}));
+		dispatch(setMenuVisibility({menu: uiTypes.menus.mainMenuVisible, visible: true}));
 		dispatch(setMainMenuSubMenu(uiTypes.subMenus.login))
 	
 	}
 
 	const handleSignUp = () => {
-		dispatch(setMenuVisibility({menu: uiTypes.mainMenu, visible: true}));
+		dispatch(setMenuVisibility({menu: uiTypes.menus.mainMenuVisible, visible: true}));
 		dispatch(setMainMenuSubMenu(uiTypes.subMenus.signup))
 	
 	}
