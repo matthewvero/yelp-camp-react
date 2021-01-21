@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { getUserImages } from "../firebase.utils";
 import { setUser, setUserProfile } from "../redux/auth-redux/auth.actions";
 
@@ -27,4 +27,20 @@ export function useAuthListener() {
 		});
 	}, [dispatch]);
 
+}
+
+export function useGetUsername(userID) {
+	const [username, setUsername] = useState()
+	useEffect( () => {
+		if (userID) {
+			const getUsername = async () => {
+				const query = await db.collection('userProfiles').where('userID', '==', userID).get();
+				setUsername(query.docs[0].data().displayName)
+			}
+			getUsername()
+
+		}
+
+	}, [userID])
+	return username
 }

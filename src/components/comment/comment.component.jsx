@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { db } from '../../firebase';
+import { useGetUsername } from '../../utils/auth-hooks';
 import { HR } from '../misc/containers.styles';
 import { Text } from '../misc/text.styles'
 
 const Comment = ({data, userID}) => {
       // const [editing, setEditing] = useState(false);
       // Finish this
-      const [username, setUsername] = useState('');
-      useEffect( () => {
-            const getUsername = async () => {
-                  const query = await db.collection('userProfiles').where('userID', '==', userID).get();
-                  setUsername(query.docs[0].data().displayName)
-            }
-            getUsername()
-      }, [userID])
+      const username = useGetUsername(data.user);
       return (
             <React.Fragment>
                   <div style={{height: 'auto', display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', width: '100%'}}>

@@ -7,6 +7,7 @@ import Rating from '../rating/rating-component'
 import { RatingsGrid } from '../reviewcreator/review-creator.styles'
 import { RatingBar, RatingSection, ReviewContainer, RatingBarPercentage } from './review.styles'
 import { useDebounce } from '../../utils/misc-hooks'
+import { useGetUsername } from '../../utils/auth-hooks'
 
 const Review = ({review}) => {
       const [averageRating, setAverageRating] = useState(0);
@@ -14,6 +15,7 @@ const Review = ({review}) => {
       const [categories, setCategories] = useState({});
       const [collapse, setCollapse] = useState(false);
       const reviewRef = useRef();
+      const username = useGetUsername(review.userID);
       useEffect(() => {
             const {ratings} = review.data;
             const ratingSum = Object.keys(ratings).reduce((prev, cur) => prev + ratings[cur], 0);
@@ -25,6 +27,8 @@ const Review = ({review}) => {
       const handleResize = () => {
             setCollapse(reviewRef.current.offsetWidth < 625);
       }
+
+
            
       const debounceResize = useDebounce(handleResize, 100)
        
@@ -42,7 +46,7 @@ const Review = ({review}) => {
             <ReviewContainer expanded={expanded} ref={reviewRef} collapse={collapse}>
                   <div style={{display: 'flex', height: '30px', alignItems: 'center'}}>
                         <SubTitle>{review.data.heading}</SubTitle>
-                        <Text style={{margin: '2%', color: '#666666'}}> - MattVero</Text>
+                        <Text style={{margin: '2%', color: '#666666'}}> - {username}</Text>
                   </div>
                   <Text 
                         style={{
