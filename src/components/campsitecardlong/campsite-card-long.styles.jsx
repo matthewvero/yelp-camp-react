@@ -15,6 +15,7 @@ export const CampsiteCardLongContainer = styled.div`
       background-color: ${props => props.theme.main};
       border-radius: ${props => props.theme.borderRadius};
       box-shadow: ${props => props.theme.boxShadow};
+      cursor: pointer;
       @media (max-width: ${props => props.theme.smallBreakPoint}) {
 		grid-template-columns: 100px 45% auto;
             grid-template-rows: 70% auto;

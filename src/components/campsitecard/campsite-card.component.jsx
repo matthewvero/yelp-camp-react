@@ -10,14 +10,14 @@ import {
 import Image from "../image/image.component";
 import { SubTitle, Text } from "../misc/text.styles";
 import { useSelector } from "react-redux";
-import { useCampsiteImageURLS, useLikeListener } from "../../utils/campsite-hooks";
+import { useCampsiteImageURLS, useLikeListener, useRatingCalculator } from "../../utils/campsite-hooks";
 import { withRouter } from "react-router";
 import LikeButton from "../likebutton/like-button.component";
 
 const CampsiteCard = ({ campsite, history }) => {
 	const themeContext = useContext(ThemeContext);
 	const user = useSelector(state => state.authReducer.user);
-	
+	const {averageRating} = useRatingCalculator(campsite.id)
 	const {likedBy} = useLikeListener(campsite)
 
 	const images = useCampsiteImageURLS(campsite.id);
@@ -55,9 +55,9 @@ const CampsiteCard = ({ campsite, history }) => {
 			</Text>
 			<CardContentContainer>
 				<span style={{ color: themeContext.color }}>
-					<FontAwesomeIcon icon={faStar} />
+					<FontAwesomeIcon icon={faStar} style={{marginRight: '10px'}}/>
 
-					{campsite.rating}
+					{averageRating.toFixed(1)}
 				</span>
 				<SubTitle
 					style={{
