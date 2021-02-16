@@ -5,7 +5,7 @@ export const CommentSectionGrid = styled.div`
       height: 100%;
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-rows: 1fr 9fr;
+      grid-template-rows: minmax(44.5px, 1fr) 9fr;
       gap: 10px;
       box-sizing: border-box;
 `;    

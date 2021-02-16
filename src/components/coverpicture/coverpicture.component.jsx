@@ -39,10 +39,6 @@ const CoverPicture = ({userID, editable}) => {
 		}
 	}, [user, userID, userProfile.coverImages]);
 
-
-	useEffect(() => {
-		console.log(images)
-	}, [images])
 	return (
 		<CoverPictureContainer>
 			{editable &&

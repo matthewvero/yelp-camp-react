@@ -41,10 +41,6 @@ const ProfilePicture = ({userID, editable}) => {
 		});
 	};
 
-	useEffect(() => {
-		console.log(image)
-	}, [image])
-
 	return (
 		<div style={{height: '100%', width: '100%', position: 'relative'}}>
 		

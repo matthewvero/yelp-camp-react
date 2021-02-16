@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import { ContentContainer } from '../misc/containers.styles'
 import { SubTitle, Text } from '../misc/text.styles'
@@ -8,23 +8,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { ReviewSectionGrid, ReviewsSectionSlide } from './reviews-section.styles'
 import ReviewCreator from '../reviewcreator/review-creator.component'
-import { getReviews } from '../../firebase.utils'
+import { useReviewListener } from '../../utils/campsite-hooks'
 
-const ReviewsSection = ({campsiteID, user}) => {
+const ReviewsSection = ({campsiteID}) => {
       const [creating, setCreating] = useState(false);
-      const [reviews, setReviews] = useState([])
-
-      useEffect(() => {
-            const fetchReviews = async () => {
-                  const reviewData = await getReviews(campsiteID);
-                  setReviews(reviewData)
-            }
-            fetchReviews()
-      }, [campsiteID])
-
-
+      const creatorRef = useRef(null);
+      const reviewsRef = useRef(null);
+      const reviews = useReviewListener(campsiteID)
      
-
+      
 
       return (
             <ContentContainer style={{padding: '10px'}}>
@@ -55,10 +47,11 @@ const ReviewsSection = ({campsiteID, user}) => {
                               classNames='reviewSection'
                               timeout={200}
                               unmountOnExit
+                              nodeRef={reviewsRef}
                         >
-                              <ReviewsSectionSlide>
+                              <ReviewsSectionSlide ref={reviewsRef}>
                                     {     
-                                          reviews.length ? 
+                                          reviews && reviews.length ? 
                                           reviews.map((el, idx) => (
                                                 <Review review={el} key={idx}/>
                                           ))
@@ -73,9 +66,10 @@ const ReviewsSection = ({campsiteID, user}) => {
                               classNames='reviewSection'
                               timeout={200}
                               unmountOnExit
+                              nodeRef={creatorRef}
                         >
-                              <ReviewsSectionSlide>
-                                    <ReviewCreator campsiteID={campsiteID} user={user}/>
+                              <ReviewsSectionSlide ref={creatorRef}>
+                                    <ReviewCreator campsiteID={campsiteID} exit={() => setCreating(false)}/>
                               </ReviewsSectionSlide>
                         </CSSTransition>
                   </CommunityContentSection>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { db, storage } from "../firebase";
+import { getReviews } from "../firebase.utils";
 
 
 export function useLikeListener(campsite, user) {
@@ -21,19 +22,6 @@ export function useLikeListener(campsite, user) {
       return {liked, likedBy}
 }
 
-export function useGetCampsite(id) {
-	const [campsite, setCampsite] = useState();
-	useEffect(() => {
-		const getCampsiteData = async () => {
-			const campsiteRef = db.collection('campsites').doc(id);
-			const campsite = await campsiteRef.get()
-			setCampsite(campsite.data())
-		}
-		getCampsiteData()
-	}, [id])
-	return campsite
-}
-
 export function useCampsiteImageURLS(campsiteID) {
 	const [imageURLS, setImageURLS] = useState([]);
 	useEffect(() => {
@@ -50,4 +38,42 @@ export function useCampsiteImageURLS(campsiteID) {
 		getImageURLS();
 	}, [campsiteID]);
 	return imageURLS
+}
+
+export function useReviewListener(campsiteID) {
+	const [reviews, setReviews] = useState();
+	useEffect(() => {
+		let unsub
+		const getReviews = async (campsiteID) => {
+			unsub = db.collection('reviews').where('campsiteID', '==', campsiteID ).onSnapshot(snapshot => {
+				setReviews(snapshot.docs.map(el => el.data()))
+			})
+		}
+		getReviews(campsiteID)
+		return () => {
+			unsub()
+		}
+	}, [campsiteID])
+	return reviews
+}
+
+export function useRatingCalculator(campsiteID) {
+	const [averageRating, setAverageRating] = useState(0);
+	const [reviewCount, setReviewCount] = useState(0)
+	useEffect(() => {
+		const getMeanRatings = async () => {
+			const reviews = await getReviews(campsiteID);
+			const sumRatings = reviews.reduce((sum, next) => {
+				return sum += Object.keys(next.data.ratings).reduce((cur, acc) => {
+					return cur += next.data.ratings[acc]
+				}, 0)
+			}, 0)
+			
+			setAverageRating( sumRatings / (reviews.length * 6))
+			setReviewCount(reviews.length)
+		}
+		getMeanRatings()
+		
+	}, [campsiteID])
+	return {averageRating, reviewCount};
 }

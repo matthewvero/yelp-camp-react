@@ -2,7 +2,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons'
 import React, { useEffect, useState } from 'react'
 import { HR } from '../misc/containers.styles'
 import { Text } from '../misc/text.styles'
-import { RatingStar } from './rating.styles'
+import { RatingStar, StarContainer } from './rating.styles'
 
 const Rating = ({setStars, title, highlight, filledArr, display, displayRating, collapse}) => {
       const [rating, setRating] = useState(0);
@@ -36,7 +36,6 @@ const Rating = ({setStars, title, highlight, filledArr, display, displayRating, 
             stars.push(
                   <RatingStar 
                         icon={faStar} 
-                        style={{margin: '0 5px'}} 
                         onPointerDown={() => handleRating(i)} 
                         onMouseEnter={() => handlePreviewRating(i)}
                         onMouseLeave={() => resetPreviewRating()}
@@ -57,7 +56,8 @@ const Rating = ({setStars, title, highlight, filledArr, display, displayRating, 
                         height: '100%', 
                         display: 'flex', 
                         flexDirection: `${collapse ? 'column' : 'row'}`, 
-                        justifyContent: 'space-between',
+                        justifyContent: `${collapse ? 'center' : 'space-between'}`,
+                        alignItems: 'center',
                         flexShrink: '1'
                   }}
             >
@@ -69,19 +69,11 @@ const Rating = ({setStars, title, highlight, filledArr, display, displayRating, 
                   <Text style={{marginBottom: `${collapse ? '10px' : '0'}`}}>{title}</Text>
                   
                   {
-                        <div 
-                              style={{
-                                    height: '100%', 
-                                    width: '50%', 
-                                    display: 'flex',  
-                                    alignItems: 'center',
-                                    
-                              }}
-                        >
+                        <StarContainer >
                         {
                               stars.map(el => el)
                         }
-                        </div>
+                        </StarContainer>
 
                   }
             </div>

@@ -18,4 +18,14 @@ export const RatingStar = styled(FontAwesomeIcon)`
       cursor: pointer;
       filter: drop-shadow(0 0 1px black);
       transition: all 200ms ease;
+      margin: 0;
+`
+
+export const StarContainer = styled.div`
+      height: 100%; 
+      width: 50%; 
+      display: flex;  
+      align-items: center;
+      justify-content: space-between;
+      
 `

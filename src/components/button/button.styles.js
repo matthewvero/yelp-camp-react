@@ -5,8 +5,8 @@ export const ButtonContainer = styled.div`
 	justify-content: space-around;
 	align-items: center;
 	border-radius: 10px;
-	background-color: ${(props) => props.$active ? props.theme.backgroundActive : props.theme.background};
-	color: ${(props) => props.theme.textAlt};
+	background-color: ${props => props.$active ? props.theme.backgroundActive : props.theme.background};
+	color: ${props => props.theme.textAlt};
 	font-size: 1.3rem;
 	transition: all 25ms linear;
 	user-select: none;
@@ -17,5 +17,8 @@ export const ButtonContainer = styled.div`
 		&:hover {
 			background-color: ${(props) => props.theme.backgroundHover};
 		}
+	}
+	@media (max-width: ${props => props.theme.xSmallBreakPoint}) {
+		font-size: 1rem;
 	}
 `;

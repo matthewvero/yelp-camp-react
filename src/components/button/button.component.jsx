@@ -1,22 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
+import withTouchAnimator from "../touch-hoc/touch-hoc.component";
 import { ButtonContainer } from "./button.styles";
 
-const Button = ({ children, fn, style }) => {
-	const [animated, setAnimated] = useState(false)
-	const handleClick = () => {
-		fn();
-		setAnimated(false)
-	}
-
+const Button = ({ $active, children, style, ...props }) => {
+	
 	return (
 		<ButtonContainer 
+			$active={$active}
 			style={style}
-			onMouseDown={() => setAnimated(true)}
-			onMouseUp={() => handleClick()}
-			animated={animated}>
+			{...props}
+		>
 			{children}
 		</ButtonContainer>
 	);
 };
 
-export default Button;
+export default withTouchAnimator(Button);

@@ -8,7 +8,7 @@ const theme = {
 	btnColor: "white",
 	extraLargeBreakPoint: '1400px',
 	largeBreakPoint: '1100px',
-	mediumBreakPoint: '900px',
+	mediumBreakPoint: '1000px',
 	smallBreakPoint: '700px',
 	xSmallBreakPoint: '500px',
 	xxSmallBreakPoint: '400px'

@@ -25,7 +25,7 @@ const Review = ({review}) => {
       }, [review])
 
       const handleResize = () => {
-            setCollapse(reviewRef.current.offsetWidth < 625);
+            setCollapse(reviewRef.current.offsetWidth < 600);
       }
 
 
@@ -44,9 +44,9 @@ const Review = ({review}) => {
       return (
             <React.Fragment>
             <ReviewContainer expanded={expanded} ref={reviewRef} collapse={collapse}>
-                  <div style={{display: 'flex', height: '30px', alignItems: 'center'}}>
+                  <div style={{display: 'flex', height: '30px'}}>
                         <SubTitle>{review.data.heading}</SubTitle>
-                        <Text style={{margin: '2%', color: '#666666'}}> - {username}</Text>
+                        
                   </div>
                   <Text 
                         style={{
@@ -61,8 +61,9 @@ const Review = ({review}) => {
                   </Text>
 
                   <RatingSection >
-
+                  <Text style={{color: '#666666'}}>{username}</Text>
                   <div style={{width: '100%', height: 'auto', paddingTop: '10px', display: 'grid', gridTemplateColumns: '1fr 1fr 8fr', gap: '5px'}}>
+                  
                         <FontAwesomeIcon icon={faStar} style={{color: 'white', marginRight: '5%', gridColumn: '1/2', filter: 'drop-shadow(0 0 1px black)'}}/>
                         <SubText style={{ maxHeight: '100%', gridColumn: '2/3', display: 'inline-block', verticalAlign: 'middle'}}>{averageRating.toFixed(1)}</SubText>
                         <div style={{gridColumn: '3/4', position: 'relative', display: 'flex', alignItems: 'center'}}>

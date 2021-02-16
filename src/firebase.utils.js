@@ -22,6 +22,14 @@ export const getUserCampsites = (setCamps, userID) => {
 		return unsub;
 };
 
+export async function getCampsite(id) {
+	if (id) {
+		const campsiteRef = db.collection('campsites').doc(id);
+		const campsite = await campsiteRef.get()
+		return campsite.data()
+	}
+}
+
 export const addCampsite = async ({ campsite, image }) => {
 	const user = store.getState().authReducer.user;
 	if (user.uid) {
@@ -100,13 +108,21 @@ export const likeCampsite = async (campsiteID, userID, liked) => {
 
 export const addComment = async (userID, comment, campsiteID) => {
 	if (userID) {
+		// Create reference for new camp to get random ID
+		const newComment = db.collection("comments").doc();
+		const newCommentRef = await newComment.get();
 		const data = {
 			user: userID,
 			comment,
-			campsiteID
+			campsiteID,
+			commentID: newCommentRef.id
 		}
-		const commentRef = db.collection('comments');
-		commentRef.add(data)
+		db.collection('comments')
+		.doc(newCommentRef.id)
+		.set(data)
+		.catch(() => {
+			alert('Something went wrong');
+		})
 	} else {
 		alert('You need to be signed in to do that')
 	}
@@ -114,12 +130,13 @@ export const addComment = async (userID, comment, campsiteID) => {
 
 // REVIEW UTILITIES
 
-export const addReview = async (userID, campsiteID, data) => {
-	if (userID) {
+export const addReview = async (campsiteID, data) => {
+	const user = store.getState().authReducer.user;
+	if (user.uid) {
 		const reviewRef = db.collection('reviews');
 		reviewRef.add({
 			campsiteID,
-			userID,
+			userID: user.uid,
 			data
 		})
 	} else {
@@ -187,3 +204,19 @@ export const updateUserProfile = async (obj) => {
 	const res = await campsiteRef.update(obj);
 	return res;
 };
+
+
+export const updateDocument = async (obj, collection, doc) => {
+	const docRef = db.collection(collection).doc(doc)
+	docRef.update(obj).catch(err => {
+		alert('Something went wrong')
+	})
+
+}
+
+export const deleteDocument = async (collection, doc) => {
+	db.collection(collection).doc(doc).delete()
+	.catch(() => {
+		alert('Something went wrong')
+	})
+}

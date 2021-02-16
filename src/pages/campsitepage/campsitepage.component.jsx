@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { PageContainer } from "../page.styles";
 import {ContentContainer, ResponsivePageContainer} from '../../components/misc/containers.styles'
 import { CampsiteImageCarousel, CampsitePageGrid, CampsitePageInfoGrid } from "./campsitepage.styles";
-import { useCampsiteImageURLS, useGetCampsite, useLikeListener } from "../../utils/campsite-hooks";
+import { useCampsiteImageURLS, useGetCampsite, useLikeListener, useRatingCalculator } from "../../utils/campsite-hooks";
 import { LoadingWaves, Wave } from "../../components/misc/loadinganimations.styles";
 import ImageCarousel from "../../components/imagecarousel/imagecarousel.component";
 import { SubTitle, Text, Title, SubText } from "../../components/misc/text.styles";
@@ -12,18 +12,54 @@ import LikeButton from '../../components/likebutton/like-button.component'
 import ReviewsSection from "../../components/reviewssection/reviews-section.component";
 import CommentSection from "../../components/commentsection/comment-section.component";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
-const CampsitePage = (props) => {
+import { useGetUsername } from "../../utils/auth-hooks";
+import EditButton from "../../components/editbutton/edit-button.component";
+import { FormInputText } from "../../components/inputs/input-text/inputs.styles";
+import Button from '../../components/button/button.component'
+import { ThemeContext } from "styled-components";
+import { getCampsite, updateDocument } from "../../firebase.utils";
+const CampsitePage = ({match}) => {
+
 	const [loading, setLoading] = useState(true);
-	const campsite = useGetCampsite(props.match.params.id);
-	const images = useCampsiteImageURLS(props.match.params.id);
-	const user = useSelector(state => state.authReducer.user)
-	const {likedBy} = useLikeListener(campsite)
+	const [campsite, setCampsite] = useState()
+	const images = useCampsiteImageURLS(match.params.id);
+	const user = useSelector(state => state.authReducer.user);
+	const {likedBy} = useLikeListener(campsite, user);
+	const userName = useGetUsername(campsite && campsite.owner);
+	const {averageRating, reviewCount} = useRatingCalculator(match.params.id);
+	const theme = useContext(ThemeContext);
+
+	const memoUpdateCampsite = useCallback(
+		() => {
+			getCampsite(match.params.id).then(data => {
+				setCampsite(data)
+			})
+		},
+		[match.params.id],
+	)
+	
+
+	// Retrieve Campsite
+	useEffect(() => {
+		memoUpdateCampsite()
+	}, [match.params.id, memoUpdateCampsite]);
 
 	useEffect(() => {
-		campsite && images.length ? setLoading(false) : setLoading(true)
-	}, [campsite, images])
+		campsite && images.length ? setLoading(false) : setLoading(true);
+	}, [campsite, images]);
 
-	
+	useEffect(() => {
+		setTitleValue(campsite && campsite.title)
+	}, [campsite])
+
+	// Editing
+	const [editing, setEditing] = useState(false);
+	const [titleValue, setTitleValue] = useState();
+	const handleTitleUpdate = () => {
+		updateDocument({...campsite, title: titleValue}, 'campsites', campsite.id);
+		setEditing(false);
+		memoUpdateCampsite()
+	}
 
 	return (
 		<PageContainer>
@@ -43,14 +79,53 @@ const CampsitePage = (props) => {
 							<ContentContainer >
 								
 								<CampsitePageInfoGrid>
-									<Title style={{
-										gridColumn: '1/3', 
-										textAlign: 'start'
-									
-									}}
+									<div 
+										style={{
+											gridColumn: editing ? '1/4' : '1/3', 
+											textAlign: 'start',
+											display: 'flex',
+											alignItems: 'center',
+											flexWrap: 'wrap',
+											
+										}}
 									>
-										{campsite.title}
-									</Title>
+										{
+											editing ?
+											<div style={{width: '90%', position: 'relative'}}>
+												<FormInputText 
+													style={{padding: '10px', width: '100%', boxSizing: 'border-box'}} 
+													value={titleValue} 
+													onChange={e => setTitleValue(e.target.value)}
+												/>
+												<Button 
+													style={{
+														padding: '10px', 
+														backgroundColor: theme.color, 
+														position: 'absolute',
+														right: '0',
+														top: '0',
+														borderTopLeftRadius: '0',
+														borderBottomLeftRadius: '0'
+													}}
+													fn={handleTitleUpdate}
+												>
+													Update
+												</Button>
+											</div>											:
+											<Title 
+											>
+												{campsite.title}
+											</Title>
+										}
+										{
+											user.uid === campsite.owner &&
+											<EditButton 
+												fn={() => setEditing(!editing)} 
+												editing={editing} 
+												style={{fontSize: '1.5rem', marginLeft: '10px'}}
+											/>
+										}
+									</div>
 									<SubText
 										style={{
 											gridColumn: '1/3', 
@@ -62,12 +137,9 @@ const CampsitePage = (props) => {
 											style={{color: 'dodgerblue', margin: '0 5px 0 0'}}
 											icon={faStar}
 										/>
-										5 (317) 
+										{averageRating.toFixed(2)} ({reviewCount} Reviews) 
 										• 
-										Hosted By: 
-										{
-
-										}
+										Hosted By: <span style={{color: theme.color}}>{userName}</span>
 
 									</SubText>
 									<Text 
@@ -79,23 +151,26 @@ const CampsitePage = (props) => {
 									>
 										{campsite.description}
 									</Text>
-									<div
-										style={{
-											gridColumn: '3/4', 
-											gridRow: '1/2',
-											display: 'flex',
-											justifyContent: "flex-end",
-											alignContent: 'center'
-										}} 
-									>
-										<LikeButton style={{margin: '0 10px'}} user={user} campsite={campsite}/>
-										<SubTitle>{likedBy.length}</SubTitle>
-									</div>
+									{
+										!editing &&
+										<div
+											style={{
+												gridColumn: '3/4', 
+												gridRow: '1/2',
+												display: 'flex',
+												justifyContent: "flex-end",
+												alignContent: 'center'
+											}} 
+										>
+											<LikeButton style={{margin: '0 10px'}} user={user} campsite={campsite}/>
+											<SubTitle>{likedBy.length}</SubTitle>
+										</div>
+									}
 								</CampsitePageInfoGrid>
 							</ContentContainer>
 							
-							<CommentSection campsiteID={props.match.params.id} userID={user.uid}/>
-							<ReviewsSection campsiteID={props.match.params.id} userID={user.uid}/>
+							<CommentSection campsiteID={match.params.id} userID={user.uid}/>
+							<ReviewsSection campsiteID={match.params.id}/>
 						
 						</CampsitePageGrid>
 				</ResponsivePageContainer>

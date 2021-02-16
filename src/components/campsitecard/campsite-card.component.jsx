@@ -5,7 +5,7 @@ import { ThemeContext } from "styled-components";
 import {
 	CampsiteCardContainer,
 	CampsiteCardImageContainer,
-	CampsiteCardThing,
+	CampsiteCardLikeBackground,
 	CardContentContainer,
 } from "./campsite-card.styles";
 import Image from "../image/image.component";
@@ -33,7 +33,6 @@ const CampsiteCard = ({ campsite, history }) => {
 		<CampsiteCardContainer
 			onClick={e => handleClick(e)}
 		> 
-			<CampsiteCardThing/>
 			<CampsiteCardImageContainer>
 				<Image image={images && images[0]} style={{height: '260px'}}/>
 			</CampsiteCardImageContainer>

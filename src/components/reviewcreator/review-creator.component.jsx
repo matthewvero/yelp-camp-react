@@ -7,7 +7,7 @@ import { FormInputText, FormInputTextArea } from '../inputs/input-text/inputs.st
 import Rating from '../rating/rating-component'
 import { RatingsGrid, ReviewCreatorGrid } from './review-creator.styles'
 
-const ReviewCreator = ({campsiteID, user}) => {
+const ReviewCreator = ({campsiteID, exit}) => {
       const themeContext = useContext(ThemeContext);
       const [ratings, setRatings] = useState({})
       const [filled, setFilled] = useState({
@@ -28,11 +28,15 @@ const ReviewCreator = ({campsiteID, user}) => {
       const handleSubmit = () => {
             setHighlight(true);
             if (sendable) {
-                  addReview(user, campsiteID, {
-                        heading,
-                        body,
-                        ratings
-                  })
+                  addReview(
+                        campsiteID, 
+                        {
+                              heading,
+                              body,
+                              ratings
+                        }
+                  )
+                  exit()
             } 
             if (heading.length < 10) {
                   setErrorHeading(true);
@@ -44,6 +48,7 @@ const ReviewCreator = ({campsiteID, user}) => {
       }
 
       useEffect(() => {
+            // Check all inputs have been filled
             if (allRatingsFilled && body.length > 10 && heading.length > 10) {
                   setSendable(true)
             } 
@@ -63,9 +68,11 @@ const ReviewCreator = ({campsiteID, user}) => {
       }, [ratings])
 
       useEffect(() => {
+            // check all ratings have been filled
             setAllRatingsFilled(Object.keys(filled).every(e => filled[e] === true));
       }, [filled])
 
+      // Remove warnings when criteria met.
       useEffect(() => {
             if (errorHeading && heading.length >= 10){
                   setErrorHeading(false)

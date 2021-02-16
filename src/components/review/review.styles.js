@@ -7,7 +7,7 @@ export const ReviewContainer = styled.div`
       } else if (!props.collapse &&  props.expanded) {
         return '250px'
       } else {
-        return '80px'
+        return '90px'
       }
   }};
   width: 100%;

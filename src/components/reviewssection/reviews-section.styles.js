@@ -12,14 +12,14 @@ export const ReviewsSectionSlide = styled.div`
 		opacity: 0;
 	}
 	&.reviewSection-enter-active {
-            transition: all 100ms ease-out;
+            transition: all 200ms ease-out;
 		opacity: 1;
 	}
 	&.reviewSection-exit {
             opacity: 1;
 	}
 	&.reviewSection-exit-active {
-            transition: all 100ms ease-out;
+            transition: all 200ms ease-out;
 		opacity: 0;
       }
 `;

@@ -34,13 +34,18 @@ export function useGetUsername(userID) {
 	useEffect( () => {
 		if (userID) {
 			const getUsername = async () => {
-				const query = await db.collection('userProfiles').where('userID', '==', userID).get();
-				setUsername(query.docs[0].data().displayName)
+				db.collection('userProfiles').where('userID', '==', userID).get()
+				.then(query => {
+					query &&
+					setUsername(query.docs[0].data().displayName)
+				})
+				.catch(err => {
+					console.log(err)
+				})
 			}
 			getUsername()
 
 		}
-
 	}, [userID])
 	return username
 }

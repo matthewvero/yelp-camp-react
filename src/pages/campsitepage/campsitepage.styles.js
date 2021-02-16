@@ -26,8 +26,8 @@ export const CampsitePageInfoGrid = styled.div`
       padding: 20px 30px;
       box-sizing: border-box;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: 40px 25px 2fr 1fr;
+      grid-template-columns: 1fr 1fr 0.5fr;
+      grid-template-rows: auto 25px 2fr 1fr;
       gap: 1rem;
       align-items: center;
 `

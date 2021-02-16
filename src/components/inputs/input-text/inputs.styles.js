@@ -9,6 +9,9 @@ export const FormInputText = styled.input`
 	border: none;
 	border-radius: 10px;
 	outline: none;
+	@media (max-width: ${props => props.theme.xSmallBreakPoint}) {
+		font-size: 1rem;
+	}
 `;
 
 export const FormInputTextArea = styled.textarea`
