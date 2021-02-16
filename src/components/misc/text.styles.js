@@ -28,6 +28,7 @@ export const SectionTitle = styled.h3`
       @media (max-width: ${props => props.theme.smallBreakPoint}) {
             font-size: 0.9rem;
 	    }
+      vertical-align: middle;
 `
 
 export const ButtonText = styled.span`

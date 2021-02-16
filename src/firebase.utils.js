@@ -198,11 +198,20 @@ export const getUserImages = async (imageType, uid) => {
 	return [];
 };
 
+export const getUserProfile = async (userID) => {
+	const userRef = await db.collection('userProfiles').where('userID', '==', userID).get()
+	const userProfile = userRef.docs[0].data()
+	return userProfile
+}
+
 export const updateUserProfile = async (obj) => {
 	const user = store.getState().authReducer.user;
-	const campsiteRef = db.collection("userProfiles").doc(user.uid);
-	const res = await campsiteRef.update(obj);
-	return res;
+	const userProfileRef = db.collection("userProfiles").where('userID', '==', user.uid);
+	const res = await userProfileRef.get()
+	const profileRef = res.docs[0].ref
+	profileRef.update(obj)
+	.catch(err => alert(err))
+	
 };
 
 

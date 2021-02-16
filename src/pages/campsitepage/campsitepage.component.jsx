@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { PageContainer } from "../page.styles";
 import {ContentContainer, ResponsivePageContainer} from '../../components/misc/containers.styles'
 import { CampsiteImageCarousel, CampsitePageGrid, CampsitePageInfoGrid } from "./campsitepage.styles";
-import { useCampsiteImageURLS, useGetCampsite, useLikeListener, useRatingCalculator } from "../../utils/campsite-hooks";
+import { useCampsiteImageURLS, useLikeListener, useRatingCalculator } from "../../utils/campsite-hooks";
 import { LoadingWaves, Wave } from "../../components/misc/loadinganimations.styles";
 import ImageCarousel from "../../components/imagecarousel/imagecarousel.component";
 import { SubTitle, Text, Title, SubText } from "../../components/misc/text.styles";
@@ -14,11 +14,11 @@ import CommentSection from "../../components/commentsection/comment-section.comp
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { useGetUsername } from "../../utils/auth-hooks";
 import EditButton from "../../components/editbutton/edit-button.component";
-import { FormInputText } from "../../components/inputs/input-text/inputs.styles";
+import { FormInputText, FormInputTextArea } from "../../components/inputs/input-text/inputs.styles";
 import Button from '../../components/button/button.component'
 import { ThemeContext } from "styled-components";
 import { getCampsite, updateDocument } from "../../firebase.utils";
-const CampsitePage = ({match}) => {
+const CampsitePage = ({match, history}) => {
 
 	const [loading, setLoading] = useState(true);
 	const [campsite, setCampsite] = useState()
@@ -50,13 +50,15 @@ const CampsitePage = ({match}) => {
 
 	useEffect(() => {
 		setTitleValue(campsite && campsite.title)
+		setDescriptionValue(campsite && campsite.description)
 	}, [campsite])
 
 	// Editing
 	const [editing, setEditing] = useState(false);
 	const [titleValue, setTitleValue] = useState();
+	const [descriptionValue, setDescriptionValue] = useState();
 	const handleTitleUpdate = () => {
-		updateDocument({...campsite, title: titleValue}, 'campsites', campsite.id);
+		updateDocument({...campsite, title: titleValue, description: descriptionValue}, 'campsites', campsite.id);
 		setEditing(false);
 		memoUpdateCampsite()
 	}
@@ -139,18 +141,40 @@ const CampsitePage = ({match}) => {
 										/>
 										{averageRating.toFixed(2)} ({reviewCount} Reviews) 
 										• 
-										Hosted By: <span style={{color: theme.color}}>{userName}</span>
+										Hosted By: <span onClick={() => history.push(`/profile/${campsite.owner}`)} style={{color: theme.color, cursor: 'pointer'}}>{userName}</span>
 
 									</SubText>
-									<Text 
+									
+									<div 
 										style={{
-											gridColumn: '1/3', 
-											alignSelf: 'start', 
-											textAlign: 'start'
+											gridColumn: editing ? '1/4' : '1/3', 
+											textAlign: 'start',
+											display: 'flex',
+											alignItems: 'flex-start',
+											flexWrap: 'wrap',
+											height: '100%'
 										}}
 									>
-										{campsite.description}
-									</Text>
+										{
+											editing ?
+											<div style={{width: '90%', position: 'relative'}}>
+												<FormInputTextArea 
+													style={{padding: '10px', width: '100%', boxSizing: 'border-box'}} 
+													value={descriptionValue} 
+													onChange={e => setDescriptionValue(e.target.value)}
+												/>
+											</div>											
+											:
+											<Text 
+											style={{
+												width: '100%', 
+												textAlign: 'start'
+											}}
+											>
+												{campsite.description}
+											</Text>
+										}
+									</div>
 									{
 										!editing &&
 										<div

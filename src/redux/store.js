@@ -7,7 +7,7 @@ import logger from "redux-logger";
 import { rootReducer } from "./root-reducer";
 // Import our root reducer so that it can interact with our store
 
-const middlewares = [logger];
+const middlewares = [];
 // Create an array of any middlewares that we want to run
 // These can then be spread in to applyMiddleware from redux
 

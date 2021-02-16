@@ -63,6 +63,9 @@ export function useRatingCalculator(campsiteID) {
 	useEffect(() => {
 		const getMeanRatings = async () => {
 			const reviews = await getReviews(campsiteID);
+			if (reviews.length === 0) {
+				return 0
+			}
 			const sumRatings = reviews.reduce((sum, next) => {
 				return sum += Object.keys(next.data.ratings).reduce((cur, acc) => {
 					return cur += next.data.ratings[acc]

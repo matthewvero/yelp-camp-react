@@ -4,14 +4,16 @@ import { ThemeContext } from 'styled-components';
 import { CollapsibleContainer, CollapsibleContainerIcon, CollapsibleContainerTitleBar } from '../misc/containers.styles';
 import { SectionTitle, SubTitle, Text } from '../misc/text.styles';
 import { AboutSection } from './about.styles';
-
+import EditButton from '../editbutton/edit-button.component'
+import { FormInputText, FormInputTextArea } from '../inputs/input-text/inputs.styles';
+import Button from '../button/button.component'
+import { updateUserProfile } from '../../firebase.utils';
 const About = ({profileInfo, editable}) => {
-      // const [editing, setEditing] = useState(false)
-      // Finish This
-      const themeContext = useContext(ThemeContext);
-      const [collapsed, setCollapsed] = useState(window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`).matches);
+      
+      const theme = useContext(ThemeContext);
+      const [collapsed, setCollapsed] = useState(window.matchMedia(`(max-width: ${theme.smallBreakPoint})`).matches);
       useEffect(() => {
-            const windowSize = window.matchMedia(`(max-width: ${themeContext.mediumBreakPoint})`);
+            const windowSize = window.matchMedia(`(max-width: ${theme.mediumBreakPoint})`);
             const handleChange = e => {
                   if(e.matches) {
                         setCollapsed(true);
@@ -23,8 +25,34 @@ const About = ({profileInfo, editable}) => {
             return () => {
                   windowSize.removeEventListener('change', handleChange);
             }
+            
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [])
+      }, [profileInfo])
+
+      // Profile updates
+      const [editing, setEditing] = useState(false);
+      const [bioValue, setBioValue] = useState('')
+      const [fromValue, setFromValue] = useState('')
+
+      useEffect(() => {
+            if (profileInfo) {
+                  setFromValue(profileInfo.from)
+                  setBioValue(profileInfo.bio)
+            }
+      }, [profileInfo])
+
+      const handleUpdate = () => {
+            if (bioValue !== profileInfo.bio || fromValue !== profileInfo.from) {
+                  updateUserProfile({
+                        ...profileInfo,
+                        bio: bioValue,
+                        from: fromValue
+                  }).then(() => {
+                        setEditing(false);
+                  }).catch(err => alert(err));
+
+            }
+      }
 
       return (
             <CollapsibleContainer
@@ -33,12 +61,14 @@ const About = ({profileInfo, editable}) => {
                         alignItems: "start",
                         padding: "20px",
                         justifyContent: "start",
-                        color: themeContext.textAlt,
-                        position: 'relative'
+                        color: theme.textAlt,
+                        position: 'relative',
+                        paddingBottom: editing ? '70px' : '20px' 
                   }}
                   collapsed={collapsed}
             >
                   
+
                   <CollapsibleContainerTitleBar onClick={() => setCollapsed(collapsed => !collapsed)}>
                         <SubTitle>About</SubTitle> 
                         <CollapsibleContainerIcon icon={faChevronDown} collapsed={collapsed ? 1 : 0}  />
@@ -57,16 +87,27 @@ const About = ({profileInfo, editable}) => {
                         
 
                         <AboutSection>
-                              <SectionTitle>
+                              <SectionTitle style={{marginRight: '5px'}}>
                                     Joined: 
                               </SectionTitle>
                               <Text>June</Text>
                         </AboutSection>
                         <AboutSection>
-                              <SectionTitle>
+                              <SectionTitle style={{marginRight: '5px'}}>
                                     From: 
                               </SectionTitle>
-                              <Text>LA</Text>
+                              {
+                                    editing ?
+                                    <FormInputText 
+                                          placeholder='Where are you from?' 
+                                          autoFocus
+                                          style={{padding: '5px', marginLeft: '10px'}}
+                                          value={fromValue}
+                                          onChange={e => setFromValue(e.target.value)}
+                                    />
+                                    :
+                                    <Text style={{color: profileInfo.from ? theme.textAlt : '#666666'}}>{profileInfo.from ? profileInfo.from : 'Tell people where you are from'}</Text>
+                              }
                         </AboutSection>
                         <SectionTitle
                               style={{
@@ -78,12 +119,31 @@ const About = ({profileInfo, editable}) => {
                         </SectionTitle>
                         <div style={{display: 'flex', alignItems: 'start', height: 'auto', minHeight: '50px', width: '100%'}}>
                         {
-                              profileInfo.bio ?
-                              <Text>bio is here</Text>
+                              editing ? 
+                              <FormInputTextArea 
+                                    style={{width: '100%', padding: '5px'}} 
+                                    placeholder='Tell us about yourself'
+                                    value={bioValue}
+                                    onChange={e => setBioValue(e.target.value)}
+                              />
                               :
-                              <Text style={{margin: '5px'}}>Tell us about yourself</Text>
+                              <Text>{profileInfo.bio ? profileInfo.bio : 'Tell people about yourself'}</Text>
                         }
                         </div>
+                        
+                        {
+                              editable && !collapsed &&
+                              <div style={{position: 'absolute', right: '20px', bottom: '20px', display: 'flex', alignItems: 'center'}}>
+                                    {
+                                          editing &&
+                                          <Button 
+                                          style={{backgroundColor: theme.color, padding: '5px', marginRight: '10px'}}
+                                          fn={handleUpdate}
+                                          >Update</Button>
+                                    }
+                                    <EditButton editing={editing} style={{fontSize: '1.5rem'}} fn={() => setEditing(!editing)}/>
+                              </div>
+                        }
                   </div>
             </CollapsibleContainer>
       )

@@ -5,7 +5,6 @@ import { ThemeContext } from "styled-components";
 import {
 	CampsiteCardContainer,
 	CampsiteCardImageContainer,
-	CampsiteCardLikeBackground,
 	CardContentContainer,
 } from "./campsite-card.styles";
 import Image from "../image/image.component";

@@ -19,7 +19,11 @@ const CampsiteCreator = () => {
 	const [progress, setProgress] = useState(0);
 	const [loading, setLoading] = useState(false);
 	const user = useSelector((state) => state.authReducer.user);
-
+	const refs = {
+		start: React.createRef(),
+		create: React.createRef(),
+		review: React.createRef()
+	}
 	const handleConfirm = () => {
 		title && description && price && image
 			? setActivePage("review")
@@ -88,6 +92,7 @@ const CampsiteCreator = () => {
 		handleReset,
 		handleConfirm,
 		handleSubmit,
+		refs
 	};
 
 	return (
@@ -104,7 +109,7 @@ const CampsiteCreator = () => {
 					classNames="page"
 					timeout={200}
 					unmountOnExit
-					
+					nodeRef={refs.start}
 				>
 					<CCStart />
 				</CSSTransition>
@@ -113,7 +118,7 @@ const CampsiteCreator = () => {
 					classNames="page"
 					timeout={200}
 					unmountOnExit
-					
+					nodeRef={refs.create}
 				>
 					<CCCreate />
 				</CSSTransition>
@@ -122,7 +127,7 @@ const CampsiteCreator = () => {
 					classNames="page"
 					timeout={200}
 					unmountOnExit
-					
+					nodeRef={refs.review}
 				>
 					<CCReview />
 				</CSSTransition>

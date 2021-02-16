@@ -42,6 +42,7 @@ export const CCStart = () => {
 	return (
 		<CCPage
 			onClick={() => api.setActivePage("create")}
+			ref={api.refs.start}
 		>
 			<CCHoverEffect>
 				<StartPageTitle>
@@ -75,7 +76,7 @@ export const CCCreate = () => {
 	} = api;
 	const themeContext = useContext(ThemeContext);
 	return (
-		<CCPage style={{ padding: "0" }}>
+		<CCPage style={{ padding: "0" }} ref={api.refs.create}>
 			<CCGrid>
 				{image === undefined ? (
 							
@@ -173,7 +174,7 @@ export const CCReview = () => {
 	} = api;
 	const themeContext = useContext(ThemeContext);
 	return (
-		<CCPage>
+		<CCPage ref={api.refs.review}>
 			{!loading ? (
 				<CCReviewGrid>
 					<CCReviewImageContainer>

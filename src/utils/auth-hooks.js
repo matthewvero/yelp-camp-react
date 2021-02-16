@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { auth, db } from "../firebase";
-import { getUserImages } from "../firebase.utils";
+import { getUserImages, getUserProfile } from "../firebase.utils";
 import { setUser, setUserProfile } from "../redux/auth-redux/auth.actions";
 
 
@@ -15,11 +15,15 @@ export function useAuthListener() {
 				const getImages = async () => {
 					const profileImageURLs = await getUserImages("profileImages", user.uid);
 					const coverImageURLs = await getUserImages("coverImages", user.uid);
-					dispatch(setUserProfile({
-						displayName: user.displayName, 
-						profilePicture: profileImageURLs, 
-						coverImages: coverImageURLs
-					}))
+					getUserProfile(user.uid)
+					.then(userProfile => {
+						dispatch(setUserProfile({
+							displayName: user.displayName, 
+							profilePicture: profileImageURLs, 
+							coverImages: coverImageURLs,
+							...userProfile
+						}))
+					}).catch(err => alert('Error Fetching profile'))
 				};
 				getImages();
 				dispatch(setUser(user));

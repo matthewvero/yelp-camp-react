@@ -1,5 +1,5 @@
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CSSTransition } from 'react-transition-group';
 import { usePreloadImages } from '../../utils/ui-hooks';
 import { ImageCarouselBtnBack, ImageCarouselBtnForward, ImageCarouselContainer, ImageCarouselSlide, ImageCarouselSlideIndicator, ImageCarouselSlideIndicatorGroup } from './imagecarousel.styles'
@@ -11,7 +11,7 @@ const ImageCarousel = ({images}) => {
       const forward = '+'
       const [activeImage, setActiveImage] = useState(0);
       const [direction, setDirection] = useState()
-
+      const [refs, setRefs] = useState()
       // Create endlessl loop with buttons
       // change animation direction accordingly
       const incrementer = (arr, idx, direction, absolute) => {
@@ -29,6 +29,14 @@ const ImageCarousel = ({images}) => {
                   setActiveImage(direction === back ? idx - 1 : idx + 1)
             }
       }
+
+      useEffect(() => {
+            let refsObj = {}
+            images.forEach((el, idx) => (
+                  refsObj[idx] = React.createRef()
+            ))
+            setRefs(refsObj)
+      }, [images])
 
       return (
 
@@ -63,8 +71,9 @@ const ImageCarousel = ({images}) => {
                               timeout={200}
                               unmountOnExit
                               key={idx}
+                              nodeRef={refs[idx]}
                         >
-                              <ImageCarouselSlide  enter={`${direction}100%`}>
+                              <ImageCarouselSlide  ref={refs[idx]} enter={`${direction}100%`}>
                                     {element}
                               </ImageCarouselSlide>
                         </CSSTransition>
