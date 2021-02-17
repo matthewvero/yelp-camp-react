@@ -2,13 +2,14 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "styled-components";
-import { addReview, updateReview } from "../../firebase.utils";
+import { addReview, deleteReview, updateReview } from "../../firebase.utils";
 import {
 	FormInputText,
 	FormInputTextArea,
 } from "../inputs/input-text/inputs.styles";
 import Rating from "../rating/rating-component";
 import { RatingsGrid, ReviewCreatorGrid } from "./review-creator.styles";
+import Button from "../button/button.component";
 
 const ReviewCreator = ({ campsiteID, exit, review }) => {
 	const themeContext = useContext(ThemeContext);
@@ -47,6 +48,16 @@ const ReviewCreator = ({ campsiteID, exit, review }) => {
 		}
 		if (body.length < 10) {
 			setErrorBody(true);
+		}
+	};
+
+	const handleDelete = () => {
+		const ans = window.confirm(
+			"Are you sure you would like to delete this Review? This can not be undone."
+		);
+		if (ans) {
+			deleteReview(review.reviewID);
+			exit();
 		}
 	};
 
@@ -94,27 +105,47 @@ const ReviewCreator = ({ campsiteID, exit, review }) => {
 					style={{
 						gridColumn: "3/4",
 						gridRow: "1/2",
-						justifySelf: "end",
-						height: "40px",
-						width: "40px",
-						backgroundColor: `${
-							sendable ? "dodgerblue" : "grey"
-						}`,
-						borderRadius: "10px",
 						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-						cursor: "pointer",
 					}}
-					onPointerDown={() => handleSubmit()}
 				>
-					<FontAwesomeIcon
-						icon={faPaperPlane}
+					{review && (
+						<Button
+							style={{
+								gridColumn: "3/4",
+								gridRow: "1/2",
+								marginRight: "10px",
+								padding: "5px",
+								backgroundColor: "crimson",
+							}}
+							fn={handleDelete}
+						>
+							Delete
+						</Button>
+					)}
+					<div
 						style={{
-							color: "white",
-							fontSize: "1.5rem",
+							justifySelf: "end",
+							height: "40px",
+							width: "40px",
+							backgroundColor: `${
+								sendable ? "dodgerblue" : "grey"
+							}`,
+							borderRadius: "10px",
+							display: "flex",
+							justifyContent: "center",
+							alignItems: "center",
+							cursor: "pointer",
 						}}
-					/>
+						onPointerDown={() => handleSubmit()}
+					>
+						<FontAwesomeIcon
+							icon={faPaperPlane}
+							style={{
+								color: "white",
+								fontSize: "1.5rem",
+							}}
+						/>
+					</div>
 				</div>
 				<FormInputText
 					placeholder="Heading..."

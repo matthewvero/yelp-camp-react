@@ -16,7 +16,8 @@ It uses:
 - Styled-components
 - Firebase (Firestore, storage, hosting)
 
-My favourite parts of this are the campsite-creator component and the review-creator component. I found building these and getting them functioning and responsive to be a fun challenge and the end results are sleek and easy to use. 
+My favourite parts of this project are the campsite-creator component and the review-creator component. I found building these and getting them functioning and responsive to be a fun challenge and the end results are sleek and easy to use. 
 
 I found this project to be really enjoyable and will definitely add more functionality in the future. Some functions I plan to add would be additional social features, like friends lists, user to user messaging, a feed with statuses etc.
 
+If I were to spend more time on this project I would add friends, messaging and notifcations. I would also handle the average rating calculations on the back end using firebase functions.

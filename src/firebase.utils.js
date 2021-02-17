@@ -58,7 +58,7 @@ export const addCampsite = async ({ campsite, image }) => {
 				.catch(() => {
 					// Remove image if document write fails
 					imageRef.delete();
-					alert("Something went wrong");
+					alert("Oops! Something went wrong.");
 				});
 		});
 		// Return uploadTask so that progress can be tracked
@@ -126,7 +126,7 @@ export const addComment = async (userID, comment, campsiteID) => {
 			.doc(newCommentRef.id)
 			.set(data)
 			.catch(() => {
-				alert("Something went wrong");
+				alert("Oops! Something went wrong.");
 			});
 	} else {
 		alert("You need to be signed in to do that");
@@ -154,7 +154,16 @@ export const updateReview = async (review) => {
 	db.collection("reviews")
 		.doc(review.reviewID)
 		.update(review)
-		.catch((err) => alert("Something went wrong"));
+		.catch((err) => alert("Oops! Something went wrong."));
+};
+
+export const deleteReview = async (review) => {
+	db.collection("reviews")
+		.doc(review)
+		.delete()
+		.catch(() => {
+			console.log("Oops! Something went wrong.");
+		});
 };
 
 export const getReviews = async (campsiteID) => {
@@ -236,7 +245,7 @@ export const updateUserProfile = async (obj) => {
 export const updateDocument = async (obj, collection, doc) => {
 	const docRef = db.collection(collection).doc(doc);
 	docRef.update(obj).catch((err) => {
-		alert("Something went wrong");
+		alert("Oops! Something went wrong.");
 	});
 };
 
@@ -245,6 +254,6 @@ export const deleteDocument = async (collection, doc) => {
 		.doc(doc)
 		.delete()
 		.catch(() => {
-			alert("Something went wrong");
+			alert("Oops! Something went wrong.");
 		});
 };
