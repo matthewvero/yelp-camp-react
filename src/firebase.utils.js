@@ -7,26 +7,24 @@ import { destroySession } from "./redux/auth-redux/auth.actions";
 const storageRef = storage.ref();
 
 export const getUserCampsites = (setCamps, userID) => {
-		const campsites = db
-			.collection("campsites")
-			.where("owner", "==", userID); // Need to load campsites in chronological order
+	const campsites = db.collection("campsites").where("owner", "==", userID); // Need to load campsites in chronological order
 
-		const unsub = campsites.onSnapshot((snapshot) => {
-			let campsitesArr = [];
-			snapshot.forEach((el) => {
-				campsitesArr.push(el.data());
-			});
-			setCamps(campsitesArr);
+	const unsub = campsites.onSnapshot((snapshot) => {
+		let campsitesArr = [];
+		snapshot.forEach((el) => {
+			campsitesArr.push(el.data());
 		});
+		setCamps(campsitesArr);
+	});
 
-		return unsub;
+	return unsub;
 };
 
 export async function getCampsite(id) {
 	if (id) {
-		const campsiteRef = db.collection('campsites').doc(id);
-		const campsite = await campsiteRef.get()
-		return campsite.data()
+		const campsiteRef = db.collection("campsites").doc(id);
+		const campsite = await campsiteRef.get();
+		return campsite.data();
 	}
 }
 
@@ -41,7 +39,10 @@ export const addCampsite = async ({ campsite, image }) => {
 		const newCampsiteRef = await newCampsite.get();
 
 		// Upload image to folder under campsite ID
-		const {uploadTask, imageRef} = addCampsiteImage(newCampsiteRef, image);
+		const { uploadTask, imageRef } = addCampsiteImage(
+			newCampsiteRef,
+			image
+		);
 
 		// On completion of image upload write data to firestore
 		uploadTask.on("state_change", undefined, undefined, async () => {
@@ -57,8 +58,8 @@ export const addCampsite = async ({ campsite, image }) => {
 				.catch(() => {
 					// Remove image if document write fails
 					imageRef.delete();
-					alert('Something went wrong');
-				})
+					alert("Something went wrong");
+				});
 		});
 		// Return uploadTask so that progress can be tracked
 		return { uploadTask };
@@ -73,8 +74,8 @@ function addCampsiteImage(newCampsiteRef, image) {
 	);
 
 	const uploadTask = imageRef.put(image);
-	return {uploadTask, imageRef};
-};
+	return { uploadTask, imageRef };
+}
 
 export const updateCampsite = async (campsite, key, value) => {
 	const user = store.getState().authReducer.user;
@@ -86,23 +87,27 @@ export const updateCampsite = async (campsite, key, value) => {
 };
 
 export const likeCampsite = async (campsiteID, userID, liked) => {
-	if (userID){
-		const campsiteRef = db.collection('campsites').doc(campsiteID);
-		liked ?
-
-			campsiteRef.update({
-				likedBy: firebase.firestore.FieldValue.arrayRemove(userID)
-			})
-			.catch(err => alert('Something Went Wrong'))
-		: 
-			campsiteRef.update({
-				likedBy: firebase.firestore.FieldValue.arrayUnion(userID)
-			}).catch(err => alert('Something Went Wrong'))
-			
+	if (userID) {
+		const campsiteRef = db.collection("campsites").doc(campsiteID);
+		liked
+			? campsiteRef
+					.update({
+						likedBy: firebase.firestore.FieldValue.arrayRemove(
+							userID
+						),
+					})
+					.catch((err) => alert("Something Went Wrong"))
+			: campsiteRef
+					.update({
+						likedBy: firebase.firestore.FieldValue.arrayUnion(
+							userID
+						),
+					})
+					.catch((err) => alert("Something Went Wrong"));
 	} else {
-		alert('You need to be signed in to do that')
+		alert("You need to be signed in to do that");
 	}
-}
+};
 
 // COMMENT UTILITIES
 
@@ -115,40 +120,51 @@ export const addComment = async (userID, comment, campsiteID) => {
 			user: userID,
 			comment,
 			campsiteID,
-			commentID: newCommentRef.id
-		}
-		db.collection('comments')
-		.doc(newCommentRef.id)
-		.set(data)
-		.catch(() => {
-			alert('Something went wrong');
-		})
+			commentID: newCommentRef.id,
+		};
+		db.collection("comments")
+			.doc(newCommentRef.id)
+			.set(data)
+			.catch(() => {
+				alert("Something went wrong");
+			});
 	} else {
-		alert('You need to be signed in to do that')
+		alert("You need to be signed in to do that");
 	}
-}
+};
 
 // REVIEW UTILITIES
 
 export const addReview = async (campsiteID, data) => {
 	const user = store.getState().authReducer.user;
 	if (user.uid) {
-		const reviewRef = db.collection('reviews');
-		reviewRef.add({
+		const reviewRef = db.collection("reviews").doc();
+		reviewRef.set({
 			campsiteID,
 			userID: user.uid,
-			data
-		})
+			data,
+			reviewID: reviewRef.id,
+		});
 	} else {
-		alert('You need to be signed in to do that')
+		alert("You need to be signed in to do that");
 	}
-}
+};
+
+export const updateReview = async (review) => {
+	db.collection("reviews")
+		.doc(review.reviewID)
+		.update(review)
+		.catch((err) => alert("Something went wrong"));
+};
 
 export const getReviews = async (campsiteID) => {
-	const reviewRef = await db.collection('reviews').where('campsiteID', '==', campsiteID ).get()
-	const reviews = reviewRef.docs.map(el => el.data())
-	return reviews
-}
+	const reviewRef = await db
+		.collection("reviews")
+		.where("campsiteID", "==", campsiteID)
+		.get();
+	const reviews = reviewRef.docs.map((el) => el.data());
+	return reviews;
+};
 
 // USER UTILITIES
 
@@ -199,33 +215,36 @@ export const getUserImages = async (imageType, uid) => {
 };
 
 export const getUserProfile = async (userID) => {
-	const userRef = await db.collection('userProfiles').where('userID', '==', userID).get()
-	const userProfile = userRef.docs[0].data()
-	return userProfile
-}
+	const userRef = await db
+		.collection("userProfiles")
+		.where("userID", "==", userID)
+		.get();
+	const userProfile = userRef.docs[0].data();
+	return userProfile;
+};
 
 export const updateUserProfile = async (obj) => {
 	const user = store.getState().authReducer.user;
-	const userProfileRef = db.collection("userProfiles").where('userID', '==', user.uid);
-	const res = await userProfileRef.get()
-	const profileRef = res.docs[0].ref
-	profileRef.update(obj)
-	.catch(err => alert(err))
-	
+	const userProfileRef = db
+		.collection("userProfiles")
+		.where("userID", "==", user.uid);
+	const res = await userProfileRef.get();
+	const profileRef = res.docs[0].ref;
+	profileRef.update(obj).catch((err) => alert(err));
 };
 
-
 export const updateDocument = async (obj, collection, doc) => {
-	const docRef = db.collection(collection).doc(doc)
-	docRef.update(obj).catch(err => {
-		alert('Something went wrong')
-	})
-
-}
+	const docRef = db.collection(collection).doc(doc);
+	docRef.update(obj).catch((err) => {
+		alert("Something went wrong");
+	});
+};
 
 export const deleteDocument = async (collection, doc) => {
-	db.collection(collection).doc(doc).delete()
-	.catch(() => {
-		alert('Something went wrong')
-	})
-}
+	db.collection(collection)
+		.doc(doc)
+		.delete()
+		.catch(() => {
+			alert("Something went wrong");
+		});
+};
