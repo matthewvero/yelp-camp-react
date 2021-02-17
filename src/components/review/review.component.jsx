@@ -68,7 +68,7 @@ const Review = ({ review, handleEdit }) => {
 					<div
 						style={{
 							width: "100%",
-							height: "auto",
+							height: "17px",
 							paddingTop: "10px",
 							display: "grid",
 							gridTemplateColumns: "1fr 1fr 8fr",
@@ -109,37 +109,27 @@ const Review = ({ review, handleEdit }) => {
 							/>
 						</div>
 					</div>
-					{expanded ? (
-						<Text
-							style={{
-								margin: "10px 0",
-								userSelect: "false",
-								cursor: "pointer",
-							}}
-							onPointerDown={() =>
-								setExpanded(false)
+
+					<Text
+						style={{
+							margin: "10px 0",
+							userSelect: "none",
+							cursor: "pointer",
+						}}
+						onPointerDown={() =>
+							setExpanded((expanded) => !expanded)
+						}
+					>
+						{expanded ? "Less" : "More"}{" "}
+						<FontAwesomeIcon
+							icon={
+								expanded
+									? faChevronDown
+									: faChevronUp
 							}
-						>
-							Less{" "}
-							<FontAwesomeIcon icon={faChevronUp} />
-						</Text>
-					) : (
-						<Text
-							style={{
-								margin: "10px 0",
-								userSelect: "false",
-								cursor: "pointer",
-							}}
-							onPointerDown={() =>
-								setExpanded(true)
-							}
-						>
-							More{" "}
-							<FontAwesomeIcon
-								icon={faChevronDown}
-							/>
-						</Text>
-					)}
+						/>
+					</Text>
+
 					{user.uid === review.userID && expanded && (
 						<Button
 							style={{

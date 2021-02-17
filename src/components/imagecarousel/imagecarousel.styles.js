@@ -1,5 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styled from 'styled-components/macro';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styled from "styled-components/macro";
 
 export const ImageCarouselContainer = styled.div`
 	height: 100%;
@@ -7,7 +7,7 @@ export const ImageCarouselContainer = styled.div`
 	position: relative;
 	border-radius: 10px;
 	overflow: hidden;
-	background-color: ${props => props.theme.main};
+	background-color: ${(props) => props.theme.main};
 `;
 
 export const ImageCarouselSlide = styled.div`
@@ -18,28 +18,44 @@ export const ImageCarouselSlide = styled.div`
 	position: absolute;
 	user-select: none;
 	will-change: auto;
-  	&.imagecarousel-enter {
-		transform: translateX(${props => props.enter});
-		z-index: 1;
+	z-index: 0;
+	opacity: 0;
+	&.imagecarousel-enter {
+		transform: translateX(${(props) => props.enter});
+		opacity: 1;
+		z-index: 2;
 	}
 	&.imagecarousel-enter-active {
-            transition: all 200ms ease-out;
+		transition: all 200ms ease-out;
 		transform: translateX(0%);
+		opacity: 1;
+		z-index: 2;
 	}
-`
+	&.imagecarousel-enter-done {
+		z-index: 2;
+		opacity: 1;
+	}
+	&.imagecarousel-exit {
+		z-index: 1;
+		opacity: 1;
+	}
+	&.imagecarousel-exit-done {
+		z-index: 0;
+	}
+`;
 
 export const ImageCarouselBtn = styled(FontAwesomeIcon)`
 	position: absolute;
 	height: 50px;
 	width: 50px;
-	z-index: 2;
+	z-index: 5;
 	font-size: 2rem;
 	color: white;
 	padding: 20px 30px;
-	border-radius: ${props => props.theme.borderRadius};
+	border-radius: ${(props) => props.theme.borderRadius};
 	cursor: pointer;
 	&:hover {
-		background-color: rgba(50,50,50, 0.3);
+		background-color: rgba(50, 50, 50, 0.3);
 	}
 `;
 
@@ -47,7 +63,6 @@ export const ImageCarouselBtnForward = styled(ImageCarouselBtn)`
 	right: 10%;
 	top: 50%;
 	transform: translateY(-50%);
-
 `;
 
 export const ImageCarouselBtnBack = styled(ImageCarouselBtn)`
@@ -56,36 +71,36 @@ export const ImageCarouselBtnBack = styled(ImageCarouselBtn)`
 	transform: translateY(-50%);
 `;
 
-
 export const ImageCarouselSlideIndicator = styled.div`
 	height: 15px;
 	width: 5px;
-	background-color: ${props => props.theme.color};
+	background-color: ${(props) => props.theme.color};
 	border-radius: 2px;
 	margin: 0 10px;
-	transform: scaleY(${props => {
-		const {activeImage, idx, arrLength} = props;
-		const arrayLength = arrLength - 1;
-		if (props.activeImage === props.idx){
-			return '1.6'
-		} else if (activeImage > idx) {
-			const increments = 1 / activeImage;
-			const height = increments * idx;
-			return 0.5 + height
-		} else if (activeImage < idx) {
-			const increments = 1 / (arrayLength - activeImage);
-			const height = increments * (arrayLength - idx);
-			return 0.5 + height
-		}
-	}});
+	transform: scaleY(
+		${(props) => {
+			const { activeImage, idx, arrLength } = props;
+			const arrayLength = arrLength - 1;
+			if (props.activeImage === props.idx) {
+				return "1.6";
+			} else if (activeImage > idx) {
+				const increments = 1 / activeImage;
+				const height = increments * idx;
+				return 0.5 + height;
+			} else if (activeImage < idx) {
+				const increments = 1 / (arrayLength - activeImage);
+				const height = increments * (arrayLength - idx);
+				return 0.5 + height;
+			}
+		}}
+	);
 	transition: transform 100ms ease-out;
 	cursor: pointer;
-`
-
+`;
 
 export const ImageCarouselSlideIndicatorGroup = styled.div`
 	position: absolute;
-	z-index: 2;
+	z-index: 5;
 	bottom: 20px;
 	left: 50%;
 	transform: translateX(-50%);
@@ -95,10 +110,8 @@ export const ImageCarouselSlideIndicatorGroup = styled.div`
 	border-radius: 10px;
 	transition: transform 100ms ease-out;
 	backdrop-filter: blur(20px);
-	background-color: rgba(50,50,50,0.2);
+	background-color: rgba(50, 50, 50, 0.2);
 	&:hover {
 		transform: scale(2) translateX(-25%);
 	}
-	
-`
-
+`;

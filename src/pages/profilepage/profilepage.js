@@ -9,59 +9,57 @@ import CampsiteCreator from "../../components/campsitecreator/campsite-creator.c
 import { useSelector } from "react-redux";
 import CampsiteCardLong from "../../components/campsitecardlong/campsite-card-long.component";
 import CoverPicture from "../../components/coverpicture/coverpicture.component";
-import { getUserCampsites } from "../../firebase.utils";
+import { getUserCampsites, getUserProfile } from "../../firebase.utils";
 import { withRouter } from "react-router";
-import About from '../../components/about/about.component'
+import About from "../../components/about/about.component";
 import { Title } from "../../components/misc/text.styles";
-import { CoverPictureResponsiveContainer, ProfilePictureResponsiveContainer, UserNameBar } from "./profilepage.styles";
-import { db } from "../../firebase";
-const ProfilePage = ({match}) => {
-	
+import {
+	CoverPictureResponsiveContainer,
+	ProfilePictureResponsiveContainer,
+	UserNameBar,
+} from "./profilepage.styles";
+const ProfilePage = ({ match }) => {
 	const user = useSelector((state) => state.authReducer.user);
-	const userProfile = useSelector((state) => state.authReducer.userProfile);
 	const [camps, setCamps] = useState();
 	const [profileInfo, setProfileInfo] = useState({});
 	const [editable, setEditable] = useState(false);
-	// const [editing, setEditing] = useState(false)
-	// Finish this
 
 	useEffect(() => {
+		let unsub;
 		const setUserProfile = async () => {
-			
-			if(user.uid === match.params.id) {
-				setProfileInfo({...userProfile, displayName: user.displayName})
-				setEditable(true);
-			} else {
-				const collectionRef = db.collection('campsites');
-				const camps = await collectionRef
-				.where('owner', '==', match.params.id).get();
-				setCamps(camps.docs.map(el => el.data()));
-			}
-
-		} 
-		setUserProfile()
-		const unsub = getUserCampsites(setCamps, match.params.id);
-		if (unsub) {
+			const profile = await getUserProfile(match.params.id);
+			setProfileInfo(profile);
+			unsub = getUserCampsites(setCamps, match.params.id);
+		};
+		setUserProfile().then(() => {
 			return () => unsub();
-		}
-	}, [match, user.displayName, user.uid, userProfile]);
+		});
+		setEditable(user.uid === match.params.id);
+	}, [match, profileInfo, user.displayName, user.uid]);
+
+	useEffect(() => {
+		console.log(profileInfo);
+	}, [profileInfo]);
 
 	return (
 		<PageContainer>
-			<CoverPictureResponsiveContainer
->
-				<CoverPicture editable={editable} userID={match.params.id}/>
+			<CoverPictureResponsiveContainer>
+				<CoverPicture
+					editable={editable}
+					userID={match.params.id}
+				/>
 
 				<ProfilePictureResponsiveContainer>
-					<ProfilePicture editable={editable} userID={match.params.id}/>
+					<ProfilePicture
+						editable={editable}
+						userID={match.params.id}
+					/>
 				</ProfilePictureResponsiveContainer>
 			</CoverPictureResponsiveContainer>
 
 			<ResponsivePageContainer>
 				<UserNameBar>
-					<Title >
-						{profileInfo.displayName}
-					</Title>
+					<Title>{profileInfo.displayName}</Title>
 				</UserNameBar>
 			</ResponsivePageContainer>
 
@@ -72,19 +70,18 @@ const ProfilePage = ({match}) => {
 					flexDirection: "row",
 					justifyContent: "space-between",
 					alignItems: "start",
-					flexWrap: 'wrap'
+					flexWrap: "wrap",
 				}}
 			>
-				<ResponsiveContentContainer $width='34%'>
-					<About profileInfo={profileInfo} editable={editable}/>
+				<ResponsiveContentContainer $width="34%">
+					<About
+						profileInfo={profileInfo}
+						editable={editable}
+					/>
 				</ResponsiveContentContainer>
 
-				<ResponsiveContentContainer
-					$width='65%'
-				>
-					{editable &&
-						<CampsiteCreator />
-					}
+				<ResponsiveContentContainer $width="65%">
+					{editable && <CampsiteCreator />}
 
 					<div
 						style={{
@@ -94,19 +91,16 @@ const ProfilePage = ({match}) => {
 							justifyContent: "space-between",
 							width: "100%",
 							overflowY: "scroll",
-							overflowX: 'visible'
+							overflowX: "visible",
 						}}
 					>
-						{
-							camps &&
+						{camps &&
 							camps.map((el) => (
 								<CampsiteCardLong
 									campsite={el}
 									key={el.id}
 								/>
-							))
-						}
-
+							))}
 					</div>
 				</ResponsiveContentContainer>
 			</ResponsivePageContainer>

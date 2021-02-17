@@ -113,9 +113,10 @@ const ReviewCreator = ({ campsiteID, exit, review }) => {
 							style={{
 								gridColumn: "3/4",
 								gridRow: "1/2",
-								marginRight: "10px",
-								padding: "5px",
+								padding: "0 5px",
 								backgroundColor: "crimson",
+								marginRight: "10px",
+								height: "40px",
 							}}
 							fn={handleDelete}
 						>

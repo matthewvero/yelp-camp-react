@@ -22,7 +22,7 @@ export const RatingSection = styled.div`
 	grid-column: 2/3;
 	border-left: solid 1px ${(props) => props.theme.main};
 	padding-left: 10px;
-	overflow: scroll;
+	overflow: hidden;
 	position: relative;
 	box-sizing: border-box;
 	display: flex;
