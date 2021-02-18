@@ -28,15 +28,19 @@ const SignupForm = () => {
 	const handleSumbit = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await auth.createUserWithEmailAndPassword(email, password)
-			await res.user
-			.updateProfile({
+			const res = await auth.createUserWithEmailAndPassword(
+				email,
+				password
+			);
+			await res.user.updateProfile({
 				displayName: username,
 			});
-			db.collection('userProfiles').add({
-				userID: res.user.uid,
-				displayName: username
-			}).catch(err => console.log(err))
+			db.collection("userProfiles")
+				.add({
+					userID: res.user.uid,
+					displayName: username,
+				})
+				.catch((err) => console.log(err));
 			dispatch(
 				setUser({
 					...res,
@@ -47,11 +51,11 @@ const SignupForm = () => {
 		} catch (error) {
 			return console.log(error);
 		}
-	}
+	};
 
 	return (
 		<React.Fragment>
-			<Title style={{margin: '2%'}}>Sign Up</Title>
+			<Title style={{ margin: "2%" }}>Sign Up</Title>
 
 			<form style={formStyles} onSubmit={(e) => handleSumbit(e)}>
 				<FormInputLabel htmlFor="username">
@@ -67,10 +71,7 @@ const SignupForm = () => {
 					onChange={(e) => setUsername(e.target.value)}
 				/>
 
-				<FormInputLabel htmlFor="email">
-					{" "}
-					Email{" "}
-				</FormInputLabel>
+				<FormInputLabel htmlFor="email"> Email </FormInputLabel>
 
 				<FormInputText
 					style={inputStyles}
@@ -80,7 +81,7 @@ const SignupForm = () => {
 					onChange={(e) => setEmail(e.target.value)}
 				/>
 
-				<FormInputLabel  htmlFor="password">
+				<FormInputLabel htmlFor="password">
 					{" "}
 					Password{" "}
 				</FormInputLabel>

@@ -15,18 +15,24 @@ const images = [
 
 const BackgroundCarousel = () => {
 	const [activeImage, setActiveImage] = useState(0);
-	const imagesArr = usePreloadImages(images)
+	const imagesArr = usePreloadImages(images, {
+		height: "100vh",
+		objectFit: "cover",
+	});
+
+	const [refs, setRefs] = useState({});
+	useEffect(() => {
+		let refObj = {};
+		imagesArr.forEach((el, idx) => {
+			refObj[idx] = React.createRef(null);
+		});
+		setRefs(refObj);
+	}, [imagesArr]);
 
 	useEffect(() => {
-		let interval;
-
-		setTimeout(() => {
+		let interval = setInterval(() => {
 			setActiveImage((val) => (val + 1) % images.length);
-			interval = setInterval(() => {
-				setActiveImage((val) => (val + 1) % images.length);
-			}, 4000);
-		}, 1000);
-
+		}, 4000);
 		return () => clearInterval(interval);
 	}, []);
 
@@ -36,13 +42,16 @@ const BackgroundCarousel = () => {
 				<Fader>
 					{imagesArr.map((el, idx) => (
 						<CSSTransition
-							classNames="image"
+							classNames="background"
 							timeout={3000}
 							key={idx}
 							in={activeImage === idx}
 							unmountOnExit
+							nodeRef={refs[idx]}
 						>
-							<BackgroundCarouselSlide>
+							<BackgroundCarouselSlide
+								ref={refs[idx]}
+							>
 								{el}
 							</BackgroundCarouselSlide>
 						</CSSTransition>

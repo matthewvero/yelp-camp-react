@@ -1,5 +1,16 @@
 import styled from "styled-components/macro";
 
+export const FormInputLabel = styled.label`
+	position: absolute;
+	left: 15%;
+	user-select: none;
+	opacity: ${(props) => (props.$focus ? "0" : "1")};
+	transition: opacity 100ms;
+	color: ${(props) => props.theme.textAlt};
+	font-size: 1.3rem;
+	cursor: text;
+`;
+
 export const FormInputText = styled.input`
 	width: auto;
 	padding: 0 20px 0 40px;
@@ -9,7 +20,7 @@ export const FormInputText = styled.input`
 	border: none;
 	border-radius: 10px;
 	outline: none;
-	@media (max-width: ${props => props.theme.xSmallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.xSmallBreakPoint}) {
 		font-size: 1rem;
 	}
 `;
@@ -25,12 +36,6 @@ export const FormInputTextArea = styled.textarea`
 	outline: none;
 	font-family: Helvetica, sans-serif;
 	resize: none;
-`
-
-export const FormInputLabel = styled.label`
-	margin: 1%;
-	font-size: 1rem;
-	color: ${props => props.theme.textAlt};
 `;
 
 export const FormInputButton = styled.button`
@@ -44,7 +49,7 @@ export const FormInputButton = styled.button`
 	font-weight: 400;
 	cursor: pointer;
 	&:hover {
-		background-color: ${(props) => props.theme.colorHover} "";
+		background-color: ${(props) => props.theme.colorHover};
 	}
 	&:active {
 		background-color: ${(props) => props.theme.colorActive};
@@ -62,7 +67,7 @@ export const UpdateImageButtonContainer = styled.label`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background-color: ${props => props.theme.backgroundTransparent};
+	background-color: ${(props) => props.theme.backgroundTransparent};
 	font-size: 2rem;
 	color: white;
 	transition: all 50ms linear;
@@ -70,6 +75,7 @@ export const UpdateImageButtonContainer = styled.label`
 	cursor: pointer;
 	&:hover {
 		transform: scale(1.1);
-		background-color: ${props => props.theme.backgroundTransparentActive};
+		background-color: ${(props) =>
+			props.theme.backgroundTransparentActive};
 	}
 `;

@@ -57,7 +57,7 @@ export function useClickOutside(callback, visible, ref) {
 	}, [callback, ref, visible]);
 }
 
-export function usePreloadImages(images) {
+export function usePreloadImages(images, style) {
 	const [imagesArr, setImagesArr] = useState([]);
 	let loadedImages = [];
 	useEffect(() => {
@@ -74,6 +74,7 @@ export function usePreloadImages(images) {
 									minHeight: "100%",
 									minWidth: "100%",
 									objectFit: "cover",
+									...style,
 								}}
 								src={el}
 								alt=" "

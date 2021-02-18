@@ -1,15 +1,20 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "styled-components";
-import {
-	ResponsivePageContainer,
-} from "../../components/misc/containers.styles";
+import { ResponsivePageContainer } from "../../components/misc/containers.styles";
 import { PageContainer } from "../page.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMountain, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FormInputText } from "../../components/inputs/input-text/inputs.styles";
+import {
+	FormInputLabel,
+	FormInputText,
+} from "../../components/inputs/input-text/inputs.styles";
 import CampsiteCard from "../../components/campsitecard/campsite-card.component";
 import { db } from "../../firebase";
-import { HomePageCardsGrid, HomepageHeadingContainer, SearchBarContainer } from "./homepage.styles";
+import {
+	HomePageCardsGrid,
+	HomepageHeadingContainer,
+	SearchBarContainer,
+} from "./homepage.styles";
 import { Text, Title } from "../../components/misc/text.styles";
 
 const formStyles = {
@@ -22,7 +27,8 @@ const formStyles = {
 const Homepage = () => {
 	const themeContext = useContext(ThemeContext);
 	const [campsites, setCampsites] = useState([]);
-	const [searchResults, setSearchResults] = useState([])
+	const [searchResults, setSearchResults] = useState([]);
+	const [searchFocus, setSearchFocus] = useState(false);
 	useEffect(() => {
 		const getData = async () => {
 			let campsitesArr = [];
@@ -36,17 +42,22 @@ const Homepage = () => {
 	}, []);
 
 	useEffect(() => {
-		setSearchResults(campsites)
-	}, [campsites])
+		setSearchResults(campsites);
+	}, [campsites]);
 
 	const handleChange = (event) => {
 		const input = event.target.value;
-		const newCampsiteArr = campsites.filter(el => 
-			el.data.title.toLowerCase().includes(input.toLowerCase()) 
-			|| 
-			el.data.description.toLowerCase().includes(input.toLowerCase()))
-		setSearchResults(newCampsiteArr)
-	}
+		const newCampsiteArr = campsites.filter(
+			(el) =>
+				el.data.title
+					.toLowerCase()
+					.includes(input.toLowerCase()) ||
+				el.data.description
+					.toLowerCase()
+					.includes(input.toLowerCase())
+		);
+		setSearchResults(newCampsiteArr);
+	};
 
 	return (
 		<PageContainer>
@@ -70,32 +81,35 @@ const Homepage = () => {
 							icon={faMountain}
 						/>
 					</Title>
-					
 				</HomepageHeadingContainer>
 
-				<SearchBarContainer >					
-					<Text
-						
-					>
-						Our most popular Campsites!
-					</Text>
-					
-						<div style={formStyles}>
-							<FontAwesomeIcon
-								icon={faSearch}
-								style={{
-									position: "absolute",
-									left: "5%",
-									color:
-										themeContext.textAlt,
-								}}
-							/>
-							<FormInputText
-								style={{ height: "70%" }}
-								placeholder="Search Campsites..."
-								onChange={e => handleChange(e)}
-							/>
-						</div>
+				<SearchBarContainer>
+					<Text>Our most popular Campsites!</Text>
+
+					<div style={formStyles}>
+						<FormInputLabel
+							htmlFor="searchcampsites"
+							$focus={searchFocus}
+						>
+							Search Campsites
+						</FormInputLabel>
+						<FontAwesomeIcon
+							icon={faSearch}
+							style={{
+								position: "absolute",
+								left: "5%",
+								color: themeContext.textAlt,
+							}}
+						/>
+
+						<FormInputText
+							style={{ height: "70%" }}
+							onChange={(e) => handleChange(e)}
+							id="searchcampsites"
+							onFocus={() => setSearchFocus(true)}
+							onBlur={() => setSearchFocus(false)}
+						/>
+					</div>
 				</SearchBarContainer>
 
 				<HomePageCardsGrid>

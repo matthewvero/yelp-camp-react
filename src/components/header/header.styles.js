@@ -2,7 +2,7 @@ import styled from "styled-components/macro";
 
 export const HeaderContainer = styled.div`
 	position: fixed;
-	z-index: 1000000;
+	z-index: 1001;
 	left: 0px;
 	top: 0px;
 	height: 65px;
@@ -14,7 +14,7 @@ export const HeaderContainer = styled.div`
 	border-bottom: ${(props) => props.theme.border};
 	padding-right: 5vw;
 	box-sizing: border-box;
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		padding-right: 10px;
 	}
 `;
@@ -49,20 +49,23 @@ export const HeaderButton = styled.div`
 	align-items: center;
 	align-self: center;
 	border-radius: 500px;
-	background-color: ${(props) => props.$active ? props.theme.backgroundActive : props.theme.backgroundAlt};
+	background-color: ${(props) =>
+		props.$active
+			? props.theme.backgroundActive
+			: props.theme.backgroundAlt};
 	color: ${(props) => props.theme.textAlt};
 	font-size: 1.3rem;
 	transition: transform 100ms linear;
 	user-select: none;
-	transform: scale(${props => props.$active ? '0.95' : '1'}); 
+	transform: scale(${(props) => (props.$active ? "0.95" : "1")});
 	cursor: pointer;
-	@media (min-width: ${props => props.theme.smallBreakPoint}) {
+	@media (min-width: ${(props) => props.theme.smallBreakPoint}) {
 		&:hover {
 			background-color: ${(props) => props.theme.backgroundHover};
 		}
 	}
 
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		font-size: 1.1rem;
 		padding: 0px;
 		height: 30px;
