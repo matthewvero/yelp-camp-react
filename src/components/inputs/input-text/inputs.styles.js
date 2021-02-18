@@ -1,6 +1,11 @@
 import styled from "styled-components/macro";
 
 export const FormInputLabel = styled.label`
+	color: ${(props) => props.theme.textAlt};
+	font-size: 1.3rem;
+`;
+
+export const FormInputLabelInternal = styled.label`
 	position: absolute;
 	left: 15%;
 	user-select: none;

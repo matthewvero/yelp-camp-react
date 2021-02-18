@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMountain, faSearch } from "@fortawesome/free-solid-svg-icons";
 import {
 	FormInputLabel,
+	FormInputLabelInternal,
 	FormInputText,
 } from "../../components/inputs/input-text/inputs.styles";
 import CampsiteCard from "../../components/campsitecard/campsite-card.component";
@@ -87,12 +88,12 @@ const Homepage = () => {
 					<Text>Our most popular Campsites!</Text>
 
 					<div style={formStyles}>
-						<FormInputLabel
+						<FormInputLabelInternal
 							htmlFor="searchcampsites"
 							$focus={searchFocus}
 						>
 							Search Campsites
-						</FormInputLabel>
+						</FormInputLabelInternal>
 						<FontAwesomeIcon
 							icon={faSearch}
 							style={{
