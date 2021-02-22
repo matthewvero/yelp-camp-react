@@ -55,7 +55,6 @@ export const HeaderButton = styled.div`
 			: props.theme.backgroundAlt};
 	color: ${(props) => props.theme.textAlt};
 	font-size: 1.3rem;
-	transition: transform 100ms linear;
 	user-select: none;
 	transform: scale(${(props) => (props.$active ? "0.95" : "1")});
 	cursor: pointer;
@@ -80,4 +79,5 @@ export const CircleButtonContainer = styled(HeaderButton)`
 	justify-content: space-around;
 	font-size: 1.7em;
 	color: ${(props) => props.theme.color};
+	transform: scale(${(props) => (props.$active ? "0.95" : "1")});
 `;

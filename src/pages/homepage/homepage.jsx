@@ -5,7 +5,6 @@ import { PageContainer } from "../page.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMountain, faSearch } from "@fortawesome/free-solid-svg-icons";
 import {
-	FormInputLabel,
 	FormInputLabelInternal,
 	FormInputText,
 } from "../../components/inputs/input-text/inputs.styles";

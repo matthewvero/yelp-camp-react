@@ -1,7 +1,6 @@
 import {
 	faChevronLeft,
 	faCog,
-	faHeart,
 	faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -144,18 +143,6 @@ const MainMenu = ({ history }) => {
 						nodeRef={subMenuRef}
 					>
 						<Page ref={subMenuRef}>
-							<MainMenuItemTouch>
-								<SubTitle>Likes</SubTitle>
-								<FontAwesomeIcon
-									icon={faHeart}
-									style={{
-										color:
-											themeContext.textAlt,
-										margin: "0 10px",
-										fontSize: "1.3rem",
-									}}
-								/>
-							</MainMenuItemTouch>
 							<MainMenuItemTouch
 								fn={() =>
 									dispatch(

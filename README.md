@@ -1,5 +1,9 @@
 YELP-CAMP_REACT
 
+Guest log in: 
+yelpcampguest@hotmail.com
+Guest123
+
 YelpCamp is was a simple vanilla JS project I did on one of my courses which I decided to rebuild with reactJS and add additional functionality. 
 
 Users are able to: 

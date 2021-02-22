@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import { Switch, Route } from "react-router";
 import LandingPage from "./pages/landingpage/landingpage";
@@ -16,14 +16,26 @@ import CampsitePage from "./pages/campsitepage/campsitepage.component";
 function App() {
 	const darkMode = useDarkMode();
 
-	useAuthListener()
-	
+	useAuthListener();
+
+	const helloWorld = async () => {
+		const data = await fetch(
+			"http://localhost:5001/yelpcamp-d57d1/us-central1/helloWorld"
+		);
+		const result = await data;
+		console.log(result);
+	};
+
+	useEffect(() => {
+		helloWorld();
+	}, []);
+
 	return (
 		<div className="App">
 			<ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
 				<Header />
-				
-				<MainMenu/>
+
+				<MainMenu />
 				<Switch>
 					<Route exact path="/" component={LandingPage} />
 					<Route exact path="/home" component={Homepage} />
@@ -31,15 +43,18 @@ function App() {
 						exact
 						path="/profile/:id"
 						render={(props) => (
-							<ProfilePage {...props} isAuthed={true} />
-						    )}
+							<ProfilePage
+								{...props}
+								isAuthed={true}
+							/>
+						)}
 					/>
 					<Route
 						exact
 						path="/campsite/:id"
 						render={(props) => (
 							<CampsitePage {...props} />
-						    )}
+						)}
 					/>
 				</Switch>
 			</ThemeProvider>

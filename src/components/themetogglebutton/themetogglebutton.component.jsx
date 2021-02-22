@@ -3,8 +3,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { useDarkMode } from "../../utils/ui-hooks";
 import { CircleButtonContainer } from "../header/header.styles";
+import withTouchAnimator from "../touch-hoc/touch-hoc.component";
 
-const ThemeToggleButton = (styles) => {
+const ThemeToggleButton = ({ styles, ...props }) => {
 	// Get dark mode from local storage and convert to boolean
 	const darkMode = useDarkMode();
 
@@ -16,10 +17,14 @@ const ThemeToggleButton = (styles) => {
 	};
 
 	return (
-		<CircleButtonContainer style={styles} onClick={toggleDarkMode}>
+		<CircleButtonContainer
+			{...props}
+			style={styles}
+			onClick={toggleDarkMode}
+		>
 			<FontAwesomeIcon icon={darkMode ? faMoon : faSun} />
 		</CircleButtonContainer>
 	);
 };
 
-export default ThemeToggleButton;
+export default withTouchAnimator(ThemeToggleButton);
