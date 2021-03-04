@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { SignedUp } from "../../../events/auth-events";
 import { auth, db } from "../../../firebase";
 import { setUser } from "../../../redux/auth-redux/auth.actions";
 import {
@@ -43,11 +42,15 @@ const SignupForm = () => {
 				.catch((err) => console.log(err));
 			dispatch(
 				setUser({
-					...res,
+					email: res.user.email,
+					uid: res.user.uid,
 					displayName: username,
 				})
 			);
-			dispatchEvent(SignedUp);
+			const SignedIn = new CustomEvent("SignedIn", {
+				detail: { type: "returningUser" },
+			});
+			dispatchEvent(SignedIn);
 		} catch (error) {
 			return console.log(error);
 		}

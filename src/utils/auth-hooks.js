@@ -7,9 +7,9 @@ import { setUser, setUserProfile } from "../redux/auth-redux/auth.actions";
 export function useAuthListener() {
 	const dispatch = useDispatch();
 	useEffect(() => {
-		auth.onAuthStateChanged(function (user) {
+		auth.onAuthStateChanged((user) => {
 			if (user) {
-				const getImages = async () => {
+				const loadUserInformation = async () => {
 					const profileImageURLs = await getUserImages(
 						"profileImages",
 						user.uid
@@ -33,9 +33,9 @@ export function useAuthListener() {
 						.catch((err) =>
 							alert("Error Fetching profile")
 						);
+					dispatch(setUser(user));
 				};
-				getImages();
-				dispatch(setUser(user));
+				loadUserInformation();
 			}
 		});
 	}, [dispatch]);

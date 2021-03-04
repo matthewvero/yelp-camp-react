@@ -228,8 +228,12 @@ export const getUserProfile = async (userID) => {
 		.collection("userProfiles")
 		.where("userID", "==", userID)
 		.get();
-	const userProfile = userRef.docs[0].data();
-	return userProfile;
+	if (userRef.docs.length) {
+		const userProfile = userRef.docs[0].data();
+		return userProfile;
+	} else {
+		return {};
+	}
 };
 
 export const updateUserProfile = async (obj) => {

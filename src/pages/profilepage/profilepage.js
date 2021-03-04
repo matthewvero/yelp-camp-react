@@ -31,15 +31,12 @@ const ProfilePage = ({ match }) => {
 			setProfileInfo(profile);
 			unsub = getUserCampsites(setCamps, match.params.id);
 		};
+
+		setEditable(user.uid === match.params.id);
 		setUserProfile().then(() => {
 			return () => unsub();
 		});
-		setEditable(user.uid === match.params.id);
-	}, [match, profileInfo, user.displayName, user.uid]);
-
-	useEffect(() => {
-		console.log(profileInfo);
-	}, [profileInfo]);
+	}, [match, user.displayName, user.uid]);
 
 	return (
 		<PageContainer>

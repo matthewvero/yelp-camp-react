@@ -18,17 +18,21 @@ function App() {
 
 	useAuthListener();
 
-	const helloWorld = async () => {
-		const data = await fetch(
-			"http://localhost:5001/yelpcamp-d57d1/us-central1/helloWorld"
-		);
-		const result = await data;
-		console.log(result);
-	};
+	// const helloWorld = async () => {
+	// 	try {
+	// 		const data = await fetch(
+	// 			"http://localhost:5001/yelpcamp-d57d1/us-central1/getResizedImage/?w=100"
+	// 		);
+	// 		const result = await data.text();
+	// 		return result;
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 	}
+	// };
 
-	useEffect(() => {
-		helloWorld();
-	}, []);
+	// useEffect(() => {
+	// 	helloWorld().then((data) => console.log(data));
+	// }, []);
 
 	return (
 		<div className="App">

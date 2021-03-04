@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SignedIn } from "../../../events/auth-events";
 import { auth } from "../../../firebase";
 import { getUserImages } from "../../../firebase.utils";
 import { setUserProfile } from "../../../redux/auth-redux/auth.actions";
@@ -35,6 +34,9 @@ const LogInForm = () => {
 					);
 				};
 				getImages();
+				const SignedIn = new CustomEvent("SignedIn", {
+					detail: { type: "returningUser" },
+				});
 				dispatchEvent(SignedIn);
 			})
 			.catch((error) => {
