@@ -1,6 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useState } from "react";
-import { addProfileImage, getUserImages } from "../../firebase.utils";
+import {
+	addProfileImage,
+	getUserImages,
+	getUserProfile,
+} from "../../firebase.utils";
 import Image from "../image/image.component";
 import InputImage from "../inputs/input-image/input-image.component";
 import { UpdateImageButtonContainer } from "../inputs/input-text/inputs.styles";
@@ -16,26 +20,29 @@ import { useSelector } from "react-redux";
 import { CSSTransition } from "react-transition-group";
 
 const ProfilePicture = ({ userID, editable }) => {
-	const [image, setImage] = useState([]);
+	const [images, setImages] = useState([]);
 	const user = useSelector((state) => state.authReducer.user);
 	const userProfile = useSelector((state) => state.authReducer.userProfile);
 	const [selectedFile, setSelectedFile] = useState();
 	const imageRef = useRef();
 	const noImageRef = useRef();
+	const containerRef = useRef();
+
+	const getImages = async () => {
+		const height = containerRef.current.offsetHeight;
+		const width = containerRef.current.offsetWidth;
+		const userProfile = await getUserProfile(userID);
+		const resizedImageLinks = userProfile.profileimages.map(
+			(el) => `${el}?ch=${height}&w=${width}`
+		);
+		setImages(resizedImageLinks);
+	};
+
+	const getImagesMemo = useCallback(getImages, [userID]);
+
 	useEffect(() => {
-		if (userID === user.uid) {
-			setImage(userProfile.profilePicture);
-		} else {
-			const getImages = async () => {
-				const URLs = await getUserImages(
-					"profileImages",
-					userID
-				);
-				setImage(URLs[0]);
-			};
-			getImages();
-		}
-	}, [user.uid, userID, userProfile.profilePicture]);
+		getImagesMemo();
+	}, [getImagesMemo, user.uid, userID, userProfile.profilePicture]);
 
 	const encodeImage = async (image) => {
 		//read data from the blob objects(file)
@@ -63,8 +70,8 @@ const ProfilePicture = ({ userID, editable }) => {
 				method: "POST",
 				body: JSON.stringify({
 					base64ImageString: selectedFile,
-					userID,
-					imageType: "profileImages",
+					userID: userID,
+					imagetype: "profileimages",
 				}),
 			}
 		)
@@ -72,18 +79,12 @@ const ProfilePicture = ({ userID, editable }) => {
 				(response) => response.text() // if the response is a JSON object
 			)
 			.then(
-				(success) => console.log(success) // Handle the success response object
+				(success) => getImagesMemo() // Handle the success response object
 			)
 			.catch(
 				(error) => console.log(error) // Handle the error response object
 			);
 	};
-
-	// const uploadTask = addProfileImage(image, "profileImages");
-	// uploadTask.then(async () => {
-	// 	const URLs = await getUserImages("profileImages", userID);
-	// 	setImage(URLs[0]);
-	// });
 
 	return (
 		<div
@@ -99,26 +100,26 @@ const ProfilePicture = ({ userID, editable }) => {
 				</UpdateImageButtonContainer>
 			)}
 
-			<ProfilePictureContainer>
+			<ProfilePictureContainer ref={containerRef}>
 				<InputImage
 					setImageFn={encodeImage}
 					id="profileImage"
 				/>
 
 				<CSSTransition
-					in={image && image.length ? true : false}
+					in={images && images.length ? true : false}
 					classNames="switcher"
 					timeout={100}
 					unmountOnExit
 					nodeRef={imageRef}
 				>
 					<Switcher ref={imageRef}>
-						<Image image={image} />
+						<Image image={images[images.length - 1]} />
 					</Switcher>
 				</CSSTransition>
 
 				<CSSTransition
-					in={image && image.length ? false : true}
+					in={images.length ? false : true}
 					classNames="switcher"
 					timeout={100}
 					unmountOnExit

@@ -40,25 +40,34 @@ var app = express();
 
 app.use(cors());
 
-app.post("/newprofileimage", async (req, res, next) => {
-	const body = JSON.parse(req.body);
+const saveTempImage = (base64String) => {
 	// give file random name
 	const fileName = Math.ceil(Math.random() * 100000).toString() + ".jpg";
 	// Create temporary file
 	const tempFilePath = path.join(os.tmpdir(), fileName);
-	// Retrieve API token from SIRV CDN
-	const accessToken = await getAccessToken();
 	// Remove header from base64
-	let base64Image = body.base64ImageString.split(";base64,").pop();
+	let base64Image = base64String.split(";base64,").pop();
 	// save image in temporary file
 	fs.writeFileSync(tempFilePath, base64Image, { encoding: "base64" });
+	return { tempFilePath, fileName };
+};
+
+app.post("/newprofileimage", async (req, res, next) => {
+	// Retrieve API token from SIRV CDN
+	const accessToken = await getAccessToken();
+	const body = JSON.parse(req.body);
+	const { tempFilePath, fileName } = saveTempImage(body.base64ImageString);
+
+	// Construct image path
+	const URL = `https://api.sirv.com/v2/files/upload?filename=/yelpcamp/userprofiles/${body.userID}/${body.imagetype}/${fileName}`;
+
 	try {
 		fs.readFile(tempFilePath, async (err, data) => {
 			if (err) throw new Error(err);
 			// Upload image to CDN
 			const upload = await axios({
 				method: "post",
-				url: `https://api.sirv.com/v2/files/upload?filename=/yelpcamp/userprofiles/${body.userID}/profileimages/${fileName}`,
+				url: URL,
 				headers: {
 					"content-type": "image/jpeg",
 					authorization: `Bearer ${accessToken}`,
@@ -77,7 +86,9 @@ app.post("/newprofileimage", async (req, res, next) => {
 					db.collection("userProfiles")
 						.doc(userProfileID)
 						.update({
-							profileImageLink: `https://printrat.sirv.com/yelpcamp/userprofiles/${body.userID}/profileimages/${fileName}`,
+							profileimages: admin.firestore.FieldValue.arrayUnion(
+								`https://printrat.sirv.com/yelpcamp/userprofiles/${body.userID}/${body.imagetype}/${fileName}`
+							),
 						})
 						.then(() => {
 							res.status(200).send(
@@ -88,21 +99,22 @@ app.post("/newprofileimage", async (req, res, next) => {
 						.catch((error) => {
 							throw new Error(error);
 						});
-				} else if (res.status !== 200) {
+				} else if (upload.status !== 200) {
 					throw new Error("File upload failed");
 				}
 			} catch (error) {
-				res.send(error);
+				res.send(error.message);
 				return;
 			}
 		});
 	} catch (error) {
-		res.send(error);
+		res.send(error.message);
 		return;
 	} finally {
 		fs.unlinkSync(tempFilePath);
 	}
 	return;
 });
+
 console.log("Running");
 exports.widgets = functions.https.onRequest(app);

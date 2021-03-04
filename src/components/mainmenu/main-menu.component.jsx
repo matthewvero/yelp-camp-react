@@ -107,7 +107,7 @@ const MainMenu = ({ history }) => {
 					<CSSTransition
 						in={
 							activeSubMenu ===
-							uiTypes.subMenus.signin
+							uiTypes.subMenus.login
 						}
 						classNames="mainMenuPage"
 						timeout={100}
