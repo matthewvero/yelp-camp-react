@@ -32,6 +32,7 @@ export const LoadingImage = styled(Loader)`
 `;
 
 export const LoadingWaves = styled.div`
+	z-index: 100;
 	height: 200px;
 	width: 200px;
 	position: fixed;
@@ -52,7 +53,6 @@ const wave = keyframes`
 	}
 `;
 
-
 export const Wave = styled.div`
 	position: absolute;
 	transform: translate(-50%, -50%);
@@ -60,11 +60,8 @@ export const Wave = styled.div`
 	top: 50%;
 	height: 10px;
 	width: 10px;
-	border: 1px solid ${props => props.theme.color};
+	border: 1px solid ${(props) => props.theme.color};
 	border-radius: 50%;
 	animation: ${wave} 1000ms linear infinite;
-	animation-delay: -${props => props.delay ? props.delay : '0'}ms;
-
-`
-
-
+	animation-delay: -${(props) => (props.delay ? props.delay : "0")}ms;
+`;

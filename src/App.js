@@ -12,40 +12,33 @@ import MainMenu from "./components/mainmenu/main-menu.component";
 import { useDarkMode } from "./utils/ui-hooks";
 import { useAuthListener } from "./utils/auth-hooks";
 import CampsitePage from "./pages/campsitepage/campsitepage.component";
+import Alert from "./components/alert/alert.component";
+import ImageViewer from "./components/imageviewer/imageviewer.component";
+import { useSelector } from "react-redux";
+import uiTypes from "./redux/ui-redux/ui.types";
 
 function App() {
 	const darkMode = useDarkMode();
-
+	const imageViewerArr = useSelector(
+		(state) => state.uiReducer[uiTypes.imageViewerArr]
+	);
 	useAuthListener();
-
-	// const helloWorld = async () => {
-	// 	try {
-	// 		const data = await fetch(
-	// 			"http://localhost:5001/yelpcamp-d57d1/us-central1/getResizedImage/?w=100"
-	// 		);
-	// 		const result = await data.text();
-	// 		return result;
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 	}
-	// };
-
-	// useEffect(() => {
-	// 	helloWorld().then((data) => console.log(data));
-	// }, []);
 
 	return (
 		<div className="App">
 			<ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
 				<Header />
-
+				<Alert />
 				<MainMenu />
+				{imageViewerArr && imageViewerArr.length && (
+					<ImageViewer images={imageViewerArr} />
+				)}
 				<Switch>
 					<Route exact path="/" component={LandingPage} />
 					<Route exact path="/home" component={Homepage} />
 					<Route
 						exact
-						path="/profile/:id"
+						path="/profile/:uid"
 						render={(props) => (
 							<ProfilePage
 								{...props}
@@ -55,7 +48,7 @@ function App() {
 					/>
 					<Route
 						exact
-						path="/campsite/:id"
+						path="/campsite/:uid"
 						render={(props) => (
 							<CampsitePage {...props} />
 						)}

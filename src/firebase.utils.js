@@ -53,7 +53,8 @@ export const addCampsite = async ({ campsite, image }) => {
 					createdAt: timestamp(),
 					likedBy: [],
 					// Insert ID inside new doc so that it can be used later.
-					id: newCampsiteRef.id,
+					uid: newCampsiteRef.id,
+					images: [],
 				})
 				.catch(() => {
 					// Remove image if document write fails
@@ -68,6 +69,7 @@ export const addCampsite = async ({ campsite, image }) => {
 	}
 };
 
+// convert to new api
 function addCampsiteImage(newCampsiteRef, image) {
 	const imageRef = storageRef.child(
 		`images/${newCampsiteRef.id}/${image.size}`
@@ -80,7 +82,7 @@ function addCampsiteImage(newCampsiteRef, image) {
 export const updateCampsite = async (campsite, key, value) => {
 	const user = store.getState().authReducer.user;
 	if (campsite.owner === user.uid) {
-		const campsiteRef = db.collection("campsites").doc(campsite.id);
+		const campsiteRef = db.collection("campsites").doc(campsite.uid);
 		const res = await campsiteRef.update({ [key]: value });
 		return res;
 	}
@@ -162,7 +164,7 @@ export const deleteReview = async (review) => {
 		.doc(review)
 		.delete()
 		.catch(() => {
-			console.log("Oops! Something went wrong.");
+			alert("Oops! Something went wrong.");
 		});
 };
 
@@ -178,50 +180,10 @@ export const getReviews = async (campsiteID) => {
 // USER UTILITIES
 
 export function logOut(history) {
-	console.log("clicked");
 	auth.signOut();
 	store.dispatch(destroySession());
 	history.push("/home");
 }
-
-export const addProfileImage = (image, imageType) => {
-	const user = store.getState().authReducer.user;
-	if (user.uid) {
-		const imageRef = storageRef.child(
-			`profiles/${user.uid}/${imageType}/${image.size}`
-		);
-
-		const uploadTask = imageRef.put(image);
-
-		return uploadTask;
-	} else {
-		alert("You need to be logged in to do that.");
-	}
-};
-
-export const getUserImages = async (imageType, uid) => {
-	if (uid) {
-		const imagesRef = storageRef.child(`profiles/${uid}/${imageType}`);
-		const list = await imagesRef.listAll();
-
-		const getDownloadURL = (item) => {
-			return new Promise((resolve, reject) => {
-				resolve(item.getDownloadURL());
-				reject((err) => console.log(err));
-			});
-		};
-		const populateUrlArray = async (list) => {
-			return Promise.all(
-				list.items.map((item) => getDownloadURL(item))
-			);
-		};
-
-		const URLs = populateUrlArray(list);
-
-		return URLs;
-	}
-	return [];
-};
 
 export const getUserProfile = async (userID) => {
 	const userRef = await db
@@ -239,8 +201,8 @@ export const getUserProfile = async (userID) => {
 export const updateUserProfile = async (obj) => {
 	const user = store.getState().authReducer.user;
 	const userProfileRef = db
-		.collection("userProfiles")
-		.where("userID", "==", user.uid);
+		.collection("userprofiles")
+		.where("uid", "==", user.uid);
 	const res = await userProfileRef.get();
 	const profileRef = res.docs[0].ref;
 	profileRef.update(obj).catch((err) => alert(err));
@@ -260,4 +222,55 @@ export const deleteDocument = async (collection, doc) => {
 		.catch(() => {
 			alert("Oops! Something went wrong.");
 		});
+};
+
+export const addImage = (image, url) => {
+	const uploadImage = async (encodedImage) => {
+		try {
+			const res = await fetch(
+				`http://localhost:5001/yelpcamp-d57d1/us-central1/widgets/newimage/${url}`,
+				{
+					// Your POST endpoint
+					method: "POST",
+					body: JSON.stringify({
+						base64ImageString: encodedImage,
+					}),
+				}
+			);
+			if (res && res.status === 200) {
+				const event = new CustomEvent("alert", {
+					detail: "Upload Complete!",
+				});
+				window.dispatchEvent(event);
+				return res;
+			} else {
+				throw new Error(res);
+			}
+		} catch (err) {
+			const event = new CustomEvent("alert", {
+				detail: `Something went wrong!`,
+			});
+			window.dispatchEvent(event);
+		}
+	};
+	return new Promise((resolve, reject) => {
+		if (image) {
+			//read data from the blob objects(file)
+			let reader = new FileReader();
+			//reads the binary data and encodes it as base64 data url
+			reader.readAsDataURL(image);
+			//reads it finish with either success or failure
+			reader.onloadend = async () => {
+				//reader.result is the result of the reading in base64 string
+				try {
+					const res = await uploadImage(reader.result);
+					if (res && res.status === 200) {
+						resolve(res);
+					}
+				} catch (err) {
+					reject(err);
+				}
+			};
+		}
+	});
 };

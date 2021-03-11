@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../../../firebase";
-import { getUserImages } from "../../../firebase.utils";
 import { setUserProfile } from "../../../redux/auth-redux/auth.actions";
 import {
 	FormInputButton,
@@ -21,26 +20,18 @@ const LogInForm = () => {
 		e.preventDefault();
 		auth.signInWithEmailAndPassword(email, password)
 			.then((user) => {
-				const getImages = async () => {
-					const URLs = await getUserImages(
-						"profileImages",
-						user.uid
-					);
-					dispatch(
-						setUserProfile({
-							...userProfile,
-							profilePicture: URLs,
-						})
-					);
-				};
-				getImages();
+				dispatch(
+					setUserProfile({
+						...userProfile,
+					})
+				);
 				const SignedIn = new CustomEvent("SignedIn", {
 					detail: { type: "returningUser" },
 				});
 				dispatchEvent(SignedIn);
 			})
 			.catch((error) => {
-				console.log(error);
+				alert(error);
 			});
 	};
 

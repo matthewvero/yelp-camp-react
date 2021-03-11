@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext } from "react";
 import {
 	MainMenuItem,
 	MainMenuProfilePicture,
@@ -23,7 +23,6 @@ import ProfilePicture from "../profilepicture/profilepicture.component";
 import { SubTitle } from "../misc/text.styles";
 import withTouchAnimator from "../touch-hoc/touch-hoc.component";
 import { CircleButtonContainer } from "../header/header.styles";
-import { CSSTransition } from "react-transition-group";
 import { ThemeContext } from "styled-components";
 import SignupForm from "../authentication/signupform/signupform.component";
 import LogInForm from "../authentication/loginform/login-form.component";
@@ -32,11 +31,12 @@ import { destroySession } from "../../redux/auth-redux/auth.actions";
 
 const MainMenuItemTouch = withTouchAnimator(MainMenuItem);
 
-export const MainMenuProfile = ({ user, history }) => {
+export const MainMenuProfile = ({ history }) => {
 	const dispatch = useDispatch();
 	const CircleButtonTouch = withTouchAnimator(CircleButtonContainer);
+	const userProfile = useSelector((state) => state.authReducer.userProfile);
 	const goToProfile = () => {
-		history.push(`/profile/${user.uid}`);
+		history.push(`/profile/${userProfile.uid}`);
 		dispatch(
 			setMenuVisibility({ menu: uiTypes.mainMenu, visible: false })
 		);
@@ -47,12 +47,13 @@ export const MainMenuProfile = ({ user, history }) => {
 			<MMProfile>
 				<MainMenuProfilePicture>
 					<ProfilePicture
-						userID={user.uid}
+						userID={userProfile.uid}
 						editable={false}
+						images={userProfile.profileimages}
 					/>
 				</MainMenuProfilePicture>
 
-				<SubTitle>{user.displayName}</SubTitle>
+				<SubTitle>{userProfile.displayname}</SubTitle>
 				<CircleButtonTouch
 					style={{
 						marginLeft: "auto",
@@ -205,7 +206,7 @@ export const MainMenuSettings = ({ $ref }) => {
 					}}
 				/>
 			</MainMenuItemTouch>
-			{user.hasOwnProperty("displayName") && (
+			{user.hasOwnProperty("displayname") && (
 				<MainMenuItemTouch fn={() => handleLogOut()}>
 					<SubTitle>Log Out</SubTitle>
 				</MainMenuItemTouch>

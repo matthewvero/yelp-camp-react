@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export function useDarkMode() {
 	const [isDark, setIsDark] = useState();
@@ -59,9 +59,9 @@ export function useClickOutside(callback, visible, ref) {
 
 export function usePreloadImages(images, style) {
 	const [imagesArr, setImagesArr] = useState([]);
-	let loadedImages = [];
+
 	useEffect(() => {
-		images &&
+		if (images && images.length) {
 			images.forEach((el) => {
 				const img = new Image();
 				img.onload = () => {
@@ -84,8 +84,24 @@ export function usePreloadImages(images, style) {
 				};
 				img.src = el;
 			});
-		setImagesArr(loadedImages);
+			return;
+		}
+		setImagesArr([]);
+		return;
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [images]);
 	return imagesArr;
+}
+
+export function useElementDimensions(ref) {
+	const [dimensions, setDimensions] = useState(null);
+	useEffect(() => {
+		if (ref) {
+			setDimensions({
+				height: ref.offsetHeight,
+				width: ref.offsetWidth,
+			});
+		}
+	}, [ref]);
+	return dimensions;
 }

@@ -24,10 +24,10 @@ const About = ({ editable, match }) => {
 	);
 
 	useEffect(() => {
-		getUserProfile(match.params.id).then((profile) => {
+		getUserProfile(match.params.uid).then((profile) => {
 			setProfileInfo(profile);
 		});
-	}, [match.params.id]);
+	}, [match.params.uid]);
 
 	useEffect(() => {
 		const windowSize = window.matchMedia(

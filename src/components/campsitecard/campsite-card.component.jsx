@@ -21,13 +21,13 @@ import LikeButton from "../likebutton/like-button.component";
 const CampsiteCard = ({ campsite, history }) => {
 	const themeContext = useContext(ThemeContext);
 	const user = useSelector((state) => state.authReducer.user);
-	const { averageRating } = useRatingCalculator(campsite.id);
+	const { averageRating } = useRatingCalculator(campsite.uid);
 	const { likedBy } = useLikeListener(campsite);
 
-	const images = useCampsiteImageURLS(campsite.id);
+	const images = useCampsiteImageURLS(campsite.uid);
 
 	const handleClick = (e) => {
-		history.push(`/campsite/${campsite.id}`);
+		history.push(`/campsite/${campsite.uid}`);
 	};
 
 	return (

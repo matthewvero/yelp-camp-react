@@ -6,7 +6,6 @@ import { ImageContainer, ImageSwitcher } from "./image.styles";
 const Image = ({ image, style }) => {
 	const [loaded, setLoaded] = useState(false);
 	const imageRef = useRef(null);
-
 	return (
 		<ImageContainer style={style}>
 			<CSSTransition

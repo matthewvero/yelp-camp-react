@@ -14,9 +14,9 @@ import {
 	ImageCarouselSlideIndicator,
 	ImageCarouselSlideIndicatorGroup,
 } from "./imagecarousel.styles";
-const ImageCarousel = ({ images }) => {
+const ImageCarousel = ({ images, style }) => {
 	// Ensure images load in background
-	const loadedImages = usePreloadImages(images);
+	const loadedImages = usePreloadImages(images, style);
 	const [loading, setLoading] = useState(true);
 	const back = "-";
 	const forward = "+";
@@ -49,9 +49,8 @@ const ImageCarousel = ({ images }) => {
 	}, [images]);
 
 	useEffect(() => {
-		loadedImages.length === images.length &&
-			setTimeout(() => setLoading(false), 50);
-	}, [images.length, loadedImages.length]);
+		loadedImages.length > 0 && setLoading(false);
+	}, [loadedImages.length]);
 
 	return (
 		<ImageCarouselContainer>
@@ -92,7 +91,7 @@ const ImageCarousel = ({ images }) => {
 			<CSSTransition
 				in={loading}
 				classNames="imagecarousel"
-				timeout={1000}
+				timeout={100}
 				nodeRef={loadingRef}
 			>
 				<ImageCarouselSlide ref={loadingRef}>

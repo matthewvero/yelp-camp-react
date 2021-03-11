@@ -1,10 +1,6 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { useState } from "react";
-import {
-	addProfileImage,
-	getUserImages,
-	getUserProfile,
-} from "../../firebase.utils";
+import { addImage, getUserProfile } from "../../firebase.utils";
 import Image from "../image/image.component";
 import InputImage from "../inputs/input-image/input-image.component";
 import { UpdateImageButtonContainer } from "../inputs/input-text/inputs.styles";
@@ -16,75 +12,56 @@ import {
 } from "./profilepicture.styles";
 import { faCamera, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { CSSTransition } from "react-transition-group";
+import { LoadingWaves, Wave } from "../misc/loadinganimations.styles";
+import { setImageViewerArr } from "../../redux/ui-redux/ui.actions";
 
-const ProfilePicture = ({ userID, editable }) => {
-	const [images, setImages] = useState([]);
-	const user = useSelector((state) => state.authReducer.user);
-	const userProfile = useSelector((state) => state.authReducer.userProfile);
+const ProfilePicture = ({ userID, editable, images }) => {
+	const [loading, setLoading] = useState(false);
 	const [selectedFile, setSelectedFile] = useState();
 	const imageRef = useRef();
 	const noImageRef = useRef();
 	const containerRef = useRef();
+	const dispatch = useDispatch();
+	const [resizedImageLinks, setResizedImageLinks] = useState([]);
 
 	const getImages = async () => {
 		const height = containerRef.current.offsetHeight;
 		const width = containerRef.current.offsetWidth;
-		const userProfile = await getUserProfile(userID);
-		const resizedImageLinks = userProfile.profileimages.map(
-			(el) => `${el}?ch=${height}&w=${width}`
-		);
-		setImages(resizedImageLinks);
+		let imageLinks = [];
+
+		if (images) {
+			imageLinks = images.map(
+				(image) =>
+					`${image.link}?ch=${height + 100}&w=${
+						width + 100
+					}`
+			);
+		}
+		setResizedImageLinks(imageLinks);
 	};
 
-	const getImagesMemo = useCallback(getImages, [userID]);
+	const getImagesMemo = useCallback(getImages, [images]);
 
 	useEffect(() => {
-		getImagesMemo();
-	}, [getImagesMemo, user.uid, userID, userProfile.profilePicture]);
+		// check images have not already been retrieved
+		images && getImagesMemo();
+	}, [getImagesMemo, images]);
 
-	const encodeImage = async (image) => {
-		//read data from the blob objects(file)
-		let reader = new FileReader();
-		//reads the binary data and encodes it as base64 data url
-		reader.readAsDataURL(image);
-		//reads it finish with either success or failure
-		reader.onloadend = () => {
-			//reader.result is the result of the reading in base64 string
-			setSelectedFile(reader.result);
+	useEffect(() => {
+		const url = `userprofiles/${userID}/profileimages`;
+		const uploadImage = async () => {
+			setLoading(true);
+			await addImage(selectedFile, url);
+			setLoading(false);
+			setSelectedFile("");
+			getImagesMemo(); // Request new image resized
 		};
-	};
-
-	useEffect(() => {
 		if (selectedFile) {
 			uploadImage();
 		}
-	}, [selectedFile]);
-
-	const uploadImage = () => {
-		fetch(
-			"http://localhost:5001/yelpcamp-d57d1/us-central1/widgets/newprofileimage",
-			{
-				// Your POST endpoint
-				method: "POST",
-				body: JSON.stringify({
-					base64ImageString: selectedFile,
-					userID: userID,
-					imagetype: "profileimages",
-				}),
-			}
-		)
-			.then(
-				(response) => response.text() // if the response is a JSON object
-			)
-			.then(
-				(success) => getImagesMemo() // Handle the success response object
-			)
-			.catch(
-				(error) => console.log(error) // Handle the error response object
-			);
-	};
+	}, [getImagesMemo, selectedFile, userID]);
 
 	return (
 		<div
@@ -99,10 +76,15 @@ const ProfilePicture = ({ userID, editable }) => {
 					<FontAwesomeIcon icon={faCamera} />
 				</UpdateImageButtonContainer>
 			)}
-
+			{loading && (
+				<LoadingWaves>
+					<Wave />
+					<Wave delay="500" />
+				</LoadingWaves>
+			)}
 			<ProfilePictureContainer ref={containerRef}>
 				<InputImage
-					setImageFn={encodeImage}
+					setImageFn={(file) => setSelectedFile(file)}
 					id="profileImage"
 				/>
 
@@ -113,13 +95,25 @@ const ProfilePicture = ({ userID, editable }) => {
 					unmountOnExit
 					nodeRef={imageRef}
 				>
-					<Switcher ref={imageRef}>
-						<Image image={images[images.length - 1]} />
+					<Switcher
+						ref={imageRef}
+						onPointerDown={() =>
+							dispatch(setImageViewerArr(images))
+						}
+					>
+						<Image
+							image={
+								resizedImageLinks[
+									resizedImageLinks.length -
+										1
+								]
+							}
+						/>
 					</Switcher>
 				</CSSTransition>
 
 				<CSSTransition
-					in={images.length ? false : true}
+					in={resizedImageLinks.length ? false : true}
 					classNames="switcher"
 					timeout={100}
 					unmountOnExit

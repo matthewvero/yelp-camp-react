@@ -20,13 +20,14 @@ export const ImageCarouselSlide = styled.div`
 	will-change: auto;
 	z-index: 0;
 	opacity: 0;
+	background-color: ${(props) => props.theme.main};
 	&.imagecarousel-enter {
 		transform: translateX(${(props) => props.enter});
 		opacity: 1;
 		z-index: 2;
 	}
 	&.imagecarousel-enter-active {
-		transition: all 200ms ease-out;
+		transition: all 100ms ease-out;
 		transform: translateX(0%);
 		opacity: 1;
 		z-index: 2;

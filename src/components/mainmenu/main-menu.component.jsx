@@ -53,7 +53,6 @@ const MainMenu = ({ history }) => {
 	// Listen for sign in
 	useEffect(() => {
 		const handleSignIn = (e) => {
-			console.log(e);
 			e.detail.type === "returningUser"
 				? dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))
 				: dispatch(
@@ -77,7 +76,7 @@ const MainMenu = ({ history }) => {
 		>
 			<MainMenuContainer ref={menuRef}>
 				{user.hasOwnProperty("displayName") && (
-					<MainMenuProfile user={user} history={history} />
+					<MainMenuProfile history={history} />
 				)}
 				<MainMenuContentSection>
 					<CSSTransition

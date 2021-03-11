@@ -2,15 +2,20 @@ import uiTypes from "./ui.types";
 
 export const toggleMenu = (payload) => ({
 	type: uiTypes.toggleMenu,
-	payload: payload
+	payload,
 });
 
 export const setMenuVisibility = (payload) => ({
 	type: uiTypes.setMenuVisibility,
-	payload: payload
-})
+	payload,
+});
 
 export const setMainMenuSubMenu = (payload) => ({
 	type: uiTypes.setMainMenuActiveSub,
-	payload: payload
-})
+	payload,
+});
+
+export const setImageViewerArr = (payload) => ({
+	type: uiTypes.setImageViewerArr,
+	payload,
+});

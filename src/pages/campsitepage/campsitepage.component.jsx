@@ -40,28 +40,29 @@ import {
 import Button from "../../components/button/button.component";
 import { ThemeContext } from "styled-components";
 import { getCampsite, updateDocument } from "../../firebase.utils";
+
 const CampsitePage = ({ match, history }) => {
 	const [loading, setLoading] = useState(true);
 	const [campsite, setCampsite] = useState();
-	const images = useCampsiteImageURLS(match.params.id);
+	const images = useCampsiteImageURLS(match.params.uid);
 	const user = useSelector((state) => state.authReducer.user);
-	const { likedBy } = useLikeListener(campsite, user);
 	const userName = useGetUsername(campsite && campsite.owner);
-	const { averageRating, reviewCount } = useRatingCalculator(
-		match.params.id
-	);
 	const theme = useContext(ThemeContext);
+	const { likedBy } = useLikeListener(campsite, user);
+	const { averageRating, reviewCount } = useRatingCalculator(
+		match.params.uid
+	);
 
 	const memoUpdateCampsite = useCallback(() => {
-		getCampsite(match.params.id).then((data) => {
+		getCampsite(match.params.uid).then((data) => {
 			setCampsite(data);
 		});
-	}, [match.params.id]);
+	}, [match.params.uid]);
 
 	// Retrieve Campsite
 	useEffect(() => {
 		memoUpdateCampsite();
-	}, [match.params.id, memoUpdateCampsite]);
+	}, [match.params.uid, memoUpdateCampsite]);
 
 	useEffect(() => {
 		campsite && images.length ? setLoading(false) : setLoading(true);
@@ -76,7 +77,7 @@ const CampsitePage = ({ match, history }) => {
 	const [editing, setEditing] = useState(false);
 	const [titleValue, setTitleValue] = useState();
 	const [descriptionValue, setDescriptionValue] = useState();
-	const handleTitleUpdate = () => {
+	const handleUpdate = () => {
 		updateDocument(
 			{
 				...campsite,
@@ -84,7 +85,7 @@ const CampsitePage = ({ match, history }) => {
 				description: descriptionValue,
 			},
 			"campsites",
-			campsite.id
+			campsite.uid
 		);
 		setEditing(false);
 		memoUpdateCampsite();
@@ -166,7 +167,7 @@ const CampsitePage = ({ match, history }) => {
 														"0",
 												}}
 												fn={
-													handleTitleUpdate
+													handleUpdate
 												}
 											>
 												Update
@@ -331,11 +332,11 @@ const CampsitePage = ({ match, history }) => {
 						</ContentContainer>
 
 						<CommentSection
-							campsiteID={match.params.id}
+							campsiteID={match.params.uid}
 							userID={user.uid}
 						/>
 						<ReviewsSection
-							campsiteID={match.params.id}
+							campsiteID={match.params.uid}
 						/>
 					</CampsitePageGrid>
 				</ResponsivePageContainer>

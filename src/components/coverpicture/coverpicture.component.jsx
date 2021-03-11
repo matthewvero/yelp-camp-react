@@ -1,61 +1,99 @@
 // import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
+import { useDispatch } from "react-redux";
 import { ThemeContext } from "styled-components";
-import { addProfileImage, getUserImages } from "../../firebase.utils.js";
+import { addImage } from "../../firebase.utils.js";
+import { setImageViewerArr } from "../../redux/ui-redux/ui.actions.js";
 import Image from "../image/image.component.jsx";
 import InputImage from "../inputs/input-image/input-image.component";
 import { UpdateImageButtonContainer } from "../inputs/input-text/inputs.styles";
-import {
-	CoverPictureContainer,
-	NoCoverPicture,
-} from "./coverpicture.styles";
+import { LoadingWaves, Wave } from "../misc/loadinganimations.styles.js";
+import { CoverPictureContainer, NoCoverPicture } from "./coverpicture.styles";
 
-const CoverPicture = ({userID, editable}) => {
-	const userProfile = useSelector(state => state.authReducer.userProfile);
-	const user = useSelector(state => state.authReducer.user);
+const CoverPicture = ({ userID, editable, images }) => {
+	const [loading, setLoading] = useState(false);
+	const [selectedFile, setSelectedFile] = useState();
+	const [resizedImageLinks, setResizedImageLinks] = useState([]);
 	const themeContext = useContext(ThemeContext);
-	const [images, setImages] = useState([]);
+	const dispatch = useDispatch();
+	const containerRef = useRef();
 
-	const updateCoverImage = async (image) => {
-		const uploadTask = addProfileImage(image, "coverImages");
-		uploadTask.then(async () => {
-			const URLs = await getUserImages("coverImages", userID);
-			setImages(URLs);
-		});
+	const getImages = async (images) => {
+		const height = containerRef.current.offsetHeight;
+		const width = containerRef.current.offsetWidth;
+		let imageLinks = [];
+
+		if (images) {
+			imageLinks = images.map(
+				(image) =>
+					`${image.link}?ch=${height}&w=${width}&cy=25%25`
+			);
+
+			setResizedImageLinks(imageLinks);
+		}
 	};
 
+	const getImagesMemo = useCallback(getImages, []);
+
+	// Await file input and upload
 	useEffect(() => {
-		if(userID === user.uid){
-			setImages(userProfile.coverImages)
-		} else {
-			const getImages = async () => {
-				const URLs = await getUserImages("coverImages", userID);
-				setImages(URLs);
-			};
-			getImages();
+		const url = `userprofiles/${userID}/coverimages`;
+		const uploadImage = async () => {
+			setLoading(true);
+			const res = await addImage(selectedFile, url);
+			console.log(res);
+			setLoading(false);
+			setSelectedFile("");
+		};
+		if (selectedFile) {
+			uploadImage();
 		}
-	}, [user, userID, userProfile.coverImages]);
+	}, [getImagesMemo, selectedFile, userID]);
+
+	// load images from link or get
+	useEffect(() => {
+		getImagesMemo(images);
+	}, [getImagesMemo, images]);
 
 	return (
-		<CoverPictureContainer>
-			{editable &&
+		<CoverPictureContainer
+			ref={containerRef}
+			onPointerDown={() => dispatch(setImageViewerArr(images))}
+		>
+			{editable && (
 				<UpdateImageButtonContainer htmlFor="coverImage">
 					<FontAwesomeIcon icon={faCamera} />
 				</UpdateImageButtonContainer>
-			}
+			)}
 
-			<InputImage setImageFn={updateCoverImage} id="coverImage" />
+			{loading && (
+				<LoadingWaves>
+					<Wave />
+					<Wave delay="500" />
+				</LoadingWaves>
+			)}
 
-			{
-			
-			images &&
-			images.length ? (
+			<InputImage
+				setImageFn={(file) => setSelectedFile(file)}
+				id="coverImage"
+			/>
 
-				<Image image={images[0]} />
-
+			{resizedImageLinks && resizedImageLinks.length ? (
+				<Image
+					image={
+						resizedImageLinks[
+							resizedImageLinks.length - 1
+						]
+					}
+				/>
 			) : (
 				<NoCoverPicture>
 					<svg
@@ -74,7 +112,6 @@ const CoverPicture = ({userID, editable}) => {
 					</svg>
 				</NoCoverPicture>
 			)}
-		
 		</CoverPictureContainer>
 	);
 };

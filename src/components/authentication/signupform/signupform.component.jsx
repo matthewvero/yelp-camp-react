@@ -32,19 +32,19 @@ const SignupForm = () => {
 				password
 			);
 			await res.user.updateProfile({
-				displayName: username,
+				displayname: username,
 			});
-			db.collection("userProfiles")
+			db.collection("userprofiles")
 				.add({
-					userID: res.user.uid,
-					displayName: username,
+					uid: res.user.uid,
+					displayname: username,
 				})
-				.catch((err) => console.log(err));
+				.catch((err) => alert(err));
 			dispatch(
 				setUser({
 					email: res.user.email,
 					uid: res.user.uid,
-					displayName: username,
+					displayname: username,
 				})
 			);
 			const SignedIn = new CustomEvent("SignedIn", {
@@ -52,7 +52,7 @@ const SignupForm = () => {
 			});
 			dispatchEvent(SignedIn);
 		} catch (error) {
-			return console.log(error);
+			return alert(error);
 		}
 	};
 

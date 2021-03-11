@@ -49,45 +49,56 @@ const saveTempImage = (base64String) => {
 	let base64Image = base64String.split(";base64,").pop();
 	// save image in temporary file
 	fs.writeFileSync(tempFilePath, base64Image, { encoding: "base64" });
+
 	return { tempFilePath, fileName };
 };
 
-app.post("/newprofileimage", async (req, res, next) => {
+app.post("/newimage/:collection/:uid/:imagetype", async (req, res, next) => {
 	// Retrieve API token from SIRV CDN
 	const accessToken = await getAccessToken();
 	const body = JSON.parse(req.body);
 	const { tempFilePath, fileName } = saveTempImage(body.base64ImageString);
+	const { collection, uid, imagetype } = req.params;
 
 	// Construct image path
-	const URL = `https://api.sirv.com/v2/files/upload?filename=/yelpcamp/userprofiles/${body.userID}/${body.imagetype}/${fileName}`;
+	const imagePath = `${collection}/${uid}/${
+		imagetype && imagetype + "/"
+	}${fileName}`;
+	const URL = `https://api.sirv.com/v2/files/upload?filename=/yelpcamp/${imagePath}`;
 
 	try {
 		fs.readFile(tempFilePath, async (err, data) => {
-			if (err) throw new Error(err);
-			// Upload image to CDN
-			const upload = await axios({
-				method: "post",
-				url: URL,
-				headers: {
-					"content-type": "image/jpeg",
-					authorization: `Bearer ${accessToken}`,
-				},
-				data: data,
-			});
-
-			// Save link to firestore for access by the client later
 			try {
+				if (err) throw new Error(err);
+				// Upload image to CDN
+				const upload = await axios({
+					method: "post",
+					url: URL,
+					headers: {
+						"content-type": "image/jpeg",
+						authorization: `Bearer ${accessToken}`,
+					},
+					data: data,
+				});
+
+				// Save link to firestore for access by the client later
+
 				if (upload.status === 200) {
 					const queryRef = db
-						.collection("userProfiles")
-						.where("userID", "==", body.userID);
+						.collection(collection)
+						.where("uid", "==", uid);
 					const querySnapshot = await queryRef.get();
-					const userProfileID = querySnapshot.docs[0].id;
-					db.collection("userProfiles")
-						.doc(userProfileID)
+					const docID = querySnapshot.docs[0].id;
+					db.collection(collection)
+						.doc(docID)
 						.update({
-							profileimages: admin.firestore.FieldValue.arrayUnion(
-								`https://printrat.sirv.com/yelpcamp/userprofiles/${body.userID}/${body.imagetype}/${fileName}`
+							[imagetype
+								? imagetype
+								: "images"]: admin.firestore.FieldValue.arrayUnion(
+								{
+									link: `https://printrat.sirv.com/yelpcamp/${imagePath}`,
+									filename: fileName,
+								}
 							),
 						})
 						.then(() => {
@@ -97,18 +108,19 @@ app.post("/newprofileimage", async (req, res, next) => {
 							return;
 						})
 						.catch((error) => {
-							throw new Error(error);
+							res.status(500).send(error);
+							throw new Error(error.message);
 						});
 				} else if (upload.status !== 200) {
 					throw new Error("File upload failed");
 				}
 			} catch (error) {
-				res.send(error.message);
+				res.status(500).send(error.message);
 				return;
 			}
 		});
 	} catch (error) {
-		res.send(error.message);
+		res.status(500).send(error.message);
 		return;
 	} finally {
 		fs.unlinkSync(tempFilePath);

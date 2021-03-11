@@ -9,7 +9,7 @@ import CampsiteCreator from "../../components/campsitecreator/campsite-creator.c
 import { useSelector } from "react-redux";
 import CampsiteCardLong from "../../components/campsitecardlong/campsite-card-long.component";
 import CoverPicture from "../../components/coverpicture/coverpicture.component";
-import { getUserCampsites, getUserProfile } from "../../firebase.utils";
+import { getUserCampsites } from "../../firebase.utils";
 import { withRouter } from "react-router";
 import About from "../../components/about/about.component";
 import { Title } from "../../components/misc/text.styles";
@@ -18,45 +18,47 @@ import {
 	ProfilePictureResponsiveContainer,
 	UserNameBar,
 } from "./profilepage.styles";
+import { useProfileListener } from "../../utils/auth-hooks";
 const ProfilePage = ({ match }) => {
 	const user = useSelector((state) => state.authReducer.user);
+	const userProfile = useProfileListener(match.params.uid);
 	const [camps, setCamps] = useState();
-	const [profileInfo, setProfileInfo] = useState({});
+
 	const [editable, setEditable] = useState(false);
 
 	useEffect(() => {
 		let unsub;
 		const setUserProfile = async () => {
-			const profile = await getUserProfile(match.params.id);
-			setProfileInfo(profile);
-			unsub = getUserCampsites(setCamps, match.params.id);
+			unsub = getUserCampsites(setCamps, match.params.uid);
 		};
 
-		setEditable(user.uid === match.params.id);
+		setEditable(user.uid === match.params.uid);
 		setUserProfile().then(() => {
 			return () => unsub();
 		});
-	}, [match, user.displayName, user.uid]);
+	}, [match.params.uid, user.uid]);
 
 	return (
 		<PageContainer>
 			<CoverPictureResponsiveContainer>
 				<CoverPicture
 					editable={editable}
-					userID={match.params.id}
+					userID={match.params.uid}
+					images={userProfile.coverimages}
 				/>
 
 				<ProfilePictureResponsiveContainer>
 					<ProfilePicture
 						editable={editable}
-						userID={match.params.id}
+						userID={match.params.uid}
+						images={userProfile.profileimages}
 					/>
 				</ProfilePictureResponsiveContainer>
 			</CoverPictureResponsiveContainer>
 
 			<ResponsivePageContainer>
 				<UserNameBar>
-					<Title>{profileInfo.displayName}</Title>
+					<Title>{userProfile.displayname}</Title>
 				</UserNameBar>
 			</ResponsivePageContainer>
 
@@ -72,7 +74,7 @@ const ProfilePage = ({ match }) => {
 			>
 				<ResponsiveContentContainer $width="34%">
 					<About
-						profileInfo={profileInfo}
+						profileInfo={userProfile}
 						editable={editable}
 					/>
 				</ResponsiveContentContainer>
@@ -95,7 +97,7 @@ const ProfilePage = ({ match }) => {
 							camps.map((el) => (
 								<CampsiteCardLong
 									campsite={el}
-									key={el.id}
+									key={el.uid}
 								/>
 							))}
 					</div>
