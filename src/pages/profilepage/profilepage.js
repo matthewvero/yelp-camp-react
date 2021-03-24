@@ -74,7 +74,7 @@ const ProfilePage = ({ match }) => {
 			>
 				<ResponsiveContentContainer $width="34%">
 					<About
-						profileInfo={userProfile}
+						userProfile={userProfile}
 						editable={editable}
 					/>
 				</ResponsiveContentContainer>

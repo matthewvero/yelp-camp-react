@@ -1,12 +1,13 @@
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { withRouter } from "react-router";
 import { ThemeContext } from "styled-components";
 import {
 	useCampsiteImageURLS,
 	useRatingCalculator,
 } from "../../utils/campsite-hooks";
+import { useImageResize } from "../../utils/ui-hooks";
 import Image from "../image/image.component";
 import {
 	CampsiteCardLongContainer,
@@ -19,7 +20,9 @@ import {
 const CampsiteCardLong = ({ campsite, history }) => {
 	const themeContext = useContext(ThemeContext);
 	const { averageRating } = useRatingCalculator(campsite.uid);
-	const images = useCampsiteImageURLS(campsite.uid);
+	const imageContainerRef = useRef();
+
+	const images = useImageResize(campsite.images, imageContainerRef);
 
 	return (
 		<CampsiteCardLongContainer
@@ -31,6 +34,7 @@ const CampsiteCardLong = ({ campsite, history }) => {
 					borderRadius: "10px",
 					overflow: "hidden",
 				}}
+				ref={imageContainerRef}
 			>
 				<Image image={images && images[0]} />
 			</div>

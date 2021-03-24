@@ -1,12 +1,9 @@
-const firebase = require("firebase");
 const functions = require("firebase-functions");
 const cors = require("cors");
 const express = require("express");
-const storage = require("firebase/storage");
 const admin = require("firebase-admin");
 admin.initializeApp();
 const db = admin.firestore();
-const spawn = require("child-process-promise").spawn;
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
@@ -62,7 +59,7 @@ app.post("/newimage/:collection/:uid/:imagetype", async (req, res, next) => {
 
 	// Construct image path
 	const imagePath = `${collection}/${uid}/${
-		imagetype && imagetype + "/"
+		imagetype !== "campsiteimage" && imagetype + "/"
 	}${fileName}`;
 	const URL = `https://api.sirv.com/v2/files/upload?filename=/yelpcamp/${imagePath}`;
 
@@ -89,10 +86,11 @@ app.post("/newimage/:collection/:uid/:imagetype", async (req, res, next) => {
 						.where("uid", "==", uid);
 					const querySnapshot = await queryRef.get();
 					const docID = querySnapshot.docs[0].id;
+					console.log(querySnapshot);
 					db.collection(collection)
 						.doc(docID)
 						.update({
-							[imagetype
+							[imagetype !== "campsiteimage"
 								? imagetype
 								: "images"]: admin.firestore.FieldValue.arrayUnion(
 								{
@@ -108,19 +106,21 @@ app.post("/newimage/:collection/:uid/:imagetype", async (req, res, next) => {
 							return;
 						})
 						.catch((error) => {
-							res.status(500).send(error);
 							throw new Error(error.message);
 						});
 				} else if (upload.status !== 200) {
 					throw new Error("File upload failed");
 				}
 			} catch (error) {
-				res.status(500).send(error.message);
+				res.send({
+					status: 500,
+					error: error.message,
+				});
 				return;
 			}
 		});
 	} catch (error) {
-		res.status(500).send(error.message);
+		res.send({ status: 500, error: error.message });
 		return;
 	} finally {
 		fs.unlinkSync(tempFilePath);

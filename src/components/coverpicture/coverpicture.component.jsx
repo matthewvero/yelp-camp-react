@@ -15,85 +15,64 @@ import { setImageViewerArr } from "../../redux/ui-redux/ui.actions.js";
 import Image from "../image/image.component.jsx";
 import InputImage from "../inputs/input-image/input-image.component";
 import { UpdateImageButtonContainer } from "../inputs/input-text/inputs.styles";
-import { LoadingWaves, Wave } from "../misc/loadinganimations.styles.js";
 import { CoverPictureContainer, NoCoverPicture } from "./coverpicture.styles";
+import withLoader from "../loaderHOC.component";
+import { useImageResize } from "../../utils/ui-hooks.jsx";
+import { useImageUploader } from "../../utils/misc-hooks.js";
 
-const CoverPicture = ({ userID, editable, images }) => {
-	const [loading, setLoading] = useState(false);
+const CoverPicture = ({
+	userID,
+	editable,
+	images,
+	setLoading,
+	setTransparency,
+}) => {
 	const [selectedFile, setSelectedFile] = useState();
-	const [resizedImageLinks, setResizedImageLinks] = useState([]);
 	const themeContext = useContext(ThemeContext);
 	const dispatch = useDispatch();
 	const containerRef = useRef();
+	const url = `userprofiles/${userID}/coverimages`;
 
-	const getImages = async (images) => {
-		const height = containerRef.current.offsetHeight;
-		const width = containerRef.current.offsetWidth;
-		let imageLinks = [];
+	const resizedImageLinks = useImageResize(images, containerRef, {
+		cy: "25%25",
+	});
 
-		if (images) {
-			imageLinks = images.map(
-				(image) =>
-					`${image.link}?ch=${height}&w=${width}&cy=25%25`
-			);
+	useImageUploader(selectedFile, setSelectedFile, setLoading, url);
 
-			setResizedImageLinks(imageLinks);
-		}
-	};
-
-	const getImagesMemo = useCallback(getImages, []);
-
-	// Await file input and upload
 	useEffect(() => {
-		const url = `userprofiles/${userID}/coverimages`;
-		const uploadImage = async () => {
-			setLoading(true);
-			const res = await addImage(selectedFile, url);
-			console.log(res);
-			setLoading(false);
-			setSelectedFile("");
-		};
-		if (selectedFile) {
-			uploadImage();
-		}
-	}, [getImagesMemo, selectedFile, userID]);
-
-	// load images from link or get
-	useEffect(() => {
-		getImagesMemo(images);
-	}, [getImagesMemo, images]);
+		setLoading(false);
+		setTransparency(true);
+	}, [setLoading, setTransparency]);
 
 	return (
-		<CoverPictureContainer
-			ref={containerRef}
-			onPointerDown={() => dispatch(setImageViewerArr(images))}
-		>
+		<CoverPictureContainer ref={containerRef}>
 			{editable && (
-				<UpdateImageButtonContainer htmlFor="coverImage">
-					<FontAwesomeIcon icon={faCamera} />
-				</UpdateImageButtonContainer>
+				<React.Fragment>
+					<UpdateImageButtonContainer htmlFor="coverImage">
+						<FontAwesomeIcon icon={faCamera} />
+					</UpdateImageButtonContainer>
+					<InputImage
+						setImageFn={(file) => setSelectedFile(file)}
+						id="coverImage"
+					/>
+				</React.Fragment>
 			)}
-
-			{loading && (
-				<LoadingWaves>
-					<Wave />
-					<Wave delay="500" />
-				</LoadingWaves>
-			)}
-
-			<InputImage
-				setImageFn={(file) => setSelectedFile(file)}
-				id="coverImage"
-			/>
 
 			{resizedImageLinks && resizedImageLinks.length ? (
-				<Image
-					image={
-						resizedImageLinks[
-							resizedImageLinks.length - 1
-						]
+				<div
+					onPointerDown={() =>
+						dispatch(setImageViewerArr(images))
 					}
-				/>
+				>
+					<Image
+						image={
+							resizedImageLinks[
+								resizedImageLinks.length - 1
+							]
+						}
+						style={{ cursor: "pointer" }}
+					/>
+				</div>
 			) : (
 				<NoCoverPicture>
 					<svg
@@ -116,4 +95,4 @@ const CoverPicture = ({ userID, editable, images }) => {
 	);
 };
 
-export default CoverPicture;
+export default withLoader(CoverPicture);

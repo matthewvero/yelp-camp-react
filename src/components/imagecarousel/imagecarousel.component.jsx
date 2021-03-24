@@ -102,7 +102,7 @@ const ImageCarousel = ({ images, style }) => {
 				<CSSTransition
 					in={activeImage === idx && !loading}
 					classNames="imagecarousel"
-					timeout={200}
+					timeout={300}
 					key={idx}
 					nodeRef={refs[idx]}
 				>

@@ -206,7 +206,7 @@ export const MainMenuSettings = ({ $ref }) => {
 					}}
 				/>
 			</MainMenuItemTouch>
-			{user.hasOwnProperty("displayname") && (
+			{user.hasOwnProperty("displayName") && (
 				<MainMenuItemTouch fn={() => handleLogOut()}>
 					<SubTitle>Log Out</SubTitle>
 				</MainMenuItemTouch>

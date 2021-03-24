@@ -5,6 +5,7 @@ const initialState = {
 	[uiTypes.mainMenuActiveSub]: uiTypes.subMenus.default,
 	[uiTypes.profileImages]: [],
 	[uiTypes.imageViewerArr]: [],
+	[uiTypes.loading]: { loading: false, transparent: false },
 };
 
 const uiReducer = (state = initialState, { type, payload }) => {
@@ -17,6 +18,13 @@ const uiReducer = (state = initialState, { type, payload }) => {
 			return { ...state, [uiTypes.mainMenuActiveSub]: payload };
 		case uiTypes.setImageViewerArr:
 			return { ...state, [uiTypes.imageViewerArr]: payload };
+		case uiTypes.setLoading:
+			return { ...state, [uiTypes.loading]: payload };
+		case uiTypes.setLoadingTransparency:
+			return {
+				...state,
+				[uiTypes.loadingTransparent]: payload,
+			};
 		default:
 			return state;
 	}

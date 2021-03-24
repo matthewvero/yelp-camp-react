@@ -3,11 +3,7 @@ import { useSelector } from "react-redux";
 import { addCampsite } from "../../firebase.utils";
 import { CSSTransition } from "react-transition-group";
 import { CCContainer } from "./campsite-creator.styles";
-import {
-	CCCreate,
-	CCReview,
-	CCStart,
-} from "./campsite-creator-pages";
+import { CCCreate, CCReview, CCStart } from "./campsite-creator-pages";
 
 const CampsiteCreator = () => {
 	const [activePage, setActivePage] = useState("start");
@@ -22,8 +18,8 @@ const CampsiteCreator = () => {
 	const refs = {
 		start: React.createRef(),
 		create: React.createRef(),
-		review: React.createRef()
-	}
+		review: React.createRef(),
+	};
 	const handleConfirm = () => {
 		title && description && price && image
 			? setActivePage("review")
@@ -54,21 +50,7 @@ const CampsiteCreator = () => {
 			owner: user.uid,
 		};
 		const res = await addCampsite({ campsite: campsite, image: image });
-		
-		res.uploadTask.on(
-			"state_changed",
-			(snapshot) => {
-				const progress =
-					(snapshot.bytesTransferred /
-						snapshot.totalBytes) *
-					100;
-				setProgress(progress);
-			},
-			(error) => alert(error),
-			() => {
-				handleReset();
-			}
-		);
+		console.log(res);
 	};
 
 	const api = {
@@ -92,7 +74,7 @@ const CampsiteCreator = () => {
 		handleReset,
 		handleConfirm,
 		handleSubmit,
-		refs
+		refs,
 	};
 
 	return (

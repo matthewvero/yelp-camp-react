@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, {
+	useCallback,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import { PageContainer } from "../page.styles";
 import {
 	ContentContainer,
@@ -14,10 +20,6 @@ import {
 	useLikeListener,
 	useRatingCalculator,
 } from "../../utils/campsite-hooks";
-import {
-	LoadingWaves,
-	Wave,
-} from "../../components/misc/loadinganimations.styles";
 import ImageCarousel from "../../components/imagecarousel/imagecarousel.component";
 import {
 	SubTitle,
@@ -40,11 +42,13 @@ import {
 import Button from "../../components/button/button.component";
 import { ThemeContext } from "styled-components";
 import { getCampsite, updateDocument } from "../../firebase.utils";
+import withLoader from "../../components/loaderHOC.component";
+import { useImageResize } from "../../utils/ui-hooks";
 
-const CampsitePage = ({ match, history }) => {
-	const [loading, setLoading] = useState(true);
-	const [campsite, setCampsite] = useState();
-	const images = useCampsiteImageURLS(match.params.uid);
+const CampsitePage = ({ match, history, loading, setLoading }) => {
+	const carouselRef = useRef();
+	const [campsite, setCampsite] = useState({});
+	const images = useImageResize(campsite.images, carouselRef);
 	const user = useSelector((state) => state.authReducer.user);
 	const userName = useGetUsername(campsite && campsite.owner);
 	const theme = useContext(ThemeContext);
@@ -66,7 +70,7 @@ const CampsitePage = ({ match, history }) => {
 
 	useEffect(() => {
 		campsite && images.length ? setLoading(false) : setLoading(true);
-	}, [campsite, images]);
+	}, [campsite, images, setLoading]);
 
 	useEffect(() => {
 		setTitleValue(campsite && campsite.title);
@@ -93,256 +97,227 @@ const CampsitePage = ({ match, history }) => {
 
 	return (
 		<PageContainer>
-			{loading ? (
-				<LoadingWaves>
-					<Wave />
-					<Wave delay="500" />
-				</LoadingWaves>
-			) : (
-				<ResponsivePageContainer>
-					<CampsitePageGrid>
-						<CampsiteImageCarousel>
-							<ImageCarousel images={images} />
-						</CampsiteImageCarousel>
-						<ContentContainer>
-							<CampsitePageInfoGrid>
-								<div
-									style={{
-										gridColumn: editing
-											? "1/4"
-											: "1/3",
-										textAlign: "start",
-										display: "flex",
-										alignItems:
-											"center",
-										flexWrap: "wrap",
-									}}
-								>
-									{editing ? (
-										<div
-											style={{
-												width:
-													"90%",
-												position:
-													"relative",
-											}}
-										>
-											<FormInputText
-												style={{
-													padding:
-														"10px",
-													width:
-														"100%",
-													boxSizing:
-														"border-box",
-												}}
-												value={
-													titleValue
-												}
-												onChange={(
-													e
-												) =>
-													setTitleValue(
-														e
-															.target
-															.value
-													)
-												}
-											/>
-											<Button
-												style={{
-													padding:
-														"10px",
-													backgroundColor:
-														theme.color,
-													position:
-														"absolute",
-													right:
-														"0",
-													top:
-														"0",
-													borderTopLeftRadius:
-														"0",
-													borderBottomLeftRadius:
-														"0",
-												}}
-												fn={
-													handleUpdate
-												}
-											>
-												Update
-											</Button>
-										</div>
-									) : (
-										<Title>
-											{
-												campsite.title
-											}
-										</Title>
-									)}
-									{user.uid ===
-										campsite.owner && (
-										<EditButton
-											fn={() =>
-												setEditing(
-													!editing
-												)
-											}
-											editing={
-												editing
-											}
-											style={{
-												fontSize:
-													"1.5rem",
-												marginLeft:
-													"10px",
-											}}
-										/>
-									)}
-								</div>
-								<SubText
-									style={{
-										gridColumn: "1/3",
-										alignSelf: "start",
-										textAlign: "start",
-									}}
-								>
-									<FontAwesomeIcon
-										style={{
-											color:
-												"dodgerblue",
-											margin:
-												"0 5px 0 0",
-										}}
-										icon={faStar}
-									/>
-									{averageRating.toFixed(2)}{" "}
-									({reviewCount} Reviews) •
-									Hosted By:{" "}
-									<span
-										onClick={() =>
-											history.push(
-												`/profile/${campsite.owner}`
-											)
-										}
-										style={{
-											color:
-												theme.color,
-											cursor:
-												"pointer",
-										}}
-									>
-										{userName}
-									</span>
-								</SubText>
-
-								<div
-									style={{
-										gridColumn: editing
-											? "1/4"
-											: "1/3",
-										textAlign: "start",
-										display: "flex",
-										alignItems:
-											"flex-start",
-										flexWrap: "wrap",
-										height: "100%",
-									}}
-								>
-									{editing ? (
-										<div
-											style={{
-												width:
-													"90%",
-												position:
-													"relative",
-											}}
-										>
-											<FormInputTextArea
-												style={{
-													padding:
-														"10px",
-													width:
-														"100%",
-													boxSizing:
-														"border-box",
-												}}
-												value={
-													descriptionValue
-												}
-												onChange={(
-													e
-												) =>
-													setDescriptionValue(
-														e
-															.target
-															.value
-													)
-												}
-											/>
-										</div>
-									) : (
-										<Text
-											style={{
-												width:
-													"100%",
-												textAlign:
-													"start",
-											}}
-										>
-											{
-												campsite.description
-											}
-										</Text>
-									)}
-								</div>
-								{!editing && (
+			<ResponsivePageContainer>
+				<CampsitePageGrid>
+					<CampsiteImageCarousel ref={carouselRef}>
+						<ImageCarousel images={images} />
+					</CampsiteImageCarousel>
+					<ContentContainer>
+						<CampsitePageInfoGrid>
+							<div
+								style={{
+									gridColumn: editing
+										? "1/4"
+										: "1/3",
+									textAlign: "start",
+									display: "flex",
+									alignItems: "center",
+									flexWrap: "wrap",
+								}}
+							>
+								{editing ? (
 									<div
 										style={{
-											gridColumn:
-												"3/4",
-											gridRow:
-												"1/2",
-											display:
-												"flex",
-											justifyContent:
-												"flex-end",
-											alignContent:
-												"center",
+											width: "90%",
+											position:
+												"relative",
 										}}
 									>
-										<LikeButton
+										<FormInputText
 											style={{
-												margin:
-													"0 10px",
+												padding:
+													"10px",
+												width:
+													"100%",
+												boxSizing:
+													"border-box",
 											}}
-											user={user}
-											campsite={
-												campsite
+											value={
+												titleValue
+											}
+											onChange={(
+												e
+											) =>
+												setTitleValue(
+													e
+														.target
+														.value
+												)
 											}
 										/>
-										<SubTitle>
-											{
-												likedBy.length
+										<Button
+											style={{
+												padding:
+													"10px",
+												backgroundColor:
+													theme.color,
+												position:
+													"absolute",
+												right:
+													"0",
+												top:
+													"0",
+												borderTopLeftRadius:
+													"0",
+												borderBottomLeftRadius:
+													"0",
+											}}
+											fn={
+												handleUpdate
 											}
-										</SubTitle>
+										>
+											Update
+										</Button>
 									</div>
+								) : (
+									<Title>
+										{campsite.title}
+									</Title>
 								)}
-							</CampsitePageInfoGrid>
-						</ContentContainer>
+								{user.uid ===
+									campsite.owner && (
+									<EditButton
+										fn={() =>
+											setEditing(
+												!editing
+											)
+										}
+										editing={editing}
+										style={{
+											fontSize:
+												"1.5rem",
+											marginLeft:
+												"10px",
+										}}
+									/>
+								)}
+							</div>
+							<SubText
+								style={{
+									gridColumn: "1/3",
+									alignSelf: "start",
+									textAlign: "start",
+								}}
+							>
+								<FontAwesomeIcon
+									style={{
+										color: "dodgerblue",
+										margin: "0 5px 0 0",
+									}}
+									icon={faStar}
+								/>
+								{averageRating.toFixed(2)} (
+								{reviewCount} Reviews) • Hosted
+								By:{" "}
+								<span
+									onClick={() =>
+										history.push(
+											`/profile/${campsite.owner}`
+										)
+									}
+									style={{
+										color: theme.color,
+										cursor: "pointer",
+									}}
+								>
+									{userName}
+								</span>
+							</SubText>
 
-						<CommentSection
-							campsiteID={match.params.uid}
-							userID={user.uid}
-						/>
-						<ReviewsSection
-							campsiteID={match.params.uid}
-						/>
-					</CampsitePageGrid>
-				</ResponsivePageContainer>
-			)}
+							<div
+								style={{
+									gridColumn: editing
+										? "1/4"
+										: "1/3",
+									textAlign: "start",
+									display: "flex",
+									alignItems: "flex-start",
+									flexWrap: "wrap",
+									height: "100%",
+								}}
+							>
+								{editing ? (
+									<div
+										style={{
+											width: "90%",
+											position:
+												"relative",
+										}}
+									>
+										<FormInputTextArea
+											style={{
+												padding:
+													"10px",
+												width:
+													"100%",
+												boxSizing:
+													"border-box",
+											}}
+											value={
+												descriptionValue
+											}
+											onChange={(
+												e
+											) =>
+												setDescriptionValue(
+													e
+														.target
+														.value
+												)
+											}
+										/>
+									</div>
+								) : (
+									<Text
+										style={{
+											width: "100%",
+											textAlign:
+												"start",
+										}}
+									>
+										{
+											campsite.description
+										}
+									</Text>
+								)}
+							</div>
+							{!editing && (
+								<div
+									style={{
+										gridColumn: "3/4",
+										gridRow: "1/2",
+										display: "flex",
+										justifyContent:
+											"flex-end",
+										alignContent:
+											"center",
+									}}
+								>
+									<LikeButton
+										style={{
+											margin:
+												"0 10px",
+										}}
+										user={user}
+										campsite={campsite}
+									/>
+									<SubTitle>
+										{likedBy.length}
+									</SubTitle>
+								</div>
+							)}
+						</CampsitePageInfoGrid>
+					</ContentContainer>
+
+					<CommentSection
+						campsiteID={match.params.uid}
+						userID={user.uid}
+					/>
+					<ReviewsSection campsiteID={match.params.uid} />
+				</CampsitePageGrid>
+			</ResponsivePageContainer>
 		</PageContainer>
 	);
 };
 
-export default CampsitePage;
+export default withLoader(CampsitePage);

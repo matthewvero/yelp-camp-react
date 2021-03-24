@@ -14,54 +14,34 @@ import { faCamera, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
 import { CSSTransition } from "react-transition-group";
-import { LoadingWaves, Wave } from "../misc/loadinganimations.styles";
 import { setImageViewerArr } from "../../redux/ui-redux/ui.actions";
+import withLoader from "../loaderHOC.component";
+import { useImageResize } from "../../utils/ui-hooks";
+import { useImageUploader } from "../../utils/misc-hooks";
 
-const ProfilePicture = ({ userID, editable, images }) => {
-	const [loading, setLoading] = useState(false);
+const ProfilePicture = ({
+	userID,
+	editable,
+	images,
+	setLoading,
+	setTransparency,
+}) => {
 	const [selectedFile, setSelectedFile] = useState();
 	const imageRef = useRef();
 	const noImageRef = useRef();
 	const containerRef = useRef();
 	const dispatch = useDispatch();
-	const [resizedImageLinks, setResizedImageLinks] = useState([]);
 
-	const getImages = async () => {
-		const height = containerRef.current.offsetHeight;
-		const width = containerRef.current.offsetWidth;
-		let imageLinks = [];
+	const url = `userprofiles/${userID}/profileimages`;
 
-		if (images) {
-			imageLinks = images.map(
-				(image) =>
-					`${image.link}?ch=${height + 100}&w=${
-						width + 100
-					}`
-			);
-		}
-		setResizedImageLinks(imageLinks);
-	};
+	useImageUploader(selectedFile, setSelectedFile, setLoading, url);
 
-	const getImagesMemo = useCallback(getImages, [images]);
+	const resizedImageLinks = useImageResize(images, containerRef);
 
 	useEffect(() => {
-		// check images have not already been retrieved
-		images && getImagesMemo();
-	}, [getImagesMemo, images]);
-
-	useEffect(() => {
-		const url = `userprofiles/${userID}/profileimages`;
-		const uploadImage = async () => {
-			setLoading(true);
-			await addImage(selectedFile, url);
-			setLoading(false);
-			setSelectedFile("");
-			getImagesMemo(); // Request new image resized
-		};
-		if (selectedFile) {
-			uploadImage();
-		}
-	}, [getImagesMemo, selectedFile, userID]);
+		setLoading(false);
+		setTransparency(true);
+	}, [setLoading, setTransparency]);
 
 	return (
 		<div
@@ -72,22 +52,18 @@ const ProfilePicture = ({ userID, editable, images }) => {
 			}}
 		>
 			{editable && (
-				<UpdateImageButtonContainer htmlFor="profileImage">
-					<FontAwesomeIcon icon={faCamera} />
-				</UpdateImageButtonContainer>
+				<React.Fragment>
+					<UpdateImageButtonContainer htmlFor="profileImage">
+						<FontAwesomeIcon icon={faCamera} />
+					</UpdateImageButtonContainer>
+					<InputImage
+						setImageFn={(file) => setSelectedFile(file)}
+						id="profileImage"
+					/>
+				</React.Fragment>
 			)}
-			{loading && (
-				<LoadingWaves>
-					<Wave />
-					<Wave delay="500" />
-				</LoadingWaves>
-			)}
-			<ProfilePictureContainer ref={containerRef}>
-				<InputImage
-					setImageFn={(file) => setSelectedFile(file)}
-					id="profileImage"
-				/>
 
+			<ProfilePictureContainer ref={containerRef}>
 				<CSSTransition
 					in={images && images.length ? true : false}
 					classNames="switcher"
@@ -130,4 +106,4 @@ const ProfilePicture = ({ userID, editable, images }) => {
 	);
 };
 
-export default ProfilePicture;
+export default withLoader(ProfilePicture);

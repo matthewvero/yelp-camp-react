@@ -14,20 +14,13 @@ import {
 	FormInputTextArea,
 } from "../inputs/input-text/inputs.styles";
 import Button from "../button/button.component";
-import { getUserProfile, updateUserProfile } from "../../firebase.utils";
+import { updateUserProfile } from "../../firebase.utils";
 import { withRouter } from "react-router";
-const About = ({ editable, match }) => {
+const About = ({ userProfile, editable, match }) => {
 	const theme = useContext(ThemeContext);
-	const [profileInfo, setProfileInfo] = useState({});
 	const [collapsed, setCollapsed] = useState(
 		window.matchMedia(`(max-width: ${theme.smallBreakPoint})`).matches
 	);
-
-	useEffect(() => {
-		getUserProfile(match.params.uid).then((profile) => {
-			setProfileInfo(profile);
-		});
-	}, [match.params.uid]);
 
 	useEffect(() => {
 		const windowSize = window.matchMedia(
@@ -54,19 +47,19 @@ const About = ({ editable, match }) => {
 	const [fromValue, setFromValue] = useState("");
 
 	useEffect(() => {
-		if (profileInfo) {
-			setFromValue(profileInfo.from);
-			setBioValue(profileInfo.bio);
+		if (userProfile) {
+			setFromValue(userProfile.from);
+			setBioValue(userProfile.bio);
 		}
-	}, [profileInfo]);
+	}, [userProfile]);
 
 	const handleUpdate = () => {
 		if (
-			bioValue !== profileInfo.bio ||
-			fromValue !== profileInfo.from
+			bioValue !== userProfile.bio ||
+			fromValue !== userProfile.from
 		) {
 			updateUserProfile({
-				...profileInfo,
+				...userProfile,
 				bio: bioValue,
 				from: fromValue,
 			})
@@ -136,13 +129,13 @@ const About = ({ editable, match }) => {
 					) : (
 						<Text
 							style={{
-								color: profileInfo.from
+								color: userProfile.from
 									? theme.textAlt
 									: "#666666",
 							}}
 						>
-							{profileInfo.from
-								? profileInfo.from
+							{userProfile.from
+								? userProfile.from
 								: "Nothing Here"}
 						</Text>
 					)}
@@ -177,8 +170,8 @@ const About = ({ editable, match }) => {
 						/>
 					) : (
 						<Text>
-							{profileInfo.bio
-								? profileInfo.bio
+							{userProfile.bio
+								? userProfile.bio
 								: "Tell people about yourself"}
 						</Text>
 					)}

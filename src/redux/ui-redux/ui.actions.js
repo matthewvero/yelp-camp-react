@@ -19,3 +19,8 @@ export const setImageViewerArr = (payload) => ({
 	type: uiTypes.setImageViewerArr,
 	payload,
 });
+
+export const setLoading = (payload) => ({
+	type: uiTypes.setLoading,
+	payload,
+});

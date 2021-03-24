@@ -6,7 +6,7 @@ export function useLikeListener(campsite, user) {
 	const [liked, setLiked] = useState(false);
 	const [likedBy, setLikedBy] = useState([]);
 	useEffect(() => {
-		if (campsite) {
+		if (campsite.hasOwnProperty("uid")) {
 			const unsub = db
 				.collection("campsites")
 				.doc(campsite.uid)
@@ -19,24 +19,6 @@ export function useLikeListener(campsite, user) {
 		}
 	}, [campsite, user]);
 	return { liked, likedBy };
-}
-
-export function useCampsiteImageURLS(campsiteID) {
-	const [imageURLS, setImageURLS] = useState([]);
-	useEffect(() => {
-		const getImageURLS = async () => {
-			const storageRef = storage.ref();
-			const listRef = await storageRef
-				.child(`/images/${campsiteID}`)
-				.listAll();
-			const URLS = listRef.items.map((el) => el.getDownloadURL());
-			Promise.all(URLS).then((values) => {
-				setImageURLS(values);
-			});
-		};
-		getImageURLS();
-	}, [campsiteID]);
-	return imageURLS;
 }
 
 export function useReviewListener(campsiteID) {

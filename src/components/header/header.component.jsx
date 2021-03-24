@@ -5,9 +5,10 @@ import {
 	HeaderButton,
 	HeaderContainer,
 	HeaderLogo,
+	MenuButtonIcon,
 } from "./header.styles";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faMountain } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faMountain, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from "styled-components";
 import ThemeToggleButton from "../themetogglebutton/themetogglebutton.component";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,17 +19,20 @@ import {
 } from "../../redux/ui-redux/ui.actions";
 import uiTypes from "../../redux/ui-redux/ui.types";
 import withTouchAnimator from "../touch-hoc/touch-hoc.component";
+import { CSSTransition } from "react-transition-group";
 
 const Header = ({ history }) => {
 	const myRef = useRef(null);
-	const themeContext = useContext(ThemeContext);
+	const theme = useContext(ThemeContext);
 	const dispatch = useDispatch();
 	const CircleButtonTouch = withTouchAnimator(CircleButtonContainer);
-	const [collapsed, setCollapsed] = useState(
-		window.matchMedia(`(max-width: ${themeContext.smallBreakPoint})`)
-			.matches
-	);
 	const user = useSelector((state) => state.authReducer.user);
+	const [collapsed, setCollapsed] = useState(
+		window.matchMedia(`(max-width: ${theme.smallBreakPoint})`).matches
+	);
+	const menuVisible = useSelector(
+		(state) => state.uiReducer[uiTypes.menus.mainMenuVisible]
+	);
 	const handleLogIn = () => {
 		dispatch(
 			setMenuVisibility({
@@ -52,7 +56,7 @@ const Header = ({ history }) => {
 	useEffect(() => {
 		// Need to add this to redux to keep code DRY.
 		const windowSize = window.matchMedia(
-			`(max-width: ${themeContext.mediumBreakPoint})`
+			`(max-width: ${theme.mediumBreakPoint})`
 		);
 		const handleChange = (e) => {
 			if (e.matches) {
@@ -65,10 +69,9 @@ const Header = ({ history }) => {
 		return () => {
 			windowSize.removeEventListener("change", handleChange);
 		};
-	}, [themeContext.mediumBreakPoint]);
+	}, [theme.mediumBreakPoint]);
 
 	const HeaderButtonTouch = withTouchAnimator(HeaderButton);
-
 	return (
 		<HeaderContainer ref={myRef}>
 			<HeaderLogo
@@ -77,7 +80,7 @@ const Header = ({ history }) => {
 			>
 				YelpCamp{" "}
 				<FontAwesomeIcon
-					style={{ color: themeContext.color }}
+					style={{ color: theme.color }}
 					icon={faMountain}
 				/>
 			</HeaderLogo>
@@ -115,7 +118,14 @@ const Header = ({ history }) => {
 						)
 					}
 				>
-					<FontAwesomeIcon icon={faBars} />
+					<FontAwesomeIcon
+						icon={menuVisible ? faTimes : faBars}
+						style={{
+							color: menuVisible
+								? "crimson"
+								: theme.color,
+						}}
+					/>
 				</CircleButtonTouch>
 			</div>
 		</HeaderContainer>

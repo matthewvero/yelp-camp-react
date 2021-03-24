@@ -63,7 +63,7 @@ export const FormInputButton = styled.button`
 `;
 
 export const UpdateImageButtonContainer = styled.label`
-	z-index: 10;
+	z-index: 15;
 	position: absolute;
 	bottom: 10px;
 	right: 10px;

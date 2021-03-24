@@ -17,6 +17,9 @@ const uiTypes = {
 	// Images
 	setImageViewerArr: "SET_IMAGE_VIEWER_ARR",
 	imageViewerArr: "IMAGE_VIEWER_ARR",
+	//
+	loading: "LOADING",
+	setLoading: "SET_LOADING",
 };
 
 export default uiTypes;

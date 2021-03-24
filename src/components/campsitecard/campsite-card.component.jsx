@@ -1,6 +1,6 @@
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { ThemeContext } from "styled-components";
 import {
 	CampsiteCardContainer,
@@ -17,14 +17,15 @@ import {
 } from "../../utils/campsite-hooks";
 import { withRouter } from "react-router";
 import LikeButton from "../likebutton/like-button.component";
+import { useImageResize } from "../../utils/ui-hooks";
 
 const CampsiteCard = ({ campsite, history }) => {
 	const themeContext = useContext(ThemeContext);
 	const user = useSelector((state) => state.authReducer.user);
 	const { averageRating } = useRatingCalculator(campsite.uid);
 	const { likedBy } = useLikeListener(campsite);
-
-	const images = useCampsiteImageURLS(campsite.uid);
+	const imageRef = useRef();
+	const images = useImageResize(campsite.images, imageRef);
 
 	const handleClick = (e) => {
 		history.push(`/campsite/${campsite.uid}`);
@@ -32,7 +33,7 @@ const CampsiteCard = ({ campsite, history }) => {
 
 	return (
 		<CampsiteCardContainer onClick={(e) => handleClick(e)}>
-			<CampsiteCardImageContainer>
+			<CampsiteCardImageContainer ref={imageRef}>
 				<Image
 					image={images && images[0]}
 					style={{ height: "260px" }}

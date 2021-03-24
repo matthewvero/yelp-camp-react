@@ -30,9 +30,9 @@ function App() {
 				<Header />
 				<Alert />
 				<MainMenu />
-				{imageViewerArr && imageViewerArr.length && (
-					<ImageViewer images={imageViewerArr} />
-				)}
+
+				<ImageViewer images={imageViewerArr} />
+
 				<Switch>
 					<Route exact path="/" component={LandingPage} />
 					<Route exact path="/home" component={Homepage} />

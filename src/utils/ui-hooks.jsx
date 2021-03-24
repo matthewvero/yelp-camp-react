@@ -105,3 +105,33 @@ export function useElementDimensions(ref) {
 	}, [ref]);
 	return dimensions;
 }
+
+// Resize image to dimensions of provided ref
+// Append any custom formatting to url
+export function useImageResize(images, ref, format) {
+	const [resizedImages, setResizedImages] = useState([]);
+	useEffect(() => {
+		const height = ref.current.offsetHeight;
+		const width = ref.current.offsetWidth;
+		let imageLinks = [];
+
+		if (images && ref) {
+			imageLinks = images.map((image) => {
+				const formatStr = `${image.link}?w=${width + 100}`;
+				if (format) {
+					let newStr;
+					for (const key in format) {
+						newStr = formatStr.concat(
+							`&${key}=${format[key]}`
+						);
+					}
+					return newStr;
+				} else {
+					return formatStr;
+				}
+			});
+		}
+		setResizedImages(imageLinks);
+	}, [images, ref]);
+	return resizedImages;
+}

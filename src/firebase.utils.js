@@ -29,55 +29,41 @@ export async function getCampsite(id) {
 }
 
 export const addCampsite = async ({ campsite, image }) => {
+	// On completion of image upload write data to firestore
 	const user = store.getState().authReducer.user;
 	if (user.uid) {
 		// Add created date
 		const timestamp = firebase.firestore.FieldValue.serverTimestamp;
-
-		// Create reference for new camp to get random ID
-		const newCampsite = db.collection("campsites").doc();
-		const newCampsiteRef = await newCampsite.get();
-
-		// Upload image to folder under campsite ID
-		const { uploadTask, imageRef } = addCampsiteImage(
-			newCampsiteRef,
-			image
-		);
-
-		// On completion of image upload write data to firestore
-		uploadTask.on("state_change", undefined, undefined, async () => {
-			db.collection("campsites")
-				.doc(newCampsiteRef.id)
+		try {
+			// Get random document ID
+			const newCampsiteRef = db.collection("campsites").doc();
+			const newCampsite = await newCampsiteRef.get();
+			// Add campsite data
+			await db
+				.collection("campsites")
+				.doc(newCampsite.id)
 				.set({
 					...campsite,
 					createdAt: timestamp(),
 					likedBy: [],
 					// Insert ID inside new doc so that it can be used later.
-					uid: newCampsiteRef.id,
-					images: [],
-				})
-				.catch(() => {
-					// Remove image if document write fails
-					imageRef.delete();
-					alert("Oops! Something went wrong.");
+					uid: newCampsite.id,
 				});
-		});
-		// Return uploadTask so that progress can be tracked
-		return { uploadTask };
-	} else {
-		alert("You need to be logged in to do that.");
+			// Add campsite image
+			const url = `campsites/${newCampsite.id}/campsiteimage`;
+			const newImageRes = await addImage(image, url);
+			if (!newImageRes.status === 200) {
+				throw new Error(newImageRes);
+			} else if (newImageRes.status === 200) {
+				return newImageRes;
+			}
+		} catch (err) {
+			return new Error("Failed to create campsite." + err.message);
+		}
+
+		// Upload image to folder under campsite ID
 	}
 };
-
-// convert to new api
-function addCampsiteImage(newCampsiteRef, image) {
-	const imageRef = storageRef.child(
-		`images/${newCampsiteRef.id}/${image.size}`
-	);
-
-	const uploadTask = imageRef.put(image);
-	return { uploadTask, imageRef };
-}
 
 export const updateCampsite = async (campsite, key, value) => {
 	const user = store.getState().authReducer.user;
@@ -238,10 +224,6 @@ export const addImage = (image, url) => {
 				}
 			);
 			if (res && res.status === 200) {
-				const event = new CustomEvent("alert", {
-					detail: "Upload Complete!",
-				});
-				window.dispatchEvent(event);
 				return res;
 			} else {
 				throw new Error(res);

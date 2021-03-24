@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components/macro";
 
 export const HeaderContainer = styled.div`
@@ -49,10 +50,15 @@ export const HeaderButton = styled.div`
 	align-items: center;
 	align-self: center;
 	border-radius: 500px;
-	background-color: ${(props) =>
-		props.$active
-			? props.theme.backgroundActive
-			: props.theme.backgroundAlt};
+	background-color: ${(props) => {
+		if (props.$active) {
+			return props.theme.backgroundActive;
+		} else if (props.$hovering) {
+			return props.theme.backgroundHover;
+		} else {
+			return "transparent";
+		}
+	}};
 	color: ${(props) => props.theme.textAlt};
 	font-size: 1.3rem;
 	user-select: none;
@@ -60,7 +66,6 @@ export const HeaderButton = styled.div`
 	cursor: pointer;
 	@media (min-width: ${(props) => props.theme.smallBreakPoint}) {
 		&:hover {
-			background-color: ${(props) => props.theme.backgroundHover};
 		}
 	}
 
@@ -80,4 +85,5 @@ export const CircleButtonContainer = styled(HeaderButton)`
 	font-size: 1.7em;
 	color: ${(props) => props.theme.color};
 	transform: scale(${(props) => (props.$active ? "0.95" : "1")});
+	position: relative;
 `;
