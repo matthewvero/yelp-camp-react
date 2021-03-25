@@ -8,7 +8,7 @@ import { ThemeContext } from "styled-components";
 import { deleteDocument, updateDocument } from "../../firebase.utils";
 const Comment = ({ data, userID }) => {
 	const [editing, setEditing] = useState(false);
-	const username = useGetUsername(data.user);
+	const username = useGetUsername(data.userID);
 	const [inputValue, setInputValue] = useState("");
 	const handleEditing = () => {
 		setEditing(true);
@@ -20,17 +20,25 @@ const Comment = ({ data, userID }) => {
 	const inputButtonStyle = { padding: "3px 10px", margin: "0 5px" };
 	const theme = useContext(ThemeContext);
 
-	const handleUpdate = () => {
+	const handleUpdate = async () => {
 		if (data.comment !== inputValue) {
-			updateDocument(
-				{
-					...data,
-					comment: inputValue,
-				},
-				"comments",
-				data.commentID
-			);
-			setEditing(false);
+			try {
+				await updateDocument(
+					{
+						...data,
+						comment: inputValue,
+					},
+					"comments",
+					data.uid
+				);
+			} catch (err) {
+				const event = new CustomEvent("alert", {
+					detail: `Something went wrong! ` + err.message,
+				});
+				window.dispatchEvent(event);
+			} finally {
+				setEditing(false);
+			}
 		} else {
 			alert("Comment can not be the same");
 		}
@@ -41,7 +49,7 @@ const Comment = ({ data, userID }) => {
 			"Are you sure you would like to delete this comment?"
 		);
 		if (ans) {
-			deleteDocument("comments", data.commentID);
+			deleteDocument("comments", data.uid);
 		}
 	};
 	return (
@@ -75,7 +83,7 @@ const Comment = ({ data, userID }) => {
 					</Text>
 				)}
 
-				{userID === data.user && (
+				{userID === data.userID && (
 					<div
 						style={{
 							marginLeft: "auto",

@@ -51,9 +51,9 @@ export function useRatingCalculator(campsiteID) {
 				return 0;
 			}
 			const sumRatings = reviews.reduce((sum, next) => {
-				return (sum += Object.keys(next.data.ratings).reduce(
+				return (sum += Object.keys(next.ratings).reduce(
 					(cur, acc) => {
-						return (cur += next.data.ratings[acc]);
+						return (cur += next.ratings[acc]);
 					},
 					0
 				));

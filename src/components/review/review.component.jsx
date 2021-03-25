@@ -28,8 +28,9 @@ const Review = ({ review, handleEdit }) => {
 	const reviewRef = useRef();
 	const username = useGetUsername(review.userID);
 	const theme = useContext(ThemeContext);
+
 	useEffect(() => {
-		const { ratings } = review.data;
+		const { ratings } = review;
 		const ratingSum = Object.keys(ratings).reduce(
 			(prev, cur) => prev + ratings[cur],
 			0
@@ -43,7 +44,7 @@ const Review = ({ review, handleEdit }) => {
 		<React.Fragment>
 			<ReviewContainer expanded={expanded} ref={reviewRef}>
 				<div style={{ display: "flex", height: "30px" }}>
-					<SubTitle>{review.data.heading}</SubTitle>
+					<SubTitle>{review.heading}</SubTitle>
 				</div>
 				<Text
 					style={{
@@ -58,7 +59,7 @@ const Review = ({ review, handleEdit }) => {
 						}`,
 					}}
 				>
-					{review.data.body}
+					{review.body}
 				</Text>
 
 				<RatingSection>
@@ -130,7 +131,7 @@ const Review = ({ review, handleEdit }) => {
 						/>
 					</Text>
 
-					{user.uid === review.userID && expanded && (
+					{user.uid === review.user && expanded && (
 						<Button
 							style={{
 								padding: "2px 5px",
@@ -152,7 +153,7 @@ const Review = ({ review, handleEdit }) => {
 								key={idx}
 								display
 								displayRating={
-									review.data.ratings[el]
+									review.ratings[el]
 								}
 							/>
 						))}

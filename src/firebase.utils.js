@@ -70,15 +70,6 @@ export const addCampsite = async ({ campsite, image }) => {
 	}
 };
 
-export const updateCampsite = async (campsite, key, value) => {
-	const user = store.getState().authReducer.user;
-	if (campsite.owner === user.uid) {
-		const campsiteRef = db.collection("campsites").doc(campsite.uid);
-		const res = await campsiteRef.update({ [key]: value });
-		return res;
-	}
-};
-
 export const likeCampsite = (campsiteID, userID, liked) => {
 	try {
 		if (userID) {
@@ -104,72 +95,8 @@ export const likeCampsite = (campsiteID, userID, liked) => {
 	}
 };
 
-// COMMENT UTILITIES
-
-export const addComment = async (userID, comment, campsiteID) => {
-	if (userID) {
-		try {
-			// Create reference for new camp to get random ID
-			const newComment = db.collection("comments").doc();
-			const newCommentRef = await newComment.get();
-			const data = {
-				user: userID,
-				comment,
-				campsiteID,
-				commentID: newCommentRef.id,
-			};
-			db.collection("comments").doc(newCommentRef.id).set(data);
-		} catch (err) {
-			throw new Error(err);
-		}
-	} else {
-		const event = new CustomEvent("alert", {
-			detail: `You need to be signed in to do that!`,
-		});
-		window.dispatchEvent(event);
-	}
-};
-
 // REVIEW UTILITIES
 
-export const addReview = async (campsiteID, data) => {
-	const user = store.getState().authReducer.user;
-	if (user.uid) {
-		try {
-			const reviewRef = db.collection("reviews").doc();
-			reviewRef.set({
-				campsiteID,
-				userID: user.uid,
-				data,
-				reviewID: reviewRef.id,
-			});
-		} catch (err) {
-			throw new Error(err.message);
-		}
-	} else {
-		const event = new CustomEvent("alert", {
-			detail: `You need to be signed in to do that!`,
-		});
-		window.dispatchEvent(event);
-	}
-};
-// change
-export const updateReview = async (review) => {
-	try {
-		db.collection("reviews").doc(review.reviewID).update(review);
-	} catch (err) {
-		throw new Error(err.message);
-	}
-};
-// change
-export const deleteReview = async (review) => {
-	try {
-		db.collection("reviews").doc(review).delete();
-	} catch (err) {
-		throw new Error(err.message);
-	}
-};
-// change
 export const getReviews = async (campsiteID) => {
 	try {
 		const reviewRef = await db
@@ -206,19 +133,29 @@ export const updateUserProfile = async (obj) => {
 	}
 };
 
-export const updateDocument = async (obj, collection, docID) => {
-	const docRef = db.collection(collection).doc(docID);
-	try {
-		docRef.update(obj).catch((err) => {
-			throw new Error("Something went wrong!" + err.message);
+export const addDocument = async (obj, collection) => {
+	const user = store.getState().authReducer.user;
+	if (user.uid) {
+		const docRef = db.collection(collection).doc();
+		docRef.set({
+			...obj,
+			uid: docRef.id,
 		});
-	} catch (err) {
-		return err;
+	} else {
+		const event = new CustomEvent("alert", {
+			detail: `You need to be signed in to do that!`,
+		});
+		window.dispatchEvent(event);
 	}
 };
 
-export const deleteDocument = (collection, doc) => {
-	db.collection(collection).doc(doc).delete();
+export const updateDocument = async (obj, collection, docID) => {
+	const docRef = db.collection(collection).doc(docID);
+	await docRef.update(obj);
+};
+
+export const deleteDocument = async (collection, doc) => {
+	await db.collection(collection).doc(doc).delete();
 };
 
 const uploadImage = async (encodedImage, url) => {

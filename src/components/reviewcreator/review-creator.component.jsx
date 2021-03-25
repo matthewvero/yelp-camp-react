@@ -2,7 +2,11 @@ import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "styled-components";
-import { addReview, deleteReview, updateReview } from "../../firebase.utils";
+import {
+	addDocument,
+	deleteDocument,
+	updateDocument,
+} from "../../firebase.utils";
 import {
 	FormInputText,
 	FormInputTextArea,
@@ -10,9 +14,11 @@ import {
 import Rating from "../rating/rating-component";
 import { RatingsGrid, ReviewCreatorGrid } from "./review-creator.styles";
 import Button from "../button/button.component";
+import { useSelector } from "react-redux";
 
 const ReviewCreator = ({ campsiteID, exit, review }) => {
 	const themeContext = useContext(ThemeContext);
+	const user = useSelector((state) => state.authReducer.user);
 	const [ratings, setRatings] = useState(review ? review.data.ratings : {});
 	const [filled, setFilled] = useState({
 		Accuracy: false,
@@ -30,18 +36,34 @@ const ReviewCreator = ({ campsiteID, exit, review }) => {
 	const [errorBody, setErrorBody] = useState(false);
 	const [errorHeading, setErrorHeading] = useState(false);
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		setHighlight(true);
-		if (sendable && review) {
-			updateReview({ ...review, data: { heading, body, ratings } });
-			exit();
-		} else if (sendable) {
-			addReview(campsiteID, {
-				heading,
-				body,
-				ratings,
+		try {
+			if (sendable && review) {
+				await updateDocument(
+					{ heading, body, ratings },
+					"reviews",
+					review.reviewID
+				);
+				exit();
+			} else if (sendable) {
+				await addDocument(
+					{
+						campsiteID,
+						heading,
+						body,
+						ratings,
+						user: user.uid,
+					},
+					"reviews"
+				);
+				exit();
+			}
+		} catch (err) {
+			const event = new CustomEvent("alert", {
+				detail: `Something went wrong! ` + err.message,
 			});
-			exit();
+			window.dispatchEvent(event);
 		}
 		if (heading.length < 10) {
 			setErrorHeading(true);
@@ -56,7 +78,7 @@ const ReviewCreator = ({ campsiteID, exit, review }) => {
 			"Are you sure you would like to delete this Review? This can not be undone."
 		);
 		if (ans) {
-			deleteReview(review.reviewID);
+			deleteDocument("reviews", review.reviewID);
 			exit();
 		}
 	};

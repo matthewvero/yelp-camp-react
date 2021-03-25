@@ -16,7 +16,7 @@ import {
 import Button from "../button/button.component";
 import { updateUserProfile } from "../../firebase.utils";
 import { withRouter } from "react-router";
-const About = ({ userProfile, editable, match }) => {
+const About = ({ userProfile, editable }) => {
 	const theme = useContext(ThemeContext);
 	const [collapsed, setCollapsed] = useState(
 		window.matchMedia(`(max-width: ${theme.smallBreakPoint})`).matches

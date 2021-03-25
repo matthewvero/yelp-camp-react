@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { AlertContainer } from "./alert.styles";
-
+import Button from "../button/button.component";
 const Alert = () => {
+	const alertRef = useRef();
 	const [alert, setAlert] = useState("");
 	const handleAlert = (e) => {
 		if (e.detail) {
 			setAlert(e.detail);
-			setTimeout(() => setAlert(""), 1000);
 		}
 	};
 	useEffect(() => {
@@ -23,9 +23,16 @@ const Alert = () => {
 			classNames="alert"
 			timeout={1000}
 			unmountOnExit
+			nodeRef={alertRef}
 		>
-			<AlertContainer>
+			<AlertContainer ref={alertRef}>
 				<h1 style={{ color: "dodgerblue" }}>{alert}</h1>
+				<Button
+					style={{ padding: "20px" }}
+					fn={() => setAlert("")}
+				>
+					Okay
+				</Button>
 			</AlertContainer>
 		</CSSTransition>
 	);
