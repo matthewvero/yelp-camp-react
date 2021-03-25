@@ -14,23 +14,26 @@ const clientSecret =
 	"aIne5sV9iHvLudxcwqFViNFn+1+qqp7lXqTIw2rUV8zoEILu7jZcFcdc4RG79d3zYQSMmI8XjyahGEPDfs/gdQ==";
 
 const getAccessToken = async () => {
-	return await axios({
-		method: "post",
-		url: "https://api.sirv.com/v2/token",
-		data: {
-			clientId,
-			clientSecret,
-		},
-		headers: {
-			"content-type": "application/json",
-		},
-	})
-		.then((res) => {
-			return res.data.token;
-		})
-		.catch((err) => {
-			throw err;
+	try {
+		const res = await axios({
+			method: "post",
+			url: "https://api.sirv.com/v2/token",
+			data: {
+				clientId,
+				clientSecret,
+			},
+			headers: {
+				"content-type": "application/json",
+			},
 		});
+		if (res.status === 200) {
+			return res.data.token;
+		} else {
+			throw new Error("Unable to retrieve token");
+		}
+	} catch (err) {
+		console.log(err);
+	}
 };
 
 var app = express();
@@ -51,19 +54,21 @@ const saveTempImage = (base64String) => {
 };
 
 app.post("/newimage/:collection/:uid/:imagetype", async (req, res, next) => {
-	// Retrieve API token from SIRV CDN
-	const accessToken = await getAccessToken();
-	const body = JSON.parse(req.body);
-	const { tempFilePath, fileName } = saveTempImage(body.base64ImageString);
-	const { collection, uid, imagetype } = req.params;
-
-	// Construct image path
-	const imagePath = `${collection}/${uid}/${
-		imagetype !== "campsiteimage" && imagetype + "/"
-	}${fileName}`;
-	const URL = `https://api.sirv.com/v2/files/upload?filename=/yelpcamp/${imagePath}`;
-
 	try {
+		// Retrieve API token from SIRV CDN
+		const accessToken = await getAccessToken();
+		const body = JSON.parse(req.body);
+		const { tempFilePath, fileName } = saveTempImage(
+			body.base64ImageString
+		);
+		const { collection, uid, imagetype } = req.params;
+
+		// Construct image path
+		const imagePath = `${collection}/${uid}/${
+			imagetype !== "campsiteimage" && imagetype + "/"
+		}${fileName}`;
+		const URL = `https://api.sirv.com/v2/files/upload?filename=/yelpcamp/${imagePath}`;
+
 		fs.readFile(tempFilePath, async (err, data) => {
 			try {
 				if (err) throw new Error(err);
@@ -86,8 +91,8 @@ app.post("/newimage/:collection/:uid/:imagetype", async (req, res, next) => {
 						.where("uid", "==", uid);
 					const querySnapshot = await queryRef.get();
 					const docID = querySnapshot.docs[0].id;
-					console.log(querySnapshot);
-					db.collection(collection)
+					await db
+						.collection(collection)
 						.doc(docID)
 						.update({
 							[imagetype !== "campsiteimage"
@@ -98,16 +103,8 @@ app.post("/newimage/:collection/:uid/:imagetype", async (req, res, next) => {
 									filename: fileName,
 								}
 							),
-						})
-						.then(() => {
-							res.status(200).send(
-								"Upload Success"
-							);
-							return;
-						})
-						.catch((error) => {
-							throw new Error(error.message);
 						});
+					res.status(200).send("Upload Success");
 				} else if (upload.status !== 200) {
 					throw new Error("File upload failed");
 				}

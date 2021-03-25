@@ -11,7 +11,6 @@ import Image from "../image/image.component";
 import { SubTitle, Text } from "../misc/text.styles";
 import { useSelector } from "react-redux";
 import {
-	useCampsiteImageURLS,
 	useLikeListener,
 	useRatingCalculator,
 } from "../../utils/campsite-hooks";
@@ -64,14 +63,19 @@ const CampsiteCard = ({ campsite, history }) => {
 				{likedBy.length}
 			</Text>
 			<CardContentContainer>
-				<span style={{ color: themeContext.color }}>
+				<span
+					style={{
+						color: themeContext.color,
+						fontSize: "1.3rem",
+					}}
+				>
 					<FontAwesomeIcon
 						icon={faStar}
 						style={{ marginRight: "10px" }}
 					/>
 					<span
 						style={{
-							color: "dodgerblue",
+							color: themeContext.textAlt,
 							fontWeight: "600",
 						}}
 					>

@@ -12,18 +12,26 @@ import {
 } from "./reviews-section.styles";
 import ReviewCreator from "../reviewcreator/review-creator.component";
 import { useReviewListener } from "../../utils/campsite-hooks";
+import { useSelector } from "react-redux";
 
 const ReviewsSection = ({ campsiteID }) => {
+	const [editable, setEditable] = useState(false);
 	const [creating, setCreating] = useState(false);
 	const [review, setReview] = useState();
 	const creatorRef = useRef(null);
 	const reviewsRef = useRef(null);
 	const reviews = useReviewListener(campsiteID);
-
+	const userProfile = useSelector((state) => state.authReducer.userProfile);
 	const handleEdit = (review) => {
 		setReview(review);
 		setCreating(true);
 	};
+
+	useEffect(() => {
+		userProfile.hasOwnProperty("uid")
+			? setEditable(true)
+			: setEditable(false);
+	}, [userProfile]);
 
 	useEffect(() => {
 		if (creating === false) {
@@ -45,33 +53,39 @@ const ReviewsSection = ({ campsiteID }) => {
 					}}
 				>
 					<SubTitle>Reviews</SubTitle>
-					<div
-						style={{
-							height: "40px",
-							width: "40px",
-							backgroundColor: `${
-								creating
-									? "crimson"
-									: "dodgerblue"
-							}`,
-							borderRadius: "10px",
-							display: "flex",
-							justifyContent: "center",
-							alignItems: "center",
-							cursor: "pointer",
-						}}
-						onPointerDown={() =>
-							setCreating((creating) => !creating)
-						}
-					>
-						<FontAwesomeIcon
-							icon={creating ? faTimes : faPen}
+					{editable && (
+						<div
 							style={{
-								color: "white",
-								fontSize: "1.5rem",
+								height: "40px",
+								width: "40px",
+								backgroundColor: `${
+									creating
+										? "crimson"
+										: "dodgerblue"
+								}`,
+								borderRadius: "10px",
+								display: "flex",
+								justifyContent: "center",
+								alignItems: "center",
+								cursor: "pointer",
 							}}
-						/>
-					</div>
+							onPointerDown={() =>
+								setCreating(
+									(creating) => !creating
+								)
+							}
+						>
+							<FontAwesomeIcon
+								icon={
+									creating ? faTimes : faPen
+								}
+								style={{
+									color: "white",
+									fontSize: "1.5rem",
+								}}
+							/>
+						</div>
+					)}
 				</div>
 
 				<CommunityContentSection

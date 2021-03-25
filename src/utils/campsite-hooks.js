@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { db, storage } from "../firebase";
+import { db } from "../firebase";
 import { getReviews } from "../firebase.utils";
 
 export function useLikeListener(campsite, user) {

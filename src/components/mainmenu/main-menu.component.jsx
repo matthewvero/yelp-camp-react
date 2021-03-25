@@ -38,16 +38,13 @@ const MainMenu = ({ history }) => {
 			dispatch(setMainMenuSubMenu(uiTypes.subMenus.default));
 	}, [dispatch, menuVisible]);
 
-	useClickOutside(
-		() =>
-			dispatch(
-				setMenuVisibility({
-					menu: uiTypes.menus.mainMenuVisible,
-					visible: false,
-				})
-			),
-		menuVisible,
-		menuRef
+	useClickOutside(menuVisible, menuRef, () =>
+		dispatch(
+			setMenuVisibility({
+				menu: uiTypes.menus.mainMenuVisible,
+				visible: false,
+			})
+		)
 	);
 
 	// Listen for sign in

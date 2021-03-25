@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
-import { addImage, getUserProfile } from "../../firebase.utils";
 import Image from "../image/image.component";
 import InputImage from "../inputs/input-image/input-image.component";
 import { UpdateImageButtonContainer } from "../inputs/input-text/inputs.styles";

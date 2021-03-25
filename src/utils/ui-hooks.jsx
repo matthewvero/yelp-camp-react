@@ -41,7 +41,7 @@ export function useDarkMode() {
 
 	return isDark;
 }
-export function useClickOutside(callback, visible, ref) {
+export function useClickOutside(visible, ref, callback) {
 	useEffect(() => {
 		function handleClickOutside(event) {
 			// Close menu when clicked outside

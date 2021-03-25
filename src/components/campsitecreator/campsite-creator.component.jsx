@@ -49,8 +49,25 @@ const CampsiteCreator = () => {
 			price: price,
 			owner: user.uid,
 		};
-		const res = await addCampsite({ campsite: campsite, image: image });
-		console.log(res);
+		try {
+			const res = await addCampsite({
+				campsite: campsite,
+				image: image,
+			});
+			if (res.status === 200) {
+				const event = new CustomEvent("alert", {
+					detail: `Campsite Created`,
+				});
+				window.dispatchEvent(event);
+			}
+		} catch (err) {
+			const event = new CustomEvent("alert", {
+				detail: `Something went wrong! ${err.message}`,
+			});
+			window.dispatchEvent(event);
+		} finally {
+			handleReset();
+		}
 	};
 
 	const api = {

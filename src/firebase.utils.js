@@ -1,10 +1,9 @@
 import firebase from "firebase/app";
-import { db, storage, auth } from "./firebase";
+import { db, auth } from "./firebase";
 import store from "./redux/store";
 import { destroySession } from "./redux/auth-redux/auth.actions";
 
 // CAMPSITE UTILITIES
-const storageRef = storage.ref();
 
 export const getUserCampsites = (setCamps, userID) => {
 	const campsites = db.collection("campsites").where("owner", "==", userID); // Need to load campsites in chronological order
@@ -38,6 +37,7 @@ export const addCampsite = async ({ campsite, image }) => {
 			// Get random document ID
 			const newCampsiteRef = db.collection("campsites").doc();
 			const newCampsite = await newCampsiteRef.get();
+
 			// Add campsite data
 			await db
 				.collection("campsites")
@@ -52,7 +52,12 @@ export const addCampsite = async ({ campsite, image }) => {
 			// Add campsite image
 			const url = `campsites/${newCampsite.id}/campsiteimage`;
 			const newImageRes = await addImage(image, url);
+
 			if (!newImageRes.status === 200) {
+				await db
+					.collection("campsites")
+					.doc(newCampsite.id)
+					.delete();
 				throw new Error(newImageRes);
 			} else if (newImageRes.status === 200) {
 				return newImageRes;
@@ -74,26 +79,28 @@ export const updateCampsite = async (campsite, key, value) => {
 	}
 };
 
-export const likeCampsite = async (campsiteID, userID, liked) => {
-	if (userID) {
-		const campsiteRef = db.collection("campsites").doc(campsiteID);
-		liked
-			? campsiteRef
-					.update({
+export const likeCampsite = (campsiteID, userID, liked) => {
+	try {
+		if (userID) {
+			const campsiteRef = db
+				.collection("campsites")
+				.doc(campsiteID);
+			liked
+				? campsiteRef.update({
 						likedBy: firebase.firestore.FieldValue.arrayRemove(
 							userID
 						),
-					})
-					.catch((err) => alert("Something Went Wrong"))
-			: campsiteRef
-					.update({
+				  })
+				: campsiteRef.update({
 						likedBy: firebase.firestore.FieldValue.arrayUnion(
 							userID
 						),
-					})
-					.catch((err) => alert("Something Went Wrong"));
-	} else {
-		alert("You need to be signed in to do that");
+				  });
+		} else {
+			alert("You need to be signed in to do that");
+		}
+	} catch (err) {
+		alert(err.message);
 	}
 };
 
@@ -101,23 +108,25 @@ export const likeCampsite = async (campsiteID, userID, liked) => {
 
 export const addComment = async (userID, comment, campsiteID) => {
 	if (userID) {
-		// Create reference for new camp to get random ID
-		const newComment = db.collection("comments").doc();
-		const newCommentRef = await newComment.get();
-		const data = {
-			user: userID,
-			comment,
-			campsiteID,
-			commentID: newCommentRef.id,
-		};
-		db.collection("comments")
-			.doc(newCommentRef.id)
-			.set(data)
-			.catch(() => {
-				alert("Oops! Something went wrong.");
-			});
+		try {
+			// Create reference for new camp to get random ID
+			const newComment = db.collection("comments").doc();
+			const newCommentRef = await newComment.get();
+			const data = {
+				user: userID,
+				comment,
+				campsiteID,
+				commentID: newCommentRef.id,
+			};
+			db.collection("comments").doc(newCommentRef.id).set(data);
+		} catch (err) {
+			throw new Error(err);
+		}
 	} else {
-		alert("You need to be signed in to do that");
+		const event = new CustomEvent("alert", {
+			detail: `You need to be signed in to do that!`,
+		});
+		window.dispatchEvent(event);
 	}
 };
 
@@ -126,41 +135,52 @@ export const addComment = async (userID, comment, campsiteID) => {
 export const addReview = async (campsiteID, data) => {
 	const user = store.getState().authReducer.user;
 	if (user.uid) {
-		const reviewRef = db.collection("reviews").doc();
-		reviewRef.set({
-			campsiteID,
-			userID: user.uid,
-			data,
-			reviewID: reviewRef.id,
-		});
+		try {
+			const reviewRef = db.collection("reviews").doc();
+			reviewRef.set({
+				campsiteID,
+				userID: user.uid,
+				data,
+				reviewID: reviewRef.id,
+			});
+		} catch (err) {
+			throw new Error(err.message);
+		}
 	} else {
-		alert("You need to be signed in to do that");
+		const event = new CustomEvent("alert", {
+			detail: `You need to be signed in to do that!`,
+		});
+		window.dispatchEvent(event);
 	}
 };
-
+// change
 export const updateReview = async (review) => {
-	db.collection("reviews")
-		.doc(review.reviewID)
-		.update(review)
-		.catch((err) => alert("Oops! Something went wrong."));
+	try {
+		db.collection("reviews").doc(review.reviewID).update(review);
+	} catch (err) {
+		throw new Error(err.message);
+	}
 };
-
+// change
 export const deleteReview = async (review) => {
-	db.collection("reviews")
-		.doc(review)
-		.delete()
-		.catch(() => {
-			alert("Oops! Something went wrong.");
-		});
+	try {
+		db.collection("reviews").doc(review).delete();
+	} catch (err) {
+		throw new Error(err.message);
+	}
 };
-
+// change
 export const getReviews = async (campsiteID) => {
-	const reviewRef = await db
-		.collection("reviews")
-		.where("campsiteID", "==", campsiteID)
-		.get();
-	const reviews = reviewRef.docs.map((el) => el.data());
-	return reviews;
+	try {
+		const reviewRef = await db
+			.collection("reviews")
+			.where("campsiteID", "==", campsiteID)
+			.get();
+		const reviews = reviewRef.docs.map((el) => el.data());
+		return reviews;
+	} catch (err) {
+		throw new Error(err.message);
+	}
 };
 
 // USER UTILITIES
@@ -171,70 +191,62 @@ export function logOut(history) {
 	history.push("/home");
 }
 
-export const getUserProfile = async (userID) => {
-	const userRef = await db
-		.collection("userProfiles")
-		.where("userID", "==", userID)
-		.get();
-	if (userRef.docs.length) {
-		const userProfile = userRef.docs[0].data();
-		return userProfile;
-	} else {
-		return {};
-	}
-};
-
+// change
 export const updateUserProfile = async (obj) => {
 	const user = store.getState().authReducer.user;
 	const userProfileRef = db
 		.collection("userprofiles")
 		.where("uid", "==", user.uid);
-	const res = await userProfileRef.get();
-	const profileRef = res.docs[0].ref;
-	profileRef.update(obj).catch((err) => alert(err));
+	const queryRef = await userProfileRef.get();
+	const profileRef = queryRef.docs[0].ref;
+	try {
+		profileRef.update(obj);
+	} catch (err) {
+		throw new Error(err.message);
+	}
 };
 
-export const updateDocument = async (obj, collection, doc) => {
-	const docRef = db.collection(collection).doc(doc);
-	docRef.update(obj).catch((err) => {
-		alert("Oops! Something went wrong.");
-	});
-};
-
-export const deleteDocument = async (collection, doc) => {
-	db.collection(collection)
-		.doc(doc)
-		.delete()
-		.catch(() => {
-			alert("Oops! Something went wrong.");
+export const updateDocument = async (obj, collection, docID) => {
+	const docRef = db.collection(collection).doc(docID);
+	try {
+		docRef.update(obj).catch((err) => {
+			throw new Error("Something went wrong!" + err.message);
 		});
+	} catch (err) {
+		return err;
+	}
+};
+
+export const deleteDocument = (collection, doc) => {
+	db.collection(collection).doc(doc).delete();
+};
+
+const uploadImage = async (encodedImage, url) => {
+	try {
+		const res = await fetch(
+			`http://localhost:5001/yelpcamp-d57d1/us-central1/widgets/newimage/${url}`,
+			{
+				// Your POST endpoint
+				method: "POST",
+				body: JSON.stringify({
+					base64ImageString: encodedImage,
+				}),
+			}
+		);
+		if (res && res.status === 200) {
+			return res;
+		} else {
+			throw new Error(res);
+		}
+	} catch (err) {
+		const event = new CustomEvent("alert", {
+			detail: `Something went wrong!`,
+		});
+		window.dispatchEvent(event);
+	}
 };
 
 export const addImage = (image, url) => {
-	const uploadImage = async (encodedImage) => {
-		try {
-			const res = await fetch(
-				`http://localhost:5001/yelpcamp-d57d1/us-central1/widgets/newimage/${url}`,
-				{
-					// Your POST endpoint
-					method: "POST",
-					body: JSON.stringify({
-						base64ImageString: encodedImage,
-					}),
-				}
-			);
-			if (res && res.status === 200) {
-				return res;
-			} else {
-				throw new Error(res);
-			}
-		} catch (err) {
-			const event = new CustomEvent("alert", {
-				detail: `Something went wrong!`,
-			});
-			window.dispatchEvent(event);
-		}
-	};
 	return new Promise((resolve, reject) => {
 		if (image) {
 			//read data from the blob objects(file)
@@ -245,7 +257,7 @@ export const addImage = (image, url) => {
 			reader.onloadend = async () => {
 				//reader.result is the result of the reading in base64 string
 				try {
-					const res = await uploadImage(reader.result);
+					const res = await uploadImage(reader.result, url);
 					if (res && res.status === 200) {
 						resolve(res);
 					}
