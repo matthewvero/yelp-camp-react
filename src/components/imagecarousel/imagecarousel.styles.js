@@ -45,6 +45,31 @@ export const ImageCarouselSlide = styled.div`
 	}
 `;
 
+export const ImageCarouselLoaderSlide = styled(ImageCarouselSlide)`
+	&.imagecarousel-enter {
+		transform: translateX(${(props) => props.enter});
+		opacity: 1;
+		z-index: 2;
+	}
+	&.imagecarousel-enter-active {
+		transition: all 10ms linear;
+		transform: translateX(0%);
+		opacity: 1;
+		z-index: 2;
+	}
+	&.imagecarousel-enter-done {
+		z-index: 2;
+		opacity: 1;
+	}
+	&.imagecarousel-exit {
+		z-index: 1;
+		opacity: 1;
+	}
+	&.imagecarousel-exit-done {
+		z-index: 0;
+	}
+`;
+
 export const ImageCarouselBtn = styled(FontAwesomeIcon)`
 	position: absolute;
 	height: 50px;

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useGetUsername } from "../../utils/auth-hooks";
 import { HR } from "../misc/containers.styles";
 import { Text } from "../misc/text.styles";

@@ -10,6 +10,7 @@ import {
 	ImageCarouselBtnBack,
 	ImageCarouselBtnForward,
 	ImageCarouselContainer,
+	ImageCarouselLoaderSlide,
 	ImageCarouselSlide,
 	ImageCarouselSlideIndicator,
 	ImageCarouselSlideIndicatorGroup,
@@ -23,7 +24,7 @@ const ImageCarousel = ({ images, style }) => {
 	const [activeImage, setActiveImage] = useState(0);
 	const [direction, setDirection] = useState();
 	const [refs, setRefs] = useState();
-	const loadingRef = useRef();
+
 	// Create endlessl loop with buttons
 	// change animation direction accordingly
 	const incrementer = (arr, idx, direction, absolute) => {
@@ -88,16 +89,9 @@ const ImageCarousel = ({ images, style }) => {
 					</ImageCarouselSlideIndicatorGroup>
 				</React.Fragment>
 			)}
-			<CSSTransition
-				in={loading}
-				classNames="imagecarousel"
-				timeout={100}
-				nodeRef={loadingRef}
-			>
-				<ImageCarouselSlide ref={loadingRef}>
-					<Loader />
-				</ImageCarouselSlide>
-			</CSSTransition>
+
+			{loading && <Loader />}
+
 			{loadedImages.map((element, idx) => (
 				<CSSTransition
 					in={activeImage === idx && !loading}

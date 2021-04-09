@@ -2,6 +2,7 @@ import firebase from "firebase/app";
 import { db, auth } from "./firebase";
 import store from "./redux/store";
 import { destroySession } from "./redux/auth-redux/auth.actions";
+import { useRef } from "react";
 
 // CAMPSITE UTILITIES
 
@@ -70,23 +71,38 @@ export const addCampsite = async ({ campsite, image }) => {
 	}
 };
 
-export const likeCampsite = (campsiteID, userID, liked) => {
+export const likeCampsite = async (campsiteID, userID, liked) => {
 	try {
 		if (userID) {
 			const campsiteRef = db
 				.collection("campsites")
 				.doc(campsiteID);
-			liked
-				? campsiteRef.update({
-						likedBy: firebase.firestore.FieldValue.arrayRemove(
-							userID
-						),
-				  })
-				: campsiteRef.update({
-						likedBy: firebase.firestore.FieldValue.arrayUnion(
-							userID
-						),
-				  });
+			const userRef = db.collection("userprofiles").doc(userID);
+
+			if (liked) {
+				campsiteRef.update({
+					likedBy: firebase.firestore.FieldValue.arrayRemove(
+						userID
+					),
+				});
+				useRef.update({
+					likes: firebase.firestore.FieldValue.arrayRemove(
+						campsiteID
+					),
+				});
+			} else {
+				campsiteRef.update({
+					likedBy: firebase.firestore.FieldValue.arrayUnion(
+						userID
+					),
+				});
+
+				userRef.update({
+					likes: firebase.firestore.FieldValue.arrayUnion(
+						campsiteID
+					),
+				});
+			}
 		} else {
 			alert("You need to be signed in to do that");
 		}
@@ -121,13 +137,9 @@ export function logOut(history) {
 // change
 export const updateUserProfile = async (obj) => {
 	const user = store.getState().authReducer.user;
-	const userProfileRef = db
-		.collection("userprofiles")
-		.where("uid", "==", user.uid);
-	const queryRef = await userProfileRef.get();
-	const profileRef = queryRef.docs[0].ref;
+	const userProfileRef = db.collection("userprofiles").doc(user.uid);
 	try {
-		profileRef.update(obj);
+		userProfileRef.update(obj);
 	} catch (err) {
 		throw new Error(err.message);
 	}

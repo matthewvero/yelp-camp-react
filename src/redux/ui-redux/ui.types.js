@@ -13,6 +13,7 @@ const uiTypes = {
 		settings: "SETTINGS",
 		login: "LOGIN",
 		signup: "SIGNUP",
+		likes: "LIKES",
 	},
 	// Images
 	setImageViewerArr: "SET_IMAGE_VIEWER_ARR",

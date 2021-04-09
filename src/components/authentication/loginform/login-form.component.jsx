@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../../../firebase";
-import { setUserProfile } from "../../../redux/auth-redux/auth.actions";
+import { setUser } from "../../../redux/auth-redux/auth.actions";
 import {
 	FormInputButton,
 	FormInputLabel,
@@ -10,29 +10,21 @@ import {
 import { ButtonText, Title } from "../../misc/text.styles";
 
 const LogInForm = () => {
-	const userProfile = useSelector((state) => state.authReducer.userProfile);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const inputStyles = { height: "50px", width: "70%", margin: "2%" };
 
-	const dispatch = useDispatch();
 	const loginUser = async (e) => {
 		e.preventDefault();
-		auth.signInWithEmailAndPassword(email, password)
-			.then((user) => {
-				dispatch(
-					setUserProfile({
-						...userProfile,
-					})
-				);
-				const SignedIn = new CustomEvent("SignedIn", {
-					detail: { type: "returningUser" },
-				});
-				dispatchEvent(SignedIn);
-			})
-			.catch((error) => {
-				alert(error);
+		try {
+			await auth.signInWithEmailAndPassword(email, password);
+			const SignedIn = new CustomEvent("SignedIn", {
+				detail: { type: "returningUser" },
 			});
+			dispatchEvent(SignedIn);
+		} catch (err) {
+			alert(err);
+		}
 	};
 
 	return (

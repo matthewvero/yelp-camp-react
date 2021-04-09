@@ -11,6 +11,7 @@ import { withRouter } from "react-router";
 import { useClickOutside } from "../../utils/ui-hooks";
 import {
 	MainMenuDefault,
+	MainMenuLikes,
 	MainMenuProfile,
 	MainMenuSettings,
 	MainMenuSignIn,
@@ -19,6 +20,7 @@ import {
 } from "./main-menu-menu-items";
 const MainMenu = ({ history }) => {
 	const user = useSelector((state) => state.authReducer.user);
+	const userProfile = useSelector((state) => state.authReducer.userProfile);
 	const menuVisible = useSelector(
 		(state) => state.uiReducer[uiTypes.menus.mainMenuVisible]
 	);
@@ -32,7 +34,7 @@ const MainMenu = ({ history }) => {
 	const loginRef = useRef();
 	const signUpRef = useRef();
 	const defaultMenuRef = useRef();
-
+	const likesRef = useRef();
 	useEffect(() => {
 		!menuVisible &&
 			dispatch(setMainMenuSubMenu(uiTypes.subMenus.default));
@@ -72,9 +74,10 @@ const MainMenu = ({ history }) => {
 			nodeRef={menuRef}
 		>
 			<MainMenuContainer ref={menuRef}>
-				{user.hasOwnProperty("displayName") && (
-					<MainMenuProfile history={history} />
-				)}
+				{userProfile &&
+					userProfile.hasOwnProperty("displayName") && (
+						<MainMenuProfile history={history} />
+					)}
 				<MainMenuContentSection>
 					<CSSTransition
 						in={
@@ -135,6 +138,21 @@ const MainMenu = ({ history }) => {
 						nodeRef={settingsRef}
 					>
 						<MainMenuSettings $ref={settingsRef} />
+					</CSSTransition>
+					<CSSTransition
+						in={
+							activeSubMenu ===
+							uiTypes.subMenus.likes
+						}
+						classNames="mainMenuPage"
+						timeout={100}
+						unmountOnExit
+						nodeRef={likesRef}
+					>
+						<MainMenuLikes
+							$ref={likesRef}
+							history={history}
+						/>
 					</CSSTransition>
 				</MainMenuContentSection>
 			</MainMenuContainer>

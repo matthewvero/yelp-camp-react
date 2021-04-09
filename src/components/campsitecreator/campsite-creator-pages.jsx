@@ -23,17 +23,23 @@ import {
 	CCReviewGrid,
 	CCReviewButtonContainer,
 	CCReviewImageContainer,
-	CCReviewButton
+	CCReviewButton,
+	CCLoadingSpinner,
 } from "./campsite-creator.styles";
 import { CreatorAPI } from "./campsite-creator.component";
 import InputImage from "../inputs/input-image/input-image.component";
 import { SubTitle } from "../misc/text.styles";
 import withTouchAnimator from "../touch-hoc/touch-hoc.component";
 import Image from "../image/image.component";
-import { CampsiteCardLongPriceContainer, CampsiteCardLongSubText, CampsiteCardLongTextContainer, CampsiteCardLongTitle } from "../campsitecardlong/campsite-card-long.styles";
+import {
+	CampsiteCardLongPriceContainer,
+	CampsiteCardLongSubText,
+	CampsiteCardLongTextContainer,
+	CampsiteCardLongTitle,
+} from "../campsitecardlong/campsite-card-long.styles";
 
-const CCImageInputTouch = withTouchAnimator(CCImageInput)
-const CCButtonTouch = withTouchAnimator(CCButton)
+const CCImageInputTouch = withTouchAnimator(CCImageInput);
+const CCButtonTouch = withTouchAnimator(CCButton);
 
 export const CCStart = () => {
 	// Access the CC hooks and state
@@ -41,14 +47,17 @@ export const CCStart = () => {
 	const themeContext = useContext(ThemeContext);
 	return (
 		<CCPage
-			onClick={() => api.setActivePage("create")}
+			onClick={() => api.setActivePage(api.ccPages.create)}
 			ref={api.refs.start}
 		>
 			<CCHoverEffect>
 				<StartPageTitle>
-					<SubTitle>Create New Campsite</SubTitle>
+					<SubTitle>New Campsite</SubTitle>
 					<FontAwesomeIcon
-						style={{ color: themeContext.color }}
+						style={{
+							color: themeContext.color,
+							marginLeft: "20px",
+						}}
 						icon={faPlus}
 					/>
 				</StartPageTitle>
@@ -79,18 +88,12 @@ export const CCCreate = () => {
 		<CCPage style={{ padding: "0" }} ref={api.refs.create}>
 			<CCGrid>
 				{image === undefined ? (
-							
-					<CCImageInputTouch
-						htmlFor="image"
-						
-					>
+					<CCImageInputTouch htmlFor="image">
 						<FontAwesomeIcon
 							icon={faCamera}
 							style={{ fontSize: "3rem" }}
 						/>
 					</CCImageInputTouch>
-							
-					
 				) : (
 					<CCImageContainer>
 						<img
@@ -134,26 +137,22 @@ export const CCCreate = () => {
 					onChange={(e) => setDescription(e.target.value)}
 				/>
 
-				<CCButtonContainer >
-						<CCButtonTouch
-							onClick={() => handleReset()}
-						>
-							<FontAwesomeIcon
-								style={{ color: "red" }}
-								icon={faChevronLeft}
-							/>{" "}
-							Cancel
-						</CCButtonTouch>
-					
-						<CCButtonTouch
-							onClick={() => handleConfirm()}
-						>
-							Review{" "}
-							<FontAwesomeIcon
-								style={{ color: themeContext.color }}
-								icon={faChevronRight}
-							/>
-						</CCButtonTouch>
+				<CCButtonContainer>
+					<CCButtonTouch onClick={() => handleReset()}>
+						<FontAwesomeIcon
+							style={{ color: "red" }}
+							icon={faChevronLeft}
+						/>{" "}
+						Cancel
+					</CCButtonTouch>
+
+					<CCButtonTouch onClick={() => handleConfirm()}>
+						Review{" "}
+						<FontAwesomeIcon
+							style={{ color: themeContext.color }}
+							icon={faChevronRight}
+						/>
+					</CCButtonTouch>
 				</CCButtonContainer>
 			</CCGrid>
 		</CCPage>
@@ -163,14 +162,13 @@ export const CCCreate = () => {
 export const CCReview = () => {
 	const api = useContext(CreatorAPI);
 	const {
-		loading,
 		previewImage,
 		description,
 		handleBack,
 		handleSubmit,
 		price,
-		progress,
 		title,
+		loading,
 	} = api;
 	const themeContext = useContext(ThemeContext);
 	return (
@@ -182,11 +180,19 @@ export const CCReview = () => {
 					</CCReviewImageContainer>
 
 					<CampsiteCardLongTextContainer>
-						<CampsiteCardLongTitle>{title}</CampsiteCardLongTitle>
-						<CampsiteCardLongSubText>{description}</CampsiteCardLongSubText>
+						<CampsiteCardLongTitle>
+							{title}
+						</CampsiteCardLongTitle>
+						<CampsiteCardLongSubText>
+							{description}
+						</CampsiteCardLongSubText>
 					</CampsiteCardLongTextContainer>
 					<CampsiteCardLongPriceContainer>
-						<CampsiteCardLongSubText style={{color: themeContext.color}}>{price}/ Night</CampsiteCardLongSubText>
+						<CampsiteCardLongSubText
+							style={{ color: themeContext.color }}
+						>
+							{price}/ Night
+						</CampsiteCardLongSubText>
 					</CampsiteCardLongPriceContainer>
 					<CCReviewButtonContainer>
 						<CCReviewButton
@@ -212,11 +218,7 @@ export const CCReview = () => {
 					</CCReviewButtonContainer>
 				</CCReviewGrid>
 			) : (
-				<ProgressIndicator
-					size={120}
-					radius={52}
-					percent={progress}
-				/>
+				<CCLoadingSpinner />
 			)}
 		</CCPage>
 	);

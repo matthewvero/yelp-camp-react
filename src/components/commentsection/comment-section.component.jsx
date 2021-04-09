@@ -24,17 +24,6 @@ const CommentSection = ({ campsiteID, userID }) => {
 		setCommentInput("");
 	};
 
-	// useEffect(() => {
-	// 	const getUsername = async () => {
-	// 		const userRef = await db.collection('userProfiles').doc(campsite.owner).get()
-	// 		const user = userRef.data()
-	// 		// finish this
-	// 	}
-	// 	campsite &&
-	// 	getUsername()
-
-	// }, [campsite])
-
 	return (
 		<ContentContainer
 			style={{

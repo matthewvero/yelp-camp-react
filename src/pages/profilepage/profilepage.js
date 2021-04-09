@@ -28,12 +28,12 @@ const ProfilePage = ({ match }) => {
 
 	useEffect(() => {
 		let unsub;
-		const setUserProfile = async () => {
+		const getCampsites = async () => {
 			unsub = getUserCampsites(setCamps, match.params.uid);
 		};
 
 		setEditable(user.uid === match.params.uid);
-		setUserProfile().then(() => {
+		getCampsites().then(() => {
 			return () => unsub();
 		});
 	}, [match.params.uid, user.uid]);
@@ -58,7 +58,7 @@ const ProfilePage = ({ match }) => {
 
 			<ResponsivePageContainer>
 				<UserNameBar>
-					<Title>{userProfile.displayname}</Title>
+					<Title>{userProfile.displayName}</Title>
 				</UserNameBar>
 			</ResponsivePageContainer>
 

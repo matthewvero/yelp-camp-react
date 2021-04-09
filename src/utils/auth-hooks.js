@@ -12,13 +12,9 @@ export function useAuthListener() {
 			if (user) {
 				unsub = db
 					.collection("userprofiles")
-					.where("uid", "==", user.uid)
+					.doc(user.uid)
 					.onSnapshot((snapshot) => {
-						dispatch(
-							setUserProfile(
-								snapshot.docs[0].data()
-							)
-						);
+						dispatch(setUserProfile(snapshot.data()));
 					});
 			}
 			dispatch(setUser(user));
@@ -28,15 +24,15 @@ export function useAuthListener() {
 		};
 	}, [dispatch]);
 }
-
+// Change
 export function useProfileListener(userID) {
 	const [userProfile, setUserProfile] = useState({});
 	useEffect(() => {
 		const unsub = db
 			.collection("userprofiles")
-			.where("uid", "==", userID)
+			.doc(userID)
 			.onSnapshot((snapshot) => {
-				setUserProfile(snapshot.docs[0].data());
+				setUserProfile(snapshot.data());
 			});
 		return () => {
 			unsub();
@@ -44,31 +40,28 @@ export function useProfileListener(userID) {
 	}, [userID]);
 	return userProfile;
 }
-
+// FIX THIS
 export function useGetUsername(userID) {
 	const [username, setUsername] = useState();
 	const user = useSelector((state) => state.authReducer.user);
 	useEffect(() => {
 		if (userID && userID === user.uid) {
+			console.log(user);
 			setUsername(user.displayName);
 		} else if (userID) {
 			const getUsername = async () => {
-				db.collection("userprofiles")
-					.where("uid", "==", userID)
-					.get()
-					.then((query) => {
-						query &&
-							query.docs.length &&
-							setUsername(
-								query.docs[0].data().displayname
-							);
-					})
-					.catch((err) => {
-						alert("Problem getting username: " + err);
-					});
+				try {
+					const res = await db
+						.collection("userprofiles")
+						.doc(userID)
+						.get();
+					setUsername(res.data().displayName);
+				} catch (err) {
+					alert("Problem getting username: " + err);
+				}
 			};
 			getUsername();
 		}
-	}, [user.displayName, user.uid, userID]);
+	}, [user, user.displayName, user.uid, userID]);
 	return username;
 }

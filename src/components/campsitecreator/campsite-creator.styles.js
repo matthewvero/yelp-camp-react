@@ -1,21 +1,21 @@
-import styled from "styled-components/macro";
+import styled, { keyframes } from "styled-components/macro";
 import { ContentContainer } from "../misc/containers.styles";
 import { ButtonContainer } from "../button/button.styles";
 export const CCContainer = styled(ContentContainer)`
 	overflow: hidden;
 	position: relative;
 	height: 200px;
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
-		height:  ${props => {
-		switch(props.activePage) {
-			case 'create': 
-				return '300px';
-			case 'review': 
-				return '150px';
-			default: 
-				return '50px';
-		} 
-	}};
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
+		height: ${(props) => {
+			switch (props.activePage) {
+				case "create":
+					return "300px";
+				case "review":
+					return "150px";
+				default:
+					return "50px";
+			}
+		}};
 	}
 `;
 
@@ -46,23 +46,22 @@ export const CCPage = styled.div`
 `;
 
 export const CCGrid = styled.div`
-  	height: 100%;
-	padding: 10px;
+	height: 100%;
+	padding: 5px;
 	box-sizing: border-box;
 	width: 100%;
 	display: grid;
 	grid-template-columns: minmax(213px, 25%) auto minmax(120px, 20%);
 	grid-template-rows: 30% auto;
-	gap: 1rem;
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	gap: 0.5rem;
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		grid-template-columns: auto 50%;
-            grid-template-rows: 15% auto 50%;
-            padding: 5px;
-            gap: 0.5rem;
-            min-height: 300px;
-            max-height: 300px;            
+		grid-template-rows: 15% auto 50%;
+		padding: 5px;
+		gap: 0.5rem;
+		min-height: 300px;
+		max-height: 300px;
 	}
-
 `;
 
 export const CCInput = styled.input`
@@ -76,23 +75,23 @@ export const CCInput = styled.input`
 	font-size: 1.3rem;
 	color: ${(props) => props.theme.textAlt};
 	box-sizing: border-box;
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		font-size: 1rem;
 	}
 `;
 
 export const CCPriceInput = styled(CCInput)`
-@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		grid-row: 1/2;
 		grid-column: 2/3;
 	}
-`
+`;
 export const CCTitleInput = styled(CCInput)`
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		grid-row: 1/2;
 		grid-column: 1/2;
 	}
-`
+`;
 
 export const CCTextArea = styled.textarea`
 	grid-row: 2/3;
@@ -100,29 +99,32 @@ export const CCTextArea = styled.textarea`
 	width: 100%;
 	border: none;
 	outline: none;
-	background-color: ${props => props.theme.background};
+	background-color: ${(props) => props.theme.background};
 	border-radius: 10px;
 	padding: 10px;
 	resize: none;
 	font-family: Helvetica, sans-serif;
-	color: ${props => props.theme.textAlt};
+	color: ${(props) => props.theme.textAlt};
 	font-size: 1.3rem;
 	box-sizing: border-box;
-	
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		font-size: 1rem;
 		grid-row: 2/3;
 		grid-column: 1/3;
 	}
 `;
 export const CCImageInput = styled.label`
-	height: 100%; 
+	height: 100%;
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
 	border-radius: 10px;
 	border: none;
-	background-color: ${(props) => props.$active ? props.theme.backgroundActive : props.theme.background};
+	background-color: ${(props) =>
+		props.$active
+			? props.theme.backgroundActive
+			: props.theme.background};
 	color: ${(props) => props.theme.textAlt};
 	font-size: 1.3rem;
 	transition: transform 25ms linear;
@@ -133,9 +135,9 @@ export const CCImageInput = styled.label`
 	&:hover {
 		background-color: ${(props) => props.theme.backgroundHover};
 	}
-	transform: ${props => props.$active ? `scale(0.95)` : `scale(1)`};
+	transform: ${(props) => (props.$active ? `scale(0.95)` : `scale(1)`)};
 
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		grid-row: 3/4;
 	}
 `;
@@ -144,10 +146,9 @@ export const CCImageContainer = styled.div`
 	grid-row: 1 / 3;
 	border-radius: 10px;
 	overflow: hidden;
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		grid-row: 3/4;
 	}
-	
 `;
 
 export const CCButtonContainer = styled.div`
@@ -156,28 +157,27 @@ export const CCButtonContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		grid-row: 3/4;
 		grid-column: 2/3;
 	}
 `;
 
 export const CCButton = styled(ButtonContainer)`
-  	width: 100%;
+	width: 100%;
 	height: 45%;
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		width: 100%;
 		height: 45%;
 		font-size: 1rem;
-
 	}
 `;
 
 export const CCReviewButton = styled(CCButton)`
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		height: 100%;
 	}
-`
+`;
 
 export const CCHoverEffect = styled.div`
 	height: 100%;
@@ -194,12 +194,12 @@ export const CCHoverEffect = styled.div`
 export const StartPageTitle = styled.span`
 	width: 70%;
 	font-size: 2rem;
-	color: ${props => props.theme.textAlt};
+	color: ${(props) => props.theme.textAlt};
 	cursor: pointer;
 	display: flex;
-	justify-content: space-around;
+	justify-content: center;
 	align-items: center;
-	@media (max-width: ${props => props.theme.smallBreakPoint}){
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		width: 95%;
 		font-size: 1.6rem;
 		justify-content: space-between;
@@ -209,25 +209,25 @@ export const StartPageTitle = styled.span`
 
 export const CCReviewGrid = styled.div`
 	height: 100%;
-      width: 100%;
-      padding: 5px;
-      box-sizing: border-box;
-      display: grid;
-      grid-template-columns: minmax(213px, 25%) auto minmax(120px, 20%);
-      grid-template-rows: 30% auto;
-      gap: 1rem;
-      background-color: ${props => props.theme.main};
-      border-radius: ${props => props.theme.borderRadius};
-      box-shadow: ${props => props.theme.boxShadow};
-      @media (max-width: ${props => props.theme.smallBreakPoint}) {
+	width: 100%;
+	padding: 5px;
+	box-sizing: border-box;
+	display: grid;
+	grid-template-columns: minmax(213px, 25%) auto minmax(120px, 20%);
+	grid-template-rows: 30% auto;
+	gap: 1rem;
+	background-color: ${(props) => props.theme.main};
+	border-radius: ${(props) => props.theme.borderRadius};
+	box-shadow: ${(props) => props.theme.boxShadow};
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		grid-template-columns: 100px 45% auto;
-            grid-template-rows: 70% auto;
-            padding: 5px;
-            gap: 0.5rem;
-            min-height: 150px;
-            max-height: 150px;            
+		grid-template-rows: 70% auto;
+		padding: 5px;
+		gap: 0.5rem;
+		min-height: 150px;
+		max-height: 150px;
 	}
-`
+`;
 
 export const CCReviewButtonContainer = styled.div`
 	grid-row: 2/3;
@@ -235,7 +235,7 @@ export const CCReviewButtonContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		grid-row: 2/3;
 		grid-column: 1/4;
 		flex-direction: row;
@@ -248,7 +248,27 @@ export const CCReviewImageContainer = styled.div`
 	grid-row: 1/3;
 	border-radius: 10px;
 	overflow: hidden;
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
 		grid-row: 1/2;
 	}
-`
+`;
+
+const spin = keyframes`
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+`;
+
+export const CCLoadingSpinner = styled.div`
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
+	border-left: 5px solid dodgerblue;
+	border-right: 5px solid dodgerblue;
+	border-top: 5px solid transparent;
+	border-bottom: 5px solid transparent;
+	animation: ${spin} 1.5s linear infinite;
+`;

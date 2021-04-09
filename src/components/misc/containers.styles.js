@@ -75,49 +75,50 @@ export const ResponsivePageContainer = styled.div`
 	height: auto;
 	min-height: 50px;
 	width: 80vw;
-	margin: 5px;
+	margin-top: 10px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	@media (max-width: ${props => props.theme.extraLargeBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.extraLargeBreakPoint}) {
 		width: 98vw;
-		
 	}
-	@media (max-width: ${props => props.theme.mediumBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.mediumBreakPoint}) {
 		width: 95vw;
-		
 	}
 `;
 
 export const ResponsiveContentContainer = styled.div`
-	width: ${props => props.$width ? props.$width : 'auto'};
+	width: ${(props) => (props.$width ? props.$width : "auto")};
 	height: auto;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	min-height: 300px;
-	@media (max-width: ${props => props.theme.largeBreakPoint}) {
+	@media (max-width: ${(props) => props.theme.largeBreakPoint}) {
 		width: 100%;
 		margin: 5px 0;
 	}
+	@media (max-width: ${(props) => props.theme.mediumBreakPoint}) {
+		min-height: auto;
+	}
 	&:before {
-		content: ' ';
+		content: " ";
 		display: table;
 	}
 	&:after {
-		content: ' ';
+		content: " ";
 		display: table;
 	}
-`
+`;
 
 export const CollapsibleContainer = styled(ContentContainer)`
-	height: ${props => props.collapsed ? '100px' : 'auto'};
+	height: ${(props) => (props.collapsed ? "100px" : "auto")};
 	overflow: hidden;
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
-		height: ${props => props.collapsed ? '50px' : 'auto'};
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
+		height: ${(props) => (props.collapsed ? "50px" : "auto")};
 	}
-`
+`;
 
 export const CollapsibleContainerTitleBar = styled.div`
 	min-height: 100px;
@@ -133,38 +134,38 @@ export const CollapsibleContainerTitleBar = styled.div`
 	user-select: none;
 	cursor: pointer;
 	&:hover {
-		background-color: ${props => props.theme.backgroundHover}
+		background-color: ${(props) => props.theme.backgroundHover};
 	}
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
-            min-height: 50px;
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
+		min-height: 50px;
 	}
-`
+`;
 
 export const CollapsibleContainerIcon = styled(FontAwesomeIcon)`
-	transform: rotateZ(${props => props.collapsed ? '180deg' : '0deg'});
+	transform: rotateZ(${(props) => (props.collapsed ? "180deg" : "0deg")});
 	transition: transform 100ms linear;
-	color: ${props => props.theme.color};
-	@media (max-width: ${props => props.theme.smallBreakPoint}) {
-            font-size: 1.6rem;
-	    }
+	color: ${(props) => props.theme.color};
+	@media (max-width: ${(props) => props.theme.smallBreakPoint}) {
+		font-size: 1.6rem;
+	}
 	font-size: 2rem;
-`
+`;
 
 export const HR = styled.hr`
 	width: 90%;
-	border: solid 1px ${props => props.theme.main};
-`
+	border: solid 1px ${(props) => props.theme.main};
+`;
 
 export const CommunityContentSection = styled.div`
-      height: 100%; 
-      width: 100%; 
-      background-color: ${props => props.theme.background}; 
-      padding: 20px;
-      border-radius: 10px;
-      display: "flex";
-      flex-direction: column;
-      align-items: flex-start;
-      overflow-y: scroll;
+	height: 100%;
+	width: 100%;
+	background-color: ${(props) => props.theme.background};
+	padding: 20px;
+	border-radius: 10px;
+	display: "flex";
+	flex-direction: column;
+	align-items: flex-start;
+	overflow-y: scroll;
 	text-align: left;
 	box-sizing: border-box;
-`
+`;

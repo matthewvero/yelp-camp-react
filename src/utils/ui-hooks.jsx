@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export function useDarkMode() {
 	const [isDark, setIsDark] = useState();
@@ -62,28 +62,28 @@ export function usePreloadImages(images, style) {
 
 	useEffect(() => {
 		if (images && images.length) {
+			const imgArr = [];
 			images.forEach((el) => {
 				const img = new Image();
 				img.onload = () => {
-					setImagesArr((imagesArr) =>
-						imagesArr.concat(
-							<img
-								style={{
-									height: "100%",
-									width: "100%",
-									minHeight: "100%",
-									minWidth: "100%",
-									objectFit: "cover",
-									...style,
-								}}
-								src={el}
-								alt=" "
-							/>
-						)
+					imgArr.push(
+						<img
+							style={{
+								height: "100%",
+								width: "100%",
+								minHeight: "100%",
+								minWidth: "100%",
+								objectFit: "cover",
+								...style,
+							}}
+							src={el}
+							alt=" "
+						/>
 					);
 				};
 				img.src = el;
 			});
+			setImagesArr(imgArr);
 			return;
 		}
 		setImagesArr([]);
