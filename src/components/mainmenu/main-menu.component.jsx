@@ -35,10 +35,6 @@ const MainMenu = ({ history }) => {
 	const signUpRef = useRef();
 	const defaultMenuRef = useRef();
 	const likesRef = useRef();
-	useEffect(() => {
-		!menuVisible &&
-			dispatch(setMainMenuSubMenu(uiTypes.subMenus.default));
-	}, [dispatch, menuVisible]);
 
 	useClickOutside(menuVisible, menuRef, () =>
 		dispatch(
@@ -72,6 +68,9 @@ const MainMenu = ({ history }) => {
 			timeout={200}
 			unmountOnExit
 			nodeRef={menuRef}
+			onExited={() =>
+				dispatch(setMainMenuSubMenu(uiTypes.subMenus.default))
+			}
 		>
 			<MainMenuContainer ref={menuRef}>
 				{userProfile &&

@@ -45,7 +45,7 @@ import { getCampsite, updateDocument } from "../../firebase.utils";
 import withLoader from "../../components/loaderHOC.component";
 import { useImageResize } from "../../utils/ui-hooks";
 
-const CampsitePage = ({ match, history, loading, setLoading }) => {
+const CampsitePage = ({ match, history, setLoading }) => {
 	const carouselRef = useRef();
 	const [campsite, setCampsite] = useState({});
 	const images = useImageResize(campsite.images, carouselRef);
@@ -56,6 +56,10 @@ const CampsitePage = ({ match, history, loading, setLoading }) => {
 	const { averageRating, reviewCount } = useRatingCalculator(
 		match.params.uid
 	);
+
+	useEffect(() => {
+		setLoading(true);
+	}, []);
 
 	const memoUpdateCampsite = useCallback(() => {
 		getCampsite(match.params.uid).then((data) => {
@@ -69,7 +73,7 @@ const CampsitePage = ({ match, history, loading, setLoading }) => {
 	}, [match.params.uid, memoUpdateCampsite]);
 
 	useEffect(() => {
-		campsite && images.length ? setLoading(false) : setLoading(true);
+		campsite && images.length && setLoading(false);
 	}, [campsite, images, setLoading]);
 
 	useEffect(() => {

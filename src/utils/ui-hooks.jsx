@@ -80,10 +80,11 @@ export function usePreloadImages(images, style) {
 							alt=" "
 						/>
 					);
+					setImagesArr(imgArr);
 				};
 				img.src = el;
 			});
-			setImagesArr(imgArr);
+
 			return;
 		}
 		setImagesArr([]);

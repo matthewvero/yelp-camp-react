@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import {
 	MainMenuItem,
 	MainMenuProfilePicture,
@@ -30,6 +30,7 @@ import { destroySession } from "../../redux/auth-redux/auth.actions";
 import CampsiteCardLong from "../campsitecardlong/campsite-card-long.component";
 import Image from "../image/image.component";
 import { withRouter } from "react-router";
+import { useImageResize } from "../../utils/ui-hooks";
 const MainMenuItemTouch = withTouchAnimator(MainMenuItem);
 
 const MainMenuPageTitle = ({ previousLocation, title }) => {
@@ -266,8 +267,73 @@ export const MainMenuSettings = ({ $ref }) => {
 	);
 };
 
-export const MainMenuLikes = ({ $ref, history }) => {
+const MainMenuCampsite = ({ campsite, history }) => {
+	const imageContainerRef = useRef();
 	const dispatch = useDispatch();
+	const handleClick = (uid) => {
+		dispatch(
+			setMenuVisibility({
+				menu: uiTypes.menus.mainMenuVisible,
+				visible: false,
+			})
+		);
+		history.push(`/campsite/${uid}`);
+	};
+
+	const images = useImageResize(campsite.images, imageContainerRef);
+	return (
+		<MainMenuItemTouch
+			style={{
+				height: "100px",
+				padding: "0",
+				overflow: "hidden",
+			}}
+			fn={() => handleClick(campsite.uid)}
+		>
+			<div
+				style={{
+					height: "100px",
+					width: "100%",
+					display: "grid",
+					gridTemplateColumns: "100px 3fr 1fr",
+				}}
+			>
+				<div
+					style={{ gridColumn: "1/2" }}
+					ref={imageContainerRef}
+				>
+					<Image image={images[0]} />
+				</div>
+				<div
+					style={{
+						gridColumn: "2/3",
+						display: "flex",
+						flexDirection: "column",
+					}}
+				>
+					<Text
+						style={{
+							textAlign: "left",
+							margin: "3%",
+						}}
+					>
+						{campsite.title}
+					</Text>
+					<SubText
+						style={{
+							textAlign: "left",
+							margin: "3%",
+						}}
+					>
+						{campsite.description}
+					</SubText>
+				</div>
+			</div>
+		</MainMenuItemTouch>
+	);
+};
+
+export const MainMenuLikes = ({ $ref, history }) => {
 	const userProfile = useSelector((state) => state.authReducer.userProfile);
 	const [campsites, setCampsites] = useState([]);
 	useEffect(() => {
@@ -293,11 +359,6 @@ export const MainMenuLikes = ({ $ref, history }) => {
 		userProfile.likes && getCampsitesById();
 	}, [userProfile.likes]);
 
-	const handleClick = (uid) => {
-		dispatch(setMenuVisibility(false));
-		history.push(`/campsite/${uid}`);
-	};
-
 	return (
 		<Page ref={$ref}>
 			<MainMenuPageTitle
@@ -312,53 +373,12 @@ export const MainMenuLikes = ({ $ref, history }) => {
 					boxSizing: "border-box",
 				}}
 			>
-				{campsites.map((el) => (
-					<MainMenuItemTouch
-						style={{
-							height: "100px",
-							padding: "0",
-						}}
-						fn={() => handleClick(el.uid)}
-					>
-						<div
-							style={{
-								height: "100px",
-								width: "100%",
-								display: "grid",
-								gridTemplateColumns:
-									"100px 3fr 1fr",
-							}}
-						>
-							<Image
-								style={{ gridColumn: "1/2" }}
-								image={el.images[0].link}
-							/>
-							<div
-								style={{
-									gridColumn: "2/3",
-									display: "flex",
-									flexDirection: "column",
-								}}
-							>
-								<Text
-									style={{
-										textAlign: "left",
-										margin: "3%",
-									}}
-								>
-									{el.title}
-								</Text>
-								<SubText
-									style={{
-										textAlign: "left",
-										margin: "3%",
-									}}
-								>
-									{el.description}
-								</SubText>
-							</div>
-						</div>
-					</MainMenuItemTouch>
+				{campsites.map((el, idx) => (
+					<MainMenuCampsite
+						campsite={el}
+						key={idx}
+						history={history}
+					/>
 				))}
 			</div>
 		</Page>
