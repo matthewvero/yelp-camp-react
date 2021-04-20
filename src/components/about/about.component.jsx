@@ -105,12 +105,6 @@ const About = ({ userProfile, editable }) => {
 			>
 				<AboutSection>
 					<SectionTitle style={{ marginRight: "5px" }}>
-						Joined:
-					</SectionTitle>
-					<Text>June</Text>
-				</AboutSection>
-				<AboutSection>
-					<SectionTitle style={{ marginRight: "5px" }}>
 						From:
 					</SectionTitle>
 					{editing ? (
