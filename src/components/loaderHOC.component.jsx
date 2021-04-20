@@ -3,7 +3,7 @@ import LoadingAnimation from "./loadinganimation/loadinganimation.component";
 
 const withLoader = (WrappedComponent) => {
 	return ({ ...props }) => {
-		const [loading, setLoading] = useState(false);
+		const [loading, setLoading] = useState(true);
 		const [transparency, setTransparency] = useState(false);
 		return (
 			<React.Fragment>

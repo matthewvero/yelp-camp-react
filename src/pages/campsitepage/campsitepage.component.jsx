@@ -57,10 +57,6 @@ const CampsitePage = ({ match, history, setLoading }) => {
 		match.params.uid
 	);
 
-	useEffect(() => {
-		setLoading(true);
-	}, []);
-
 	const memoUpdateCampsite = useCallback(() => {
 		getCampsite(match.params.uid).then((data) => {
 			setCampsite(data);
@@ -73,7 +69,7 @@ const CampsitePage = ({ match, history, setLoading }) => {
 	}, [match.params.uid, memoUpdateCampsite]);
 
 	useEffect(() => {
-		campsite && images.length && setLoading(false);
+		campsite && images.length ? setLoading(false) : setLoading(true);
 	}, [campsite, images, setLoading]);
 
 	useEffect(() => {

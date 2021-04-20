@@ -61,13 +61,16 @@ export const MainMenuItem = styled.div`
 	padding: 0 5%;
 	margin: 5px 2.5%;
 	cursor: pointer;
-	background-color: ${(props) => props.$active && "rgba(50,50,50, 0.5)"};
-	box-sizing: border-box;
-	@media (min-width: ${(props) => props.theme.smallBreakPoint}) {
-		&:hover {
-			background-color: ${(props) => props.theme.mainMenuItemHover};
+	background-color: ${(props) => {
+		if (props.$active) {
+			return props.theme.mainMenuItemBackgroundActive;
+		} else if (props.$hovering) {
+			return props.theme.mainMenuItemBackgroundHover;
+		} else {
+			return "transparent";
 		}
-	}
+	}};
+	box-sizing: border-box;
 `;
 
 export const MMProfile = styled.div`
