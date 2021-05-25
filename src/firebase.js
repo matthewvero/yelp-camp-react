@@ -1,7 +1,7 @@
 import fb from "firebase/app";
-import 'firebase/auth';        // for authentication
-import 'firebase/storage';     // for storage
-import 'firebase/firestore';
+import "firebase/auth"; // for authentication
+import "firebase/storage"; // for storage
+import "firebase/firestore";
 
 var firebaseConfig = {
 	apiKey: "AIzaSyCsZdFdrJ7-NXJ7EtvfzfagzCUWJg_dQ3k",

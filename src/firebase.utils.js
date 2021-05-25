@@ -85,7 +85,7 @@ export const likeCampsite = async (campsiteID, userID, liked) => {
 						userID
 					),
 				});
-				useRef.update({
+				userRef.update({
 					likes: firebase.firestore.FieldValue.arrayRemove(
 						campsiteID
 					),

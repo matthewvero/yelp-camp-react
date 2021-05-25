@@ -43,9 +43,8 @@ const Review = ({ review, handleEdit }) => {
 	return (
 		<React.Fragment>
 			<ReviewContainer expanded={expanded} ref={reviewRef}>
-				<div style={{ display: "flex", height: "30px" }}>
-					<SubTitle>{review.heading}</SubTitle>
-				</div>
+				<SubTitle>{review.heading}</SubTitle>
+
 				<Text
 					style={{
 						gridColumn: "1/2",

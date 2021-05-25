@@ -11,7 +11,7 @@ export const ReviewContainer = styled.div`
 	width: 100%;
 	display: grid;
 	grid-template-columns: 3fr 1fr;
-	grid-template-rows: 40px 80px 100px;
+	grid-template-rows: 50px 70px 100px;
 	gap: 0.5rem;
 	overflow: hidden;
 	transition: all 100ms ease-in;
