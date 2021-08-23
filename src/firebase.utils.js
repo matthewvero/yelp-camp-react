@@ -2,7 +2,11 @@ import firebase from "firebase/app";
 import { db, auth } from "./firebase";
 import store from "./redux/store";
 import { destroySession } from "./redux/auth-redux/auth.actions";
-import { useRef } from "react";
+
+const functionsURL =
+	window.location.hostname === "localhost"
+		? "http://localhost:5001/yelpcamp-d57d1/us-central1/widgets"
+		: "https://us-central1-yelpcamp-d57d1.cloudfunctions.net/widgets";
 
 // CAMPSITE UTILITIES
 
@@ -172,16 +176,13 @@ export const deleteDocument = async (collection, doc) => {
 
 const uploadImage = async (encodedImage, url) => {
 	try {
-		const res = await fetch(
-			`http://localhost:5001/yelpcamp-d57d1/us-central1/widgets/newimage/${url}`,
-			{
-				// Your POST endpoint
-				method: "POST",
-				body: JSON.stringify({
-					base64ImageString: encodedImage,
-				}),
-			}
-		);
+		const res = await fetch(`${functionsURL}/newimage/${url}`, {
+			// Your POST endpoint
+			method: "POST",
+			body: JSON.stringify({
+				base64ImageString: encodedImage,
+			}),
+		});
 		if (res && res.status === 200) {
 			return res;
 		} else {
@@ -189,7 +190,7 @@ const uploadImage = async (encodedImage, url) => {
 		}
 	} catch (err) {
 		const event = new CustomEvent("alert", {
-			detail: `Something went wrong!`,
+			detail: `Something went wrong!` + err.message,
 		});
 		window.dispatchEvent(event);
 	}

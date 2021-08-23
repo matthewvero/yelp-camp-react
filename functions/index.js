@@ -68,7 +68,7 @@ app.post("/newimage/:collection/:uid/:imagetype", async (req, res, next) => {
 			imagetype !== "campsiteimage" && imagetype + "/"
 		}${fileName}`;
 		const URL = `https://api.sirv.com/v2/files/upload?filename=/yelpcamp/${imagePath}`;
-
+		console.log(tempFilePath);
 		fs.readFile(tempFilePath, async (err, data) => {
 			try {
 				if (err) throw new Error(err);
@@ -86,6 +86,7 @@ app.post("/newimage/:collection/:uid/:imagetype", async (req, res, next) => {
 				// Save link to firestore for access by the client later
 
 				if (upload.status === 200) {
+					console.log("Upload Successful");
 					const queryRef = db
 						.collection(collection)
 						.where("uid", "==", uid);
@@ -114,13 +115,13 @@ app.post("/newimage/:collection/:uid/:imagetype", async (req, res, next) => {
 					error: error.message,
 				});
 				return;
+			} finally {
+				fs.unlinkSync(tempFilePath);
 			}
 		});
 	} catch (error) {
 		res.send({ status: 500, error: error.message });
 		return;
-	} finally {
-		fs.unlinkSync(tempFilePath);
 	}
 	return;
 });
