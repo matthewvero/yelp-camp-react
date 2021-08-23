@@ -1,4 +1,4 @@
-YELP-CAMP_REACT
+YELP-CAMP-REACT
 
 Guest log in: 
 yelpcampguest@hotmail.com
@@ -11,7 +11,6 @@ Users are able to:
 - Create a profile
 - Create campsites with descriptions, images, pricing.
 - Browse and interact with other users campsites via likes, comments and reviews.
-- All user made content is editable and deletable. 
 
 It uses: 
 - React
@@ -22,6 +21,4 @@ It uses:
 
 My favourite parts of this project are the campsite-creator component and the review-creator component. I found building these and getting them functioning and responsive to be a fun challenge and the end results are sleek and easy to use. 
 
-I found this project to be really enjoyable and will definitely add more functionality in the future. Some functions I plan to add would be additional social features, like friends lists, user to user messaging, a feed with statuses etc.
-
-If I were to spend more time on this project I would add friends, messaging and notifcations. I would also handle the average rating calculations on the back end using firebase functions.
+If I were to spend more time on this project (I plan to once I have filled out my portfolio further) I would add friends, messaging and notifcations. I would also handle the average rating calculations on the back end using firebase functions.
